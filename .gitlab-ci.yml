@@ -1,0 +1,4 @@
+include:
+  - project: 'larvata/devops/gitlab-ci-templates'
+    ref: master
+    file: 'Auto-DevOps.gitlab-ci.yml'
