@@ -17,6 +17,31 @@ Route::get('probe', function () {
     return "ok";
 });
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', 'DashboardController@index')->name('index');
+
+    Route::resource('anchor', 'AnchorController')->except(['show']);
+
+    Route::group(['prefix' => 'device', 'as' => 'device.'], function () {
+        Route::get('/', ['as' => 'index', 'uses' => 'DeviceController@index']);
+        Route::get('/info', ['as' => 'info', 'uses' => 'Devicecontroller@info']);
+    });
+
+    Route::resource('weather', 'WeatherController')->except(['show']);
+
+
+    Route::resource('typhoon', 'TyphoonController')->except(['show']);
+
+
+    Route::resource('users', 'UserController')->except(['show']);
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+        Route::get('query', ['as' => 'query', 'uses' => 'UserController@query']);
+    });
+
 });
+

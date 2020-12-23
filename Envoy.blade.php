@@ -48,3 +48,17 @@ php /var/www/artisan schedule:run >> /dev/null 2>&1;
 @task('laravel-worker')
 supervisorctl start laravel-worker:*
 @endtask
+
+
+@task('dev')
+{{--下載套件--}}
+composer install
+{{--yarn --ignore-engines install--}}
+{{--基本設定--}}
+{{--yarn dev--}}
+php artisan migrate
+php artisan storage:link
+{{--啟動設定--}}
+php -S 0.0.0.0:80 -t public
+{{--php artisan queue:listen --tries=1--}}
+@endtask
