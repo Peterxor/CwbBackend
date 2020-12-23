@@ -8,24 +8,14 @@ ingress:
     kubernetes.io/tls-acme: "false"
     kubernetes.io/ingress.class: "traefik"
 livenessProbe:
-  path: "/wp-includes/images/blank.gif"
+  path: "/probe"
   initialDelaySeconds: 15
   timeoutSeconds: 15
   scheme: "HTTP"
   probeType: "httpGet"
 readinessProbe:
-  path: "/wp-includes/images/blank.gif"
-  initialDelaySeconds: 15
-  timeoutSeconds: 15
+  path: "/probe"
+  initialDelaySeconds: 5
+  timeoutSeconds: 3
   scheme: "HTTP"
   probeType: "httpGet"
-persistence:
-  enabled: true
-  ## Set annotations on pvc
-  annotations: {}
-
-  volumeMounts:
-    - mountPath: /var/www/public/wp-content/uploads
-      subPath: storage_uploads
-    - mountPath: /var/www/public/wp-content/plugins
-      subPath: storage_plugins
