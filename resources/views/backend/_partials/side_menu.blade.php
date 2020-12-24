@@ -1,10 +1,11 @@
 <!-- begin:: Aside -->
 <div class="kt-aside  kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop"
      id="kt_aside">
-    <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand" style="background-color:#083F8C">
+    <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand" style="background-color:#1e1e2d">
         <div class="kt-aside__brand-logo">
-            <a href="{{route('index')}}">
-                <img alt="Logo" src="/images/logo_large.png" style="width:80%;">
+            <a href="{{route('index')}}" style="color:#fff">
+                {{-- <img alt="Logo" src="/images/logo_large.png" style="width:80%;"> --}}
+                氣象局播報系統
             </a>
         </div>
     </div>

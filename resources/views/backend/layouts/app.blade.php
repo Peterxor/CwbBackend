@@ -22,10 +22,11 @@
     class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
 <!-- side_menu -->
 <!-- begin:: Header Mobile -->
-<div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed " style="background-color: #083F8C">
+<div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed " style="background-color: #1e1e2d">
     <div class="kt-header-mobile__logo">
-        <a href="{{route('index')}}">
-            <img alt="Logo" src="/images/logo_large.png"/>
+        <a href="{{route('index')}}" style="color:#fff">
+            {{-- <img alt="Logo" src="/images/logo_large.png"/> --}}
+            氣象局播報系統
         </a>
     </div>
     <div class="kt-header-mobile__toolbar">
