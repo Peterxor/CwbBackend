@@ -17,7 +17,7 @@
     <div class="row">
         <div class="kt-portlet">
             <div class="kt-portlet__body">
-                <table id="typhoon-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ env('URL_PREFIX','').route('typhoon.update', ['_id'],false) }}">
+                <table id="typhoon-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-query-url="{{route('typhoon.query')}}" data-edit-url="{{ env('URL_PREFIX','').route('typhoon.edit', ['_id'],false) }}">
                     <thead>
                         <tr>
                             <th>排序</th>

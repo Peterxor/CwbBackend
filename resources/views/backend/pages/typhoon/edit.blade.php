@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 @section('content')
-    @switch($sort)
+    @switch($type)
         @case(1)
         @include('backend.pages.typhoon.motive')
         @break

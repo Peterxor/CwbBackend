@@ -41,6 +41,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::resource('typhoon', 'TyphoonController')->except(['show']);
+    Route::group(['prefix' => 'typhoon', 'as' => 'typhoon.'], function () {
+        Route::get('/query', ['as' => 'query', 'uses' => 'TyphoonController@query']);
+    });
 
 
     Route::resource('users', 'UserController')->except(['show']);
