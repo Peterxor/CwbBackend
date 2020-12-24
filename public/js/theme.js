@@ -237,7 +237,7 @@ eval("\n/**\n * @class KTUtil  base utilize class that privides helper functions
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/setsu/larvata/wfc/web-backend/resources/js/theme.js */"./resources/js/theme.js");
+module.exports = __webpack_require__(/*! /Users/setsu/larvata/24go/24go-backend/resources/js/theme.js */"./resources/js/theme.js");
 
 
 /***/ })
