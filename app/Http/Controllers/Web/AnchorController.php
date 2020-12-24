@@ -18,7 +18,6 @@ class AnchorController extends Controller
         // todo https://pl70hd.axshare.com/#id=vue7xr&p=e_1_1_%E5%80%8B%E5%88%A5%E6%8E%92%E7%89%88%E5%81%8F%E5%A5%BD%E8%A8%AD%E5%AE%9A&g=1
 
         return view('backend.pages.anchor.edit');
-
     }
 
     public function update()
