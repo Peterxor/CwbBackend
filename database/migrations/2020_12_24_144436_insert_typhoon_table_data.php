@@ -177,6 +177,6 @@ class InsertTyphoonTableData extends Migration
     public function down()
     {
         //
-        TyphoonImage::delete();
+        TyphoonImage::truncate();
     }
 }

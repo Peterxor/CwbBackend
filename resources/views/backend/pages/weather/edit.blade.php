@@ -57,7 +57,7 @@
                     			<div class="col-3">
                                     <select class="form-control" name="category">
                                         @foreach($categorys as $id => $name)
-                    					<option value="{{$id}}" {{$id == $general->category->id ? 'selected' : ''}}>{{$name}}</option>
+                    					<option value="{{$id}}" {{$id == ($general->category->id ?? null) ? 'selected' : ''}}>{{$name}}</option>
                                         @endforeach
                                         {{-- @widget('CategorySelect') --}}
                                     </select>
