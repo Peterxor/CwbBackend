@@ -6,7 +6,6 @@
         <div class="kt-subheader__main">
             <h3 class="kt-subheader__title">主播偏好設定</h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-            {{-- <h3 class="kt-subheader__title">{{$parent_name}}</h3> --}}
         </div>
 
     </div>
@@ -14,6 +13,8 @@
 <!-- end:: Content Head -->
 <!-- begin:: Content -->
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <form class="kt-form kt-form--label-right" id="search-form" action="{{route('anchor.query')}}">
+    </form>
     <div class="row">
         <div class="kt-portlet">
             <div class="kt-portlet__body">
