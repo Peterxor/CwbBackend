@@ -1,9 +1,22 @@
+@php
+$user = Auth::user();
+$permissions = [];
+if ($user){
+    foreach($user->getAllPermissions() as $permission){
+        $permissions[] = $permission->name;
+    }
+}
+@endphp
+
 @foreach ($items as $item)
+    @if ($item['permission'] && !in_array($item['permission'], $permissions))
+        @continue
+    @endif
     @if(!empty($item['children']))
         <li class="kt-menu__item kt-menu__item--submenu {{($item['name']==Request::segment($item['level']))?'kt-menu__item--open':''}}"
             aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
-                <span class="kt-menu__link-icon"><i class="la la-folder-open"></i></span>
+                <span class="kt-menu__link-icon"><i class="la la-wrench"></i></span>
                 <span class="kt-menu__link-text">{{$item['display_name'] ?? ''}}</span>
                 <i class="kt-menu__ver-arrow la la-angle-right"></i>
             </a>
@@ -32,8 +45,9 @@
                 $link = '#';
             }
             @endphp
-            <a href="{{$link}}" class="kt-menu__link " target="{{$item['name'] === 'chatwoot' ? '_blank' : '_self'}}">
-                <span class="kt-menu__link-icon"><i class="la la-file-text"></i></span>
+            <a href="{{$link}}" class="kt-menu__link ">
+                <!-- <span class="kt-menu__link-icon"><i class="la la-file-text"></i></span> -->
+                <span class="kt-menu__link-icon">{!! $item['icon'] ?? '' !!}</i></span>
                 <span class="kt-menu__link-text">{{$item['display_name'] ?? ''}}</span>
             </a>
         </li>
