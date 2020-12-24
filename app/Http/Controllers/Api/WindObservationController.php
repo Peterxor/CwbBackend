@@ -14,7 +14,7 @@ class WindObservationController extends Controller
      */
     public function index(): JsonResponse
     {
-        $stationObs = simplexml_load_file(storage_path('xml/WindObs.xml'));
+        $stationObs = simplexml_load_file(storage_path('data/wind/obs/WindObs.xml'));
 
         $data = [
             'startTime' => (string)$stationObs->dataset->datasetInfo->validTime->startTime,
