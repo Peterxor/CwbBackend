@@ -14,38 +14,23 @@ class WindObservationController extends Controller
      */
     public function index(): JsonResponse
     {
-
-        $StationObs = $this->simpleXmlToArray(simplexml_load_file(public_path('StationObs.xml')));
+        $stationObs = simplexml_load_file(storage_path('xml/WindObs.xml'));
 
         $data = [
-            'startTime' => $StationObs['dataset'][0]['datasetInfo'][0]['validTime'][0]['startTime'],
-            'endTime' => $StationObs['dataset'][0]['datasetInfo'][0]['validTime'][0]['endTime'],
+            'startTime' => (string)$stationObs->dataset->datasetInfo->validTime->startTime,
+            'endTime' => (string)$stationObs->dataset->datasetInfo->validTime->endTime,
         ];
 
         $location = [];
-        foreach ($StationObs['dataset'][0]['location'] ?? [] as $loc){
-            $location[$loc['locationName']] = [
-                "wind" => $loc['weatherElement'][1]['time'][0]['parameter'][2]['parameterValue'],
-                "gust" => $loc['weatherElement'][2]['time'][0]['parameter'][2]['parameterValue'],
+        foreach ($stationObs->dataset->location ?? [] as $loc) {
+            $location[(string)$loc->locationName] = [
+                "wind" => (string)$loc->weatherElement[1]->time->parameter[2]->parameterValue,
+                "gust" => (string)$loc->weatherElement[2]->time->parameter[2]->parameterValue,
             ];
         }
 
         $data['location'] = $location;
 
         return response()->json($data);
-    }
-
-    function simpleXmlToArray(SimpleXMLElement $xmlObject)
-    {
-        $object = [];
-
-        foreach ($xmlObject as $node) {
-            if ($node->count()) {
-                $object[$node->getName()][] = $this->simpleXmlToArray($node);
-            } else
-                $object[$node->getName()] = (string)$node;
-        }
-
-        return $object;
     }
 }

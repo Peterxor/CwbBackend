@@ -17,7 +17,8 @@
         "spatie/laravel-permission": "^3.17",
         "yajra/laravel-datatables-oracle": "~9.0",
         "yajra/laravel-datatables-fractal": "^1.6",
-        "laravelcollective/html": "^6.2"
+        "laravelcollective/html": "^6.2",
+        "ext-simplexml": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
