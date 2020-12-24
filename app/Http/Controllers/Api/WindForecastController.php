@@ -13,7 +13,7 @@ class WindForecastController extends Controller
      */
     public function index(): JsonResponse
     {
-        $windForecast = simplexml_load_file(storage_path('xml/WindForecast.xml'));
+        $windForecast = simplexml_load_file(storage_path('data/wind/forecast/WindForecast.xml'));
 
         $data = [];
 
