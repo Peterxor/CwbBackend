@@ -8,11 +8,11 @@
 				</button>
 			</div>
 			<div class="modal-body">
-			<form class="kt-form kt-form--label-right" id="edit-form">
+			<form class="kt-form kt-form--label-right" id="category-form" method="post" action="{{route('weather.storeCategory')}}" data-search-category="{{route('weather.queryCategory')}}">
 				<div class="row">
 			        <div class="kt-portlet">
 			            <div class="kt-portlet__body">
-			                <table id="category-table" class="table table-sm table-head-bg-brand">
+			                <table id="category-table" class="table table-sm table-head-bg-brand dataTable">
 			                    <thead>
 			                        <tr>
 			                            <th>排序</th>
@@ -31,12 +31,13 @@
 			            </div>
 			        </div>
 			    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-btn">取消</button>
+                    <button type="button" class="btn btn-primary" id="edit-category-btn">儲存變更</button>
+                </div>
 		     </form>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-btn">取消</button>
-				<button type="button" class="btn btn-primary" id="edit-btn">儲存變更</button>
-			</div>
+
 		</div>
 	</div>
 </div>

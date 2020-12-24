@@ -12,7 +12,7 @@
 </div>
 <!-- end:: Content Head -->
 <!-- begin:: Content -->
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+<div id="search-form" action="{{route('weather.query')}}" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="kt-form__actions">
         <div class="form-group row">
             <div class="col-6">
@@ -26,7 +26,7 @@
     <div class="row">
         <div class="kt-portlet">
             <div class="kt-portlet__body">
-                <table id="weather-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ env('URL_PREFIX','').route('weather.update', ['_id'],false) }}">
+                <table id="weather-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ env('URL_PREFIX','').route('weather.edit', ['_id'],false) }}">
                     <thead>
                         <tr>
                             <th>排序</th>

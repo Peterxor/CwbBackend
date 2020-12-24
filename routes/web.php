@@ -33,6 +33,11 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::resource('weather', 'WeatherController')->except(['show']);
+    Route::group(['prefix' => 'weather', 'as' => 'weather.'], function () {
+        Route::get('/query', ['as' => 'query', 'uses' => 'WeatherController@query']);
+        Route::get('/queryCategory', ['as' => 'queryCategory', 'uses' => 'WeatherController@queryCategory']);
+        Route::post('/storeCategory', ['as' => 'storeCategory', 'uses' => 'WeatherController@storeCategory']);
+    });
 
 
     Route::resource('typhoon', 'TyphoonController')->except(['show']);
