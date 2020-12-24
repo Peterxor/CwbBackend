@@ -13,22 +13,25 @@ class WindForecastController extends Controller
      */
     public function index(): JsonResponse
     {
-        $StationObs = $this->simpleXmlToArray(simplexml_load_file(public_path('WPPS_WWW_FcstWindTable_201609130943.xml')));
+        $windForecast = simplexml_load_file(storage_path('xml/WindForecast.xml'));
 
-        return response()->json();
-    }
+        $data = [];
 
-    function simpleXmlToArray(SimpleXMLElement $xmlObject)
-    {
-        $object = [];
+        foreach ($windForecast->WindForecastInformation->AreaForecastData ?? [] as $areaForecastData) {
+            $key = (string) $areaForecastData->StartValidTime->Time;
+            if(!array_key_exists($key, $data)){
+                $data[$key]['startTime'] = (string) $areaForecastData->StartValidTime->Time;
+                $data[$key]['endTime'] = (string) $areaForecastData->EndValidTime->Time;
+                $data[$key]['location'] = [];
+            }
 
-        foreach ($xmlObject as $node) {
-            if ($node->count()) {
-                $object[$node->getName()][] = $this->simpleXmlToArray($node);
-            } else
-                $object[$node->getName()] = (string)$node;
+            if(((string) $areaForecastData->WindData->attributes()['type']) == 'average'){
+                $data[$key]['location'][(string) $areaForecastData->attributes()['area']]['wind'] =  (string) $areaForecastData->WindData->Level;
+            } else {
+                $data[$key]['location'][(string) $areaForecastData->attributes()['area']]['gust'] =  (string) $areaForecastData->WindData->Level;
+            }
         }
 
-        return $object;
+        return response()->json($data);
     }
 }
