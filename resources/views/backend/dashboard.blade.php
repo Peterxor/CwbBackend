@@ -40,54 +40,75 @@
             </div>
             <div class="kt-portlet__body">
                 <div class="kt-section kt-section--first">
+
                     <div class="form-group row">
-                        <label for="example-search-input" class="col-2 col-form-label">
-                            <span class="kt-badge kt-badge--lg kt-badge--rounded"><i class="la la-user"></i></span>預報主播
+                        <label for="example-search-input" class="col-12 col-form-label">
+                            <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i class="la la-user"></i></span>預報主播
                         </label>
-                    </div>
-                    <div class="form-group row">
                         <div class="col-3">
                             <select class="form-control" name="category" id="dish-category">
             					{{-- {{ Widget::UserSelect()}} --}}
                             </select>
                         </div>
                         <div class="col-3 kt-align-left">
-                            <button type="submit" class="btn btn-success">儲存
+                            <button type="submit" class="btn btn-primary">儲存
                             </button>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <div class="col-6">
                             <label for="example-search-input" class="col-4 col-form-label">
-                                <span class="kt-badge kt-badge--lg kt-badge--rounded"><i class="la la-user"></i></span>颱風主播圖卡
+                                <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i class="la la-desktop"></i></span>颱風主播圖卡
                             </label>
-                            <button type="submit" class="btn btn-success">編輯主播圖卡
+                            <button type="submit" class="btn btn-primary">編輯主播圖卡
                             </button>
                         </div>
                         <div class="col-6">
                             <label for="example-search-input" class="col-4 col-form-label">
-                                <span class="kt-badge kt-badge--lg kt-badge--rounded"><i class="la la-user"></i></span>颱風主播圖卡
+                                <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i class="la la-desktop"></i></span>天氣預報排程
                             </label>
-                            <button type="submit" class="btn btn-success">天氣預報排程
+                            <button type="submit" class="btn btn-primary">編輯預報排程
                             </button>
                         </div>
                     </div>
                     <div class="form-group row">
 
-                        <div class="col-6">
-                            <div class="col-1 layout-container" style="background-image:url(/images/login/logo.png);">
-                                <div class="row" style="margin-top: 160px">
-                                    <label>東亞IR</label>
+                        <div class="col-6 row">
+                            <div class="col-empty"></div>
+                            <div class="col-4 layout-container" style="background-image:url(/images/login/logo.png);">
+
+                                <div class="row layout-text">
+                                    <label>1. 東亞IR</label>
                                 </div>
                             </div>
-                            <div class="col-1 layout-container" style="background-image:url(/logo_large.png);">
-                                <div class="row" style="margin-top: 160px">
-                                    <label>東亞MB</label>
+                            <div class="col-4 layout-container" style="background-image:url(/images/login/logo.png);">
+                                <div class="row layout-text">
+                                    <label>2. 東亞MB</label>
                                 </div>
                             </div>
-                            <div class="col-1 layout-container" style="background-image:url(/logo_large.png);">
-                                <div class="row" style="margin-top: 160px">
-                                    <label>雨量</label>
+                            <div class="col-4 layout-container" style="background-image:url(/images/login/logo.png);">
+                                <div class="row layout-text">
+                                    <label>3. 雨量</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 row">
+                            <div class="col-empty"></div>
+                            <div class="col-4 layout-container" style="background-image:url(/images/login/logo.png);">
+
+                                <div class="row layout-text">
+                                    <label>1. 東亞IR</label>
+                                </div>
+                            </div>
+                            <div class="col-4 layout-container" style="background-image:url(/images/login/logo.png);">
+                                <div class="row layout-text">
+                                    <label>2. 東亞MB</label>
+                                </div>
+                            </div>
+                            <div class="col-4 layout-container" style="background-image:url(/images/login/logo.png);">
+                                <div class="row layout-text">
+                                    <label>3. 雨量</label>
                                 </div>
                             </div>
                         </div>
@@ -96,19 +117,28 @@
             </div>
         </div>
     </div>
-    <style>
+<style>
+    .col-empty{
+        flex:0 0 50%;max-width:5%;
+    }
+
     .layout-container {
-        width: 100px;
-        height: 150px;
+        max-width:30%;
+        height: 100px;
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
-        margin-bottom: 100px;
-        margin-left:10px;
+        margin-bottom: 50px;
+        margin-left:5px;
         border-style:solid;
         border-color:black;
         border-width:1px;
     }
-    </style>
+
+    .layout-text{
+        margin-top: 110px;
+    }
+
+</style>
     <!-- end:: Content -->
 @endsection
