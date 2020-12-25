@@ -13,7 +13,9 @@
                 </div>
             </div>
             <div class="kt-portlet__body" style="display: none; overflow: hidden; padding-top: 0px; padding-bottom: 0px;">
-
+                <form class="kt-form kt-form--label-right" id="edit-form" action="" method="post">
+                    @csrf
+                    <input type="hidden" name="_method" value="put"/>
                 <div class="kt-section">
                     <div class="kt-section__content">
                         <table class="table table-bordered">
@@ -64,6 +66,7 @@
                     </div>
                 </div>
             </div>
+        </form>
         </div>
     </div>
 
