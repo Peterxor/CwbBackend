@@ -75,7 +75,7 @@
                     <div class="form-group row">
 
                         <div class="col-6">
-                            <div class="col-1 layout-container" style="background-image:url(/images/logo_large.png);">
+                            <div class="col-1 layout-container" style="background-image:url(/images/login/logo.png);">
                                 <div class="row" style="margin-top: 160px">
                                     <label>東亞IR</label>
                                 </div>
