@@ -569,28 +569,28 @@ class WindObservationController extends Controller
     ];
 
     private $countyToTaiwan = [
-        '臺北市' => '北',
-        '新北市' => '北',
-        '基隆市' => '北',
-        '桃園市' => '北',
-        '新竹市' => '北',
-        '新竹縣' => '北',
-        '宜蘭縣' => '北',
-        '苗栗縣' => '中',
-        '臺中市' => '中',
-        '彰化縣' => '中',
-        '南投縣' => '中',
-        '雲林縣' => '中',
-        '嘉義市' => '南',
-        '嘉義縣' => '南',
-        '臺南市' => '南',
-        '高雄市' => '南',
-        '屏東縣' => '南',
-        '澎湖縣' => '南',
-        '花蓮縣' => '東',
-        '臺東縣' => '東',
-        '金門縣' => '東',
-        '連江縣' => '東'
+        '臺北市' => 'n',
+        '新北市' => 'n',
+        '基隆市' => 'n',
+        '桃園市' => 'n',
+        '新竹市' => 'n',
+        '新竹縣' => 'n',
+        '宜蘭縣' => 'n',
+        '苗栗縣' => 'm',
+        '臺中市' => 'm',
+        '彰化縣' => 'm',
+        '南投縣' => 'm',
+        '雲林縣' => 'm',
+        '嘉義市' => 's',
+        '嘉義縣' => 's',
+        '臺南市' => 's',
+        '高雄市' => 's',
+        '屏東縣' => 's',
+        '澎湖縣' => 's',
+        '花蓮縣' => 'e',
+        '臺東縣' => 'e',
+        '金門縣' => 'e',
+        '連江縣' => 'e'
     ];
 
     /**
@@ -605,7 +605,7 @@ class WindObservationController extends Controller
             'endTime' => (string)$stationObs->dataset->datasetInfo->validTime->endTime,
         ];
 
-        $location = ['北' => [], '中' => [], '南' => [], '東' => []];
+        $location = ['n' => [], 'm' => [], 's' => [], 'e' => []];
         foreach ($stationObs->dataset->location ?? [] as $loc) {
             if (!array_key_exists((string)$loc->locationName, $this->locationToCounty))
                 continue;
