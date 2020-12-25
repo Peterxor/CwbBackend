@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('anchor', 'AnchorController')->except(['show']);
 
     Route::group(['prefix' => 'device', 'as' => 'device.'], function () {
+        Route::get('query', ['as' => 'query', 'uses' => 'DeviceController@query']);
         Route::get('/', ['as' => 'index', 'uses' => 'DeviceController@index']);
         Route::get('/info', ['as' => 'info', 'uses' => 'Devicecontroller@info']);
     });

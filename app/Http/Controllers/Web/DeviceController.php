@@ -12,6 +12,10 @@ class DeviceController extends Controller
         return view("backend.pages.device.index");
     }
 
+    public function query()
+    {
+    }
+
     public function info()
     {
         //todo https://pl70hd.axshare.com/#id=r1l380&p=a_1_1_%E5%9C%96%E8%B3%87%E9%A0%85%E7%9B%AE%E6%8E%92%E7%89%88%E8%A8%AD%E5%AE%9A
