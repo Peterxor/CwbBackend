@@ -5,6 +5,7 @@ $(document).ready(function() {
     var typhoonTable = $('#typhoon-table');
     var _typhoonTable;
     var editUrl = typhoonTable.attr('data-edit-url');
+    var queryUrl = typhoonTable.attr('data-query-url');
 
     $.fn.dataTable.ext.errMode = 'none';
     var dataTableSettings = {
@@ -17,7 +18,7 @@ $(document).ready(function() {
         ordering: false,
         language: datatable_lang_tw,
         ajax: {
-            url: searchUrl,
+            url: queryUrl,
             type: 'GET',
             data: function(aoData) {
                 //把分頁的參數與自訂的搜尋結合
