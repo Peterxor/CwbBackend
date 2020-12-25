@@ -89,6 +89,7 @@
 <script src="/js/theme.js"></script>
 <script src="/js/app.js"></script>
 <script src="/js/common.js"></script>
+{{--<script src="/js/socket.js"></script>--}}
 <!--end::Global Theme Bundle -->
 
 <!--begin::Page Vendors(used by this pages) -->
