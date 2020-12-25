@@ -47,7 +47,7 @@
                             <div class="col-3 kt-input-icon">
                                 <input class="form-control"
                                        type="email"
-                                       value="" name="email" id="email-input" required maxlength="50">
+                                       value="" name="email" required maxlength="50">
                                 <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
                             </div>
                         </div>

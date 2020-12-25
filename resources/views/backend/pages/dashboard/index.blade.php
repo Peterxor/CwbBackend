@@ -123,3 +123,7 @@
 </style>
     <!-- end:: Content -->
 @endsection
+
+@section('pages_scripts')
+    {!! Html::script(env('URL_PREFIX','').'js/dashboard/index.js') !!}
+@endsection
