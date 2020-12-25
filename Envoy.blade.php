@@ -53,7 +53,7 @@ supervisorctl start laravel-worker:*
 @task('dev')
 {{--下載套件--}}
 composer install
-{{--yarn --ignore-engines install--}}
+yarn --ignore-engines install
 {{--基本設定--}}
 {{--yarn dev--}}
 php artisan migrate

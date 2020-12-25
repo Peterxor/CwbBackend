@@ -55,3 +55,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('query', ['as' => 'query', 'uses' => 'UserController@query']);
     });
 });
+
+
+Route::get('test-broadcast', function () {
+    broadcast(new \App\Events\ExampleEvent);
+});
