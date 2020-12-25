@@ -25,6 +25,9 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'DashboardController@index')->name('index');
 
+    Route::group(['prefix' => 'anchor', 'as' => 'anchor.'], function () {
+        Route::get('query', ['as' => 'query', 'uses' => 'AnchorController@query']);
+    });
     Route::resource('anchor', 'AnchorController')->except(['show']);
 
     Route::group(['prefix' => 'device', 'as' => 'device.'], function () {
@@ -50,6 +53,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::get('query', ['as' => 'query', 'uses' => 'UserController@query']);
     });
-
 });
-

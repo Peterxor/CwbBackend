@@ -12,6 +12,9 @@ class AnchorController extends Controller
         return view("backend.pages.anchor.index");
     }
 
+    public function query()
+    {
+    }
 
     public function edit()
     {
