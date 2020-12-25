@@ -30,12 +30,14 @@
                             <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i class="la la-user"></i></span>預報主播
                         </label>
                         <div class="col-3">
-                            <select class="form-control" name="category" id="dish-category">
+                            <select class="form-control" name="user" disabled>
+                                <option selected>不指定主播</option>
             					{{ Widget::UserSelect()}}
                             </select>
                         </div>
                         <div class="col-3 kt-align-left">
-                            <a href="{{route('device.query')}}" class="btn btn-primary">儲存</a>
+                            <button class="btn btn-primary js-submit-btn" name="save_btn" style="display:none;">儲存</button>
+                            <button class="btn btn-outline-secondary js-change-btn">變更</button>
                         </div>
                     </div>
 
@@ -44,13 +46,13 @@
                             <label for="example-search-input" class="col-4 col-form-label">
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i class="la la-desktop"></i></span>颱風主播圖卡
                             </label>
-                            <a href="{{route('device.query')}}" class="btn btn-primary">編輯主播圖卡</a>
+                            <a href="{{route('dashboard.update', ['dashboard'=>1])}}" class="btn btn-primary">編輯主播圖卡</a>
                         </div>
                         <div class="col-6">
                             <label for="example-search-input" class="col-4 col-form-label">
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i class="la la-desktop"></i></span>天氣預報排程
                             </label>
-                            <a href="{{route('device.query')}}" class="btn btn-primary">編輯預報排程</a>
+                            <a href="{{route('dashboard.update', ['dashboard'=>1])}}" class="btn btn-primary">編輯預報排程</a>
                         </div>
                     </div>
                     <div class="form-group row">

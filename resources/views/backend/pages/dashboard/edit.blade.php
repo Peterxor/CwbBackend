@@ -4,27 +4,31 @@
     <div class="kt-subheader  kt-grid__item" id="kt_subheader">
         <div class="kt-container  kt-container--fluid ">
             <div class="kt-subheader__main">
-                <h3 class="kt-subheader__title">設定天氣圖資</h3>
+                <h3 class="kt-subheader__title">天氣預報排程</h3>
                 <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-                <a href="{{route('weather.index', [])}}">一般天氣預報圖資管理 </a><span> / 設定天氣圖資</span>
+                <a href="{{route('dashboard.index', [])}}">Dashboard </a><span> / 天氣預報排程</span>
             </div>
         </div>
     </div>
 <!-- end:: Content Head -->
 <!-- begin:: Content -->
-    <form class="kt-form kt-form--label-right" id="edit-form" method="post" action="{{route('weather.update', ['weather' => $general->id])}}}" >
+    <form class="kt-form kt-form--label-right" id="edit-form" method="post">
       @csrf
     <input type="hidden" name="_method" value="put"/>
 
     <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+
+
         <div class="row">
             <div class="col-12">
                 <div class="kt-form__actions">
                     <div class="form-group row">
                         <div class="col-6">
-                            <a href="{{route('weather.index', [])}}" class="btn btn-secondary">回上一頁</a>
+                            <a href="{{route('dashboard.index', [])}}" class="btn btn-secondary">回上一頁</a>
+                            <button type="submit" class="btn btn-primary" id="edit-btn">儲存變更</button>
                         </div>
-                        <div class="col-6 kt-align-right">
+                        <div class="col-6">
 
                         </div>
                     </div>
@@ -34,126 +38,41 @@
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
-                                圖資資訊
+                                裝置：防災視訊室
                             </h3>
                         </div>
                     </div>
+
                     <div class="kt-portlet__body">
-                        <div class="kt-section kt-section--first">
-                            <div class="form-group row">
-                    			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>圖資名稱
-                                </label>
-                    			<div class="col-3">
-                                    <input class="form-control" type="text" value="{{$general->name}}" name="name" required>
-                                </div>
-                                <div class="col-3 pt-3 col-form-label">
-                                </div>
-            		        </div>
-                            <div class="form-group row">
-                    			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>分類
-                                </label>
-                    			<div class="col-3">
-                                    <select class="form-control" name="category">
-                                        @foreach($categorys as $id => $name)
-                    					<option value="{{$id}}" {{$id == ($general->category->id ?? null) ? 'selected' : ''}}>{{$name}}</option>
-                                        @endforeach
-                                        {{-- @widget('CategorySelect') --}}
+                        <table class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" >
+                            <thead>
+                                <tr>
+                                    <th style="width:50px;">排序</th>
+                                    <th style="width:150px;">類別</th>
+                                    <th>名稱</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td><span class="kt-badge kt-badge--inline"><i class="la la-sort" style="font-size:24px"></i></span></td>
+                                <td>
+                                    <select class="form-control js-change-btn">
+                                        <option value="weather" selected>圖資來源</option>
+                                        <option value="upload">圖片上傳</option>
                                     </select>
-                                </div>
-            		        </div>
-                            <div class="form-group row">
-                    			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>顯示模式
-                                </label>
-                    			<div class="col-7">
-                                    <div class="kt-radio-inline">
-                    					<label class="kt-radio">
-                    						<input class="mr-1" type="radio" name="display_type" value="1" id="single" {{$json->type == 1 ? 'checked' : ''}} disabled/>單圖
-                                            <span></span>
-                    					</label>
-                    					<label class="kt-radio">
-                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="2" id="parallel" {{$json->type == 2 ? 'checked' : ''}} disabled/>雙圖並列
-                                            <span></span>
-                    					</label>
-                                        <label class="kt-radio">
-                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="3" id="dynamic" {{$json->type == 3 ? 'checked' : '' }} disabled/>動態組圖
-                                            <span></span>
-                    					</label>
-                                        <label class="kt-radio">
-                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="4" id="list" {{$json->type == 4 ? 'checked' : ''}} disabled/>圖片列表
-                                            <span></span>
-                    					</label>
-                    				</div>
-                                </div>
-                                <div class="col-3 pt-3 col-form-label">
-                                </div>
-            		        </div>
-                            <div class="form-group row js-info-group js-single js-dynamic js-list" style="{{$json->type != 2 ? '' : 'display:none;'}}">
-                    			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>資料來源
-                                </label>
-                    			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->data_origin ?? ''}}" name="data_origin">
-                                </div>
-                                <div class="col-3 pt-3 col-form-label">
-                                </div>
-            		        </div>
-                            <div class="form-group row js-info-group js-parallel" style="{{$json->type == 2 ? '' : 'display:none;'}}">
-                    			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>資料來源(左)
-                                </label>
-                    			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->data_left ?? ''}}" name="data_left">
-                                </div>
-                                <div class="col-3 pt-3 col-form-label">
-                                </div>
-            		        </div>
-                            <div class="form-group row js-info-group js-parallel" style="{{$json->type == 2 ? '' : 'display:none;'}}">
-                    			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>資料來源(右)
-                                </label>
-                    			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->data_right ?? ''}}" name="data_right">
-                                </div>
-                                <div class="col-3 pt-3 col-form-label">
-                                </div>
-            		        </div>
-                            <div class="form-group row js-info-group js-dynamic" style="{{$json->type == 3 ? '' : 'display:none;'}}">
-                    			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>動態組圖張數
-                                </label>
-                    			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->move_pic_number ?? ''}}" name="move_pic_number">
-                                </div>
-                                <div class="col-3 pt-3 col-form-label">
-                                    <span>張</span>
-                                </div>
-            		        </div>
-                            <div class="form-group row js-info-group js-dynamic" style="{{$json->type == 3 ? '' : 'display:none;'}}">
-                    			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>換圖速率 (秒/張)
-                                </label>
-                    			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->pic_change_rate ?? ''}}" name="pic_change_rate">
-                                </div>
-                                <div class="col-3 pt-3 col-form-label">
-                                    <span>張/秒</span>
-                                </div>
-            		        </div>
-                        </div>
+                                </td>
+                                <td>
+                                    <select class="form-control js-ref js-weather" style="display:block;">
+                                        {{-- 一般天氣預報圖資 --}}
+                                    </select>
+                                    <input type="file" class="js-ref js-avatar" id="file-upload" accept="image/gif, image/jpeg, image/png" style="display:none;"/>
+                                </td>
+                            </tr>
+                        </table>
                 	</div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6">
-            </div>
-            <div class="col-6 kt-align-right">
-                <button type="submit" class="btn btn-primary" id="edit-btn">儲存</button>
-            </div>
-        </div>
+
     </div>
     </form>
 <!-- end:: Content -->
@@ -161,5 +80,5 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/weather/edit.js') !!}
+    {!! Html::script(env('URL_PREFIX','').'js/dashboard/edit.js') !!}
 @endsection
