@@ -110,7 +110,7 @@
                                 <div class="col-3 pt-3 col-form-label">
                                 </div>
             		        </div>
-                            <div class="form-group row js-parallel" style="{{$json->type == 2 ? '' : 'display:none;'}}">
+                            <div class="form-group row js-info-group js-parallel" style="{{$json->type == 2 ? '' : 'display:none;'}}">
                     			<label for="example-search-input" class="col-2 col-form-label">
                                     <span class="kt-font-danger">*</span>資料來源(右)
                                 </label>
