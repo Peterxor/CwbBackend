@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Web;
+
 use App\User;
 use App\Models\Role;
 use Egulias\EmailValidator\Exception\ExpectingQPair;
@@ -28,10 +29,14 @@ class UserController extends Controller
         });
 
         return DataTables::eloquent($query)->setTransformer(function ($item) {
+            foreach ($item->getAllPermissions() as $permission) {
+                $permissions[] = $permission->name;
+            }
             return [
-                'id'=>$item->id,
-                'name'=>$item->name,
+                'id' => $item->id,
                 'email' => $item->email,
+                'name'=>$item->name,
+                'permission'=>$permissions,
                 'created_at' => $item->created_at ? Carbon::parse($item->created_at)->format('Y/m/d H:i:s') : '',
                 'updated_at'=>$item->updated_at ? Carbon::parse($item->updated_at)->format('Y/m/d H:i:s') : ''
             ];
@@ -58,7 +63,7 @@ class UserController extends Controller
         $request->merge(['password' => Hash::make($request->get('password'))]);
 
         // Create the user
-        if ( $user = User::create($request->except('roles', 'permissions')) ) {
+        if ($user = User::create($request->except('roles', 'permissions'))) {
             $this->syncPermissions($request, $user);
         }
 
@@ -85,7 +90,7 @@ class UserController extends Controller
             $user->fill($request->except('roles', 'permissions', 'password'));
 
             // check for password change
-            if($request->get('password')) {
+            if ($request->get('password')) {
                 $user->password = Hash::make($request->get('password'));
             }
 
@@ -104,7 +109,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         try {
-            if ( Auth::user()->id == $id ) {
+            if (Auth::user()->id == $id) {
                 throw new \Exception('無法刪除自己');
             }
             User::findOrFail($id)->delete();
@@ -125,7 +130,7 @@ class UserController extends Controller
         $roles = Role::find($roles);
 
         // check for current role changes
-        if( ! $user->hasAllRoles( $roles ) ) {
+        if (! $user->hasAllRoles($roles)) {
             // reset all direct permissions for user
             $user->permissions()->sync([]);
         } else {
@@ -136,5 +141,4 @@ class UserController extends Controller
         $user->syncRoles($roles);
         return $user;
     }
-
 }

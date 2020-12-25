@@ -35,8 +35,7 @@
                             </select>
                         </div>
                         <div class="col-3 kt-align-left">
-                            <button type="submit" class="btn btn-primary">儲存
-                            </button>
+                            <a href="{{route('device.query')}}" class="btn btn-primary">儲存</a>
                         </div>
                     </div>
 
@@ -45,15 +44,13 @@
                             <label for="example-search-input" class="col-4 col-form-label">
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i class="la la-desktop"></i></span>颱風主播圖卡
                             </label>
-                            <button type="submit" class="btn btn-primary">編輯主播圖卡
-                            </button>
+                            <a href="{{route('device.query')}}" class="btn btn-primary">編輯主播圖卡</a>
                         </div>
                         <div class="col-6">
                             <label for="example-search-input" class="col-4 col-form-label">
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i class="la la-desktop"></i></span>天氣預報排程
                             </label>
-                            <button type="submit" class="btn btn-primary">編輯預報排程
-                            </button>
+                            <a href="{{route('device.query')}}" class="btn btn-primary">編輯預報排程</a>
                         </div>
                     </div>
                     <div class="form-group row">

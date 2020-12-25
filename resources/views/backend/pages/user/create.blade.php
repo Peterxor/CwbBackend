@@ -4,23 +4,28 @@
     <div class="kt-subheader  kt-grid__item" id="kt_subheader">
         <div class="kt-container  kt-container--fluid ">
             <div class="kt-subheader__main">
-                <h3 class="kt-subheader__title">新增管理員</h3>
+                <h3 class="kt-subheader__title">新增使用者</h3>
                 <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                <a href="{{route('users.index', [])}}">使用者管理</a><span> / 新增使用者</span>
             </div>
         </div>
     </div>
     <!-- end:: Content Head -->
     <!-- begin:: Content -->
 
-
     <form class="kt-form kt-form--label-right" id="add-info-form" action="{{route('users.store', [])}}" method="post"
           enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="set_avatar" id="set_avatar" value="0">
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
             <div class="kt-form__actions">
                 <div class="form-group row">
-                    <a href="{{route('users.index', [])}}" class="btn btn-secondary">回上一頁</a>
+                    <div class="col-6">
+                        <a href="{{route('users.index', [])}}" class="btn btn-secondary">回上一頁</a>
+                    </div>
+                    <div class="col-6 kt-align-right">
+
+                    </div>
                 </div>
             </div>
 
@@ -28,40 +33,18 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h3 class="kt-portlet__head-title">
-                            管理員資訊
+                            使用者資訊
                         </h3>
                     </div>
                 </div>
                 <div class="kt-portlet__body">
                     <div class="kt-section kt-section--first">
-                        <div class="form-group row">
-                            <label for="example-search-input" class="col-2 col-form-label">
-                                <span class="kt-font-danger">*</span>管理員名稱
-                            </label>
-                            <div class="col-6 kt-input-icon">
-                                <input class="form-control" type="text" value="" name="name" id="name-input" required
-                                       maxlength="30">
-                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span
-                                        id="name-count">0/30</span></span>
-                            </div>
-                        </div>
 
                         <div class="form-group row">
                             <label for="example-search-input" class="col-2 col-form-label">
-                                <span class="kt-font-danger">*</span>密碼
+                                <span class="kt-font-danger">*</span>帳號(信箱)
                             </label>
-                            <div class="col-6 kt-input-icon">
-                                <input class="form-control" type="password" value="" name="password" id="password-input"
-                                       required minlength="8" maxlength="15">
-                                <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="example-search-input" class="col-2 col-form-label">
-                                <span class="kt-font-danger">*</span>email
-                            </label>
-                            <div class="col-6 kt-input-icon">
+                            <div class="col-3 kt-input-icon">
                                 <input class="form-control"
                                        type="email"
                                        value="" name="email" id="email-input" required maxlength="50">
@@ -71,38 +54,52 @@
 
                         <div class="form-group row">
                             <label for="example-search-input" class="col-2 col-form-label">
-                                角色
+                                <span class="kt-font-danger">*</span>密碼
                             </label>
-                            <div class="checkbox-inline">
-                                @foreach($roles as $role)
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="roles[]" value="{{$role->id}}">
-                                        <span>{{$role->name}}</span>
-                                    </label>
-                                @endforeach
+                            <div class="col-3 kt-input-icon">
+                                <input class="form-control" type="password" value="" name="password" required minlength="8" maxlength="12">
+                                <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="example-search-input" class="col-2 col-form-label">
+                                <span class="kt-font-danger">*</span>使用者名稱
+                            </label>
+                            <div class="col-3 kt-input-icon">
+                                <input class="form-control" type="text" value="" name="name" required maxlength="30">
+                                <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
+                            </div>
+                        </div>
 
+                        <div class="form-group row">
+                            <label for="example-search-input" class="col-2 col-form-label">
+                                <span class="kt-font-danger">*</span>角色權限
+                            </label>
+                            <div class="col-2">
+                				<select class="form-control" name="role">
+                                    @foreach($roles as $role)
+                        					<option value="{{$role->id}}">{{$role->name}}</option>
+                                    @endforeach
+                                </select>
+                			</div>
+                        </div>
                     </div>
                 </div>
-
-
             </div>
-            <div class="kt-portlet__foot">
-                <div class="kt-form__actions">
-                    <div class="col-8">
-                        <button type="submit" class="btn btn-primary" id="submit-btn">確認新增</button>
-                    </div>
+
+            <div class="row">
+                <div class="col-6">
+                </div>
+                <div class="col-6 kt-align-right">
+                    <button type="submit" class="btn btn-primary" id="submit-btn">確認新增</button>
                 </div>
             </div>
         </div>
         <!-- end:: Content -->
-
     </form>
 
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/course/create.js') !!}
 @endsection

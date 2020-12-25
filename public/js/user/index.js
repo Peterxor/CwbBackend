@@ -3,10 +3,10 @@ $(document).ready(function() {
     var searchForm = $('#search-form');
     var searchFromBtn = $('#search-btn');
     var searchUrl = searchForm.attr('action');
-    var courseTable = $('#course-table');
-    var _courseTable;
-    var editUrl = courseTable.attr('data-edit-url');
-    var destroyUrl = courseTable.attr('data-destroy-url')
+    var userTable = $('#user-table');
+    var _userTable;
+    var editUrl = userTable.attr('data-edit-url');
+    var destroyUrl = userTable.attr('data-destroy-url')
 
     $.fn.dataTable.ext.errMode = 'none';
     var dataTableSettings = {
@@ -17,9 +17,6 @@ $(document).ready(function() {
         destroy: true,
         autoWidth: true,
         ordering: false,
-        // order: [
-        //     [0, "asc"]
-        // ],
         language: datatable_lang_tw,
         ajax: {
             url: searchUrl,
@@ -31,7 +28,7 @@ $(document).ready(function() {
                 });
                 return aoData;
             },
-            dataSrc: function ( json ) {
+            dataSrc: function(json) {
                 //Make your callback here.
                 return json.data;
             },
@@ -44,19 +41,15 @@ $(document).ready(function() {
             },
         },
         columns: [{
-                data: 'name',
-                width: '220px',
-            },
-            {
                 data: 'email',
                 width: '220px',
             },
             {
-                data: 'created_at',
-                width: '120px',
+                data: 'name',
+                width: '220px',
             },
             {
-                data: 'updated_at',
+                data: 'permission',
                 width: '120px',
             },
             {
@@ -82,20 +75,20 @@ $(document).ready(function() {
     }
 
     // dataTableSettings.deferLoading = 0;
-    _courseTable = courseTable.DataTable(dataTableSettings);
+    _userTable = userTable.DataTable(dataTableSettings);
 
     searchFromBtn.on('click', function() {
-        _courseTable.ajax.reload();
+        _userTable.ajax.reload();
     });
 
     $(document).keypress(function(event) {
         if (event.which == '13') {
             event.preventDefault();
-            _courseTable.ajax.reload();
+            _userTable.ajax.reload();
         }
     });
 
-    _courseTable.on('click', '.user-delete', function(e){
+    _userTable.on('click', '.user-delete', function(e) {
         console.log(123)
 
         swal.fire({
@@ -116,26 +109,19 @@ $(document).ready(function() {
                     contentType: false, //prevents ajax sending the content type header. The content type header make Laravel handel the FormData Object as some serialized string.,
                     success: function(msg) {
                         if (msg.success) {
-                            _courseTable.draw()
+                            _userTable.draw()
                             swal.fire(msg.message);
                             return
                         }
                         swal.fire('刪除失敗');
                     },
-                    error: function () {
+                    error: function() {
                         swal.fire('刪除失敗');
                     },
                 });
 
             }
         })
-
-
     })
-
-
-
-
-
 
 });
