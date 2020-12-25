@@ -28,7 +28,7 @@ class RainfallObservationController extends Controller
     {
         $rainfallObs = fopen($path, 'r');
 
-        $data = [];
+        $data = ['image' => url('test/rainfall.gif')];
 
         if (!feof($rainfallObs))
             fgets($rainfallObs);
