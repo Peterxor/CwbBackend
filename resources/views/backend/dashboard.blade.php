@@ -14,22 +14,6 @@
     <!-- begin:: Content -->
     <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
 
-        {{-- <div class="row">
-            <div class="kt-portlet">
-                <div class="kt-portlet__head kt-portlet__head--lg">
-                    <div class="kt-portlet__head-label">
-                        <div class="kt-portlet__head-wrapper">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="kt-portlet__body">
-                    <p>目前登入帳號：{{Auth::user() ? Auth::user()->email : ''}}</p>
-                    <p>使用者名稱：{{Auth::user() ? Auth::user()->name : ''}}</p>
-                </div>
-            </div>
-        </div> --}}
-
         <div class="kt-portlet">
             <div class="kt-portlet__head">
                 <div class="kt-portlet__head-label">
@@ -47,7 +31,7 @@
                         </label>
                         <div class="col-3">
                             <select class="form-control" name="category" id="dish-category">
-            					{{-- {{ Widget::UserSelect()}} --}}
+            					{{ Widget::UserSelect()}}
                             </select>
                         </div>
                         <div class="col-3 kt-align-left">
