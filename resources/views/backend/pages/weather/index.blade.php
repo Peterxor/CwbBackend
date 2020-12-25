@@ -12,11 +12,14 @@
 </div>
 <!-- end:: Content Head -->
 <!-- begin:: Content -->
-<div id="search-form" action="{{route('weather.query')}}" class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <form class="kt-form kt-form--label-right" id="search-form" action="{{route('weather.query')}}">
+    </form>
+
     <div class="kt-form__actions">
         <div class="form-group row">
             <div class="col-6">
-                <a href="#" class="btn btn-outline-success js-edit-btn" data-toggle="modal" data-target="#index-modal" >管理分類</a>
+                <a href="#" class="btn btn-outline-primary js-edit-btn" data-toggle="modal" data-target="#index-modal" >管理分類</a>
             </div>
             <div class="col-6 kt-align-right">
             </div>

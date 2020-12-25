@@ -13,7 +13,7 @@ if ($user){
         @continue
     @endif
     @if(!empty($item['children']))
-        <li class="kt-menu__item kt-menu__item--submenu {{($item['name']==Request::segment($item['level']))?'kt-menu__item--open':''}}"
+        <li class="kt-menu__item kt-menu__item--submenu  {{($item['name']==Request::segment($item['level'])) || Request::segment($item['level']) == 'weather' || Request::segment($item['level']) == 'typhoon' ?'kt-menu__item--open':''}}"
             aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
             <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
                 <span class="kt-menu__link-icon"><i class="la la-wrench"></i></span>

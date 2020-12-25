@@ -41,7 +41,7 @@ $(document).ready(function() {
         },
         columns: [{
                 data: 'sequence',
-                width: '40px',
+                width: '10px',
                 defaultContent: '',
                 mRender: function(data, type, full) {
                     return '<span class="kt-badge kt-badge--inline"><i class="la la-sort" style="font-size:24px"></i></span>';
@@ -49,16 +49,17 @@ $(document).ready(function() {
             },
             { //操作
                 data: null,
-                width: '250px',
+                width: '10px',
                 defaultContent: '',
                 mRender: function(data, type, full) {
-                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-success" title="Edit details" id="edit-' + data.id + '-btn"><i class="la la-sort" style="font-size:24px"></i></a>';
+                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-primary" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
                 }
             },
             {
                 data: 'name',
-                width: '150px',
+                width: '200px',
             },
+
         ],
         rowReorder: {
             dataSrc: 'sequence'

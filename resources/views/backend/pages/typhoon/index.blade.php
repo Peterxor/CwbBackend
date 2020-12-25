@@ -14,6 +14,8 @@
 <!-- end:: Content Head -->
 <!-- begin:: Content -->
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <form class="kt-form kt-form--label-right" id="search-form" action="{{route('typhoon.query')}}">
+    </form>
     <div class="row">
         <div class="kt-portlet">
             <div class="kt-portlet__body">

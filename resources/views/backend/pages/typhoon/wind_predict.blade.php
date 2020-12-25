@@ -61,7 +61,7 @@
                 <div class="col-6">
                 </div>
                 <div class="col-6 kt-align-right">
-                    <button type="submit" class="btn btn-success ld-over" id="edit-btn">儲存
+                    <button type="submit" class="btn btn-primary ld-over" id="edit-btn">儲存
                         <div class="ld ld-ring ld-spin"></div>
                     </button>
                 </div>
