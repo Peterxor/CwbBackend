@@ -20,7 +20,7 @@ class InsertDeviceDataJson extends Migration
         //
         $forecast = [];
         $typhoon = [];
-        $user = User::first();
+//        $user = User::first();
         $typhoonImages = TyphoonImage::get();
         $generalImages = GeneralImages::get();
 
@@ -43,7 +43,6 @@ class InsertDeviceDataJson extends Migration
 
         Device::create([
             'name' => '防災視訊室',
-            'user_id' => $user->id,
             'forecast_json' => $forecast_json,
             'typhoon_json' => $typhoon_json,
         ]);
@@ -51,7 +50,6 @@ class InsertDeviceDataJson extends Migration
 
         Device::create([
             'name' => '公關室',
-            'user_id' => $user->id,
             'forecast_json' => $forecast_json,
             'typhoon_json' => $typhoon_json,
         ]);
