@@ -17,7 +17,8 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('backend.pages.user.index');
+        $roles = Role::all();
+        return view('backend.pages.user.index', compact('roles'));
     }
 
     public function query()
@@ -26,6 +27,8 @@ class UserController extends Controller
 
         $query->when(request()->get('name', false), function ($query) {
             $query->where('name', 'like', '%'.request()->get('name').'%');
+        })->when(request()->get('role', false), function ($query) {
+            $query->role(request()->get('role'));
         });
 
         return DataTables::eloquent($query)->setTransformer(function ($item) {
@@ -46,7 +49,6 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-//        dd($roles->toArray());
         return view('backend.pages.user.create', compact('roles'));
     }
 
