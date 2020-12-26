@@ -10,6 +10,7 @@ use App\Models\Device;
 use Illuminate\Http\Request;
 use App\Models\TyphoonImage;
 use App\Models\GeneralImages;
+use App\Events\MobileActionEvent;
 
 class MobileDeviceController extends Controller
 {
@@ -89,6 +90,18 @@ class MobileDeviceController extends Controller
 
         return response()->json($res);
     }
+
+    public function action(Request $request)
+    {
+        $screen = $request->screen;
+        $behaviour = $request->behaviour;
+        $res['success'] = true;
+        $res['data'] = $request->all();
+        broadcast(new MobileActionEvent($screen, $behaviour));
+        return response()->json($res);
+
+    }
+
 
     public function makeBehavior($name)
     {

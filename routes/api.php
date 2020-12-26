@@ -41,4 +41,5 @@ Route::get('anchor-information', 'AnchorInformationController@index');
 Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () {
     Route::get('deviceList', ['as' => 'deviceList', 'uses' => 'MobileDeviceController@deviceList']);
     Route::get('data', ['as' => 'data', 'uses' => 'MobileDeviceController@getDeviceData']);
+    Route::get('action', ['as' => 'action', 'uses' => 'MobileDeviceController@action']);
 });
