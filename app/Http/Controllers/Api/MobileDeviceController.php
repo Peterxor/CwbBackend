@@ -54,8 +54,9 @@ class MobileDeviceController extends Controller
         return response()->json($data);
     }
 
-    public function getDeviceData(Request $request, $id)
+    public function getDeviceData(Request $request)
     {
+        $id = $request->id;
         $typhoonImgs = TyphoonImage::get();
         $generalImgs = GeneralImages::get();
 //        dd($generalImgs->toArray());
