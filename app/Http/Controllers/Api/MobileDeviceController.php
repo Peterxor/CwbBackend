@@ -94,8 +94,9 @@ class MobileDeviceController extends Controller
 
     public function action(Request $request)
     {
-        $screen = $request->screen;
-        $behaviour = $request->behaviour;
+        $room = $request->room ?? '';
+        $screen = $request->screen ?? '';
+        $behaviour = $request->behaviour ?? '';
         $res['success'] = true;
         $res['data'] = $request->all();
         broadcast(new MobileActionEvent($screen, $behaviour));
