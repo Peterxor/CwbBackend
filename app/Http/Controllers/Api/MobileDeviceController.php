@@ -64,7 +64,7 @@ class MobileDeviceController extends Controller
         $device = Device::with(['user'])->where('id', $id)->first();
         $res = [
             'room' => $device->name,
-            'anchor' => $device->user->name,
+            'anchor' => $device->user->name ?? '',
             'typhoon' => [],
             'weather' => [],
         ];
