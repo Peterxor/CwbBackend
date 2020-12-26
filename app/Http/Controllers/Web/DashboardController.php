@@ -23,4 +23,9 @@ class DashboardController extends Controller
     public function update()
     {
     }
+
+    public function probe()
+    {
+        return 'ok';
+    }
 }
