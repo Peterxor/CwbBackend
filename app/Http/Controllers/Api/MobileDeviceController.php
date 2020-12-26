@@ -66,6 +66,7 @@ class MobileDeviceController extends Controller
         $device = Device::with(['user'])->where('id', $id)->first();
         $res = [
             'room' => $device->name,
+            'room_value' => $this->roomValue($device->name),
             'anchor' => $device->user->name ?? '',
             'typhoon' => [],
             'weather' => [],
@@ -100,6 +101,16 @@ class MobileDeviceController extends Controller
         broadcast(new MobileActionEvent($screen, $behaviour));
         return response()->json($res);
 
+    }
+
+
+    public function roomValue($room)
+    {
+        $map = [
+            '防災視訊室' => 'protect_disaster',
+            '公關室' => 'pr'
+        ];
+        return $map[$room] ?? '';
     }
 
 
