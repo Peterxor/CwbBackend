@@ -70,19 +70,19 @@
                     			<div class="col-7">
                                     <div class="kt-radio-inline">
                     					<label class="kt-radio">
-                    						<input class="mr-1" type="radio" name="display_type" value="1" id="single" {{$json->type == 1 ? 'checked' : ''}} />單圖
+                    						<input class="mr-1" type="radio" name="display_type" value="1" id="single" {{$json->type == 1 ? 'checked' : ''}} disabled/>單圖
                                             <span></span>
                     					</label>
                     					<label class="kt-radio">
-                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="2" id="parallel" {{$json->type == 2 ? 'checked' : ''}} />雙圖並列
+                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="2" id="parallel" {{$json->type == 2 ? 'checked' : ''}} disabled/>雙圖並列
                                             <span></span>
                     					</label>
                                         <label class="kt-radio">
-                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="3" id="dynamic" {{$json->type == 3 ? 'checked' : '' }} />動態組圖
+                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="3" id="dynamic" {{$json->type == 3 ? 'checked' : '' }} disabled/>動態組圖
                                             <span></span>
                     					</label>
                                         <label class="kt-radio">
-                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="4" id="list" {{$json->type == 4 ? 'checked' : ''}} />圖片列表
+                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="4" id="list" {{$json->type == 4 ? 'checked' : ''}} disabled/>圖片列表
                                             <span></span>
                     					</label>
                     				</div>
@@ -151,9 +151,7 @@
             <div class="col-6">
             </div>
             <div class="col-6 kt-align-right">
-                <button type="submit" class="btn btn-primary ld-over" id="edit-btn">儲存
-                    <div class="ld ld-ring ld-spin"></div>
-                </button>
+                <button type="submit" class="btn btn-primary" id="edit-btn">儲存</button>
             </div>
         </div>
     </div>
