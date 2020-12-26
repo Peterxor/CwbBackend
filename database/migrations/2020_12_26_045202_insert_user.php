@@ -34,8 +34,8 @@ class InsertUser extends Migration
             }
 
             // create one user for each role
-            $user = factory(User::class)->create();
-            $user->assignRole($role->name);
+//            $user = factory(User::class)->create();
+//            $user->assignRole($role->name);
         }
     }
 
