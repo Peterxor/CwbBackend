@@ -35,3 +35,10 @@ Route::get('typhoon-potential', 'TyphoonPotentialController@index');
 
 // TODO: 主播圖卡
 Route::get('anchor-information', 'AnchorInformationController@index');
+
+
+
+Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () {
+    Route::get('deviceList', ['as' => 'deviceList', 'uses' => 'MobileDeviceController@deviceList']);
+    Route::get('data/{id}', ['as' => 'data', 'uses' => 'MobileDeviceController@getDeviceData']);
+});
