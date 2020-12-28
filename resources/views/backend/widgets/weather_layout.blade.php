@@ -73,7 +73,7 @@
                         <div class="row">
                             <div class="col-6"></div>
                             <div class="col-6 kt-align-right">
-                                <button type="submit" class="btn btn-success">儲存</button>
+                                <button type="submit" class="btn btn-primary">儲存</button>
                             </div>
                         </div>
                     </div>

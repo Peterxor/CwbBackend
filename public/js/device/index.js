@@ -39,17 +39,18 @@ $(document).ready(function() {
             }
         },
         columns: [{
-                data: 'name',
-                width: '150px',
-            },
-            {
                 data: null,
-                width: '250px',
+                width: '10%',
+                className: 'text-center',
                 defaultContent: '',
                 mRender: function(data, type, full) {
-                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-success" ><i class="la la-edit" style="font-size:24px"></i></a>';
+                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-primary" ><i class="la la-image"></i></a>';
                 }
-            }
+            }, {
+                data: 'name',
+                width: '250px',
+            },
+
         ],
         "rowCallback": function(row, data, index) {
 
