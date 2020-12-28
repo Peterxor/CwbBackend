@@ -38,7 +38,8 @@ $(document).ready(function() {
                 }
             }
         },
-        columns: [{
+        columns: [
+            {
                 data: 'name',
                 width: '150px',
             },

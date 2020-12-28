@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -28,13 +28,12 @@ class MediaController extends Controller
             $file = $request->file('file');
             $extension = $file->getClientOriginalExtension();
             $origin_name = $file->getClientOriginalName();
-            $name = Str::replaceLast('.' . $extension, '', $origin_name)  . '-' . (string)Str::uuid();
+            $name = Str::replaceLast('.' . $extension, '', $origin_name);
             $file_name = $name . '.' . $extension;
             $user = $request->user();
-            $path = '/italent';
+            $path = '/cwb';
 
             $new_media = new Media([
-                'member_id' => $user->id,
                 'disk' => $this->filesystem,
                 'file_name' => $name,
                 'mime_type' => $extension,
@@ -56,7 +55,8 @@ class MediaController extends Controller
 
             return $this->sendResponse([
                 "image_id" => $new_media->id,
-                "url" => Storage::disk($this->filesystem)->url($path . '/' . $file_name)
+                "url" => Storage::disk($this->filesystem)->url($path . '/' . $file_name),
+                'name' => $file_name
             ], 'upload image success');
         } catch (Exception $e) {
             Log::error($e->getMessage());

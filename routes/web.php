@@ -65,4 +65,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/query', ['as' => 'query', 'uses' => 'ActiveController@query']);
     });
     Route::resource('active', 'ActiveController')->except(['show']);
+
+    Route::group(['prefix' => 'media', 'as' => 'media.'], function () {
+        Route::post('upload', ['as' => 'upload', 'uses' => 'MediaController@upload']);
+    });
+
 });
