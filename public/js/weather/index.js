@@ -91,6 +91,8 @@ $(document).ready(function() {
         destroy: true,
         autoWidth: true,
         ordering: false,
+        paging: false,
+        info: false,
         language: datatable_lang_tw,
         sEmptyTable: null,
         ajax: {

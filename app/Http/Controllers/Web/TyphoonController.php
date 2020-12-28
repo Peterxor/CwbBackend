@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\TyphoonImage;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
+use Log;
 
 class TyphoonController extends Controller
 {
@@ -17,6 +18,7 @@ class TyphoonController extends Controller
     public function query()
     {
         $query = TyphoonImage::orderBy('sort');
+
         return DataTables::eloquent($query)->setTransformer(function ($item) {
             return [
                 'id' => $item->id,
@@ -28,7 +30,44 @@ class TyphoonController extends Controller
 
     public function updateOrder()
     {
+    }
 
+    public function upper()
+    {
+        $id = request()->get('id', false);
+        $data = TyphoonImage::find($id);
+        $old_data = TyphoonImage::where('sort', '<', $data->sort)->orderBy('sort', 'desc')->limit(1)->first();
+
+        if (empty($old_data)) {
+            return response()->json(['success'=>false, 'message' => '此為第一筆資料']);
+        }
+
+        $old_data->sort = $data->sort;
+        $old_data->save();
+
+        $data->sort = (int)$data->sort-1;
+        $data->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function lower()
+    {
+        $id = request()->get('id', false);
+        $data = TyphoonImage::find($id);
+        $old_data = TyphoonImage::where('sort', '>', $data->sort)->orderBy('sort', 'asc')->limit(1)->first();
+
+        if (empty($old_data)) {
+            return response()->json(['success'=>false, 'message' => '此為最後一筆資料']);
+        }
+
+        $old_data->sort = $data->sort;
+        $old_data->save();
+
+        $data->sort = (int)$data->sort+1;
+        $data->save();
+
+        return response()->json(['success' => true]);
     }
 
     public function edit(Request $request, $id)

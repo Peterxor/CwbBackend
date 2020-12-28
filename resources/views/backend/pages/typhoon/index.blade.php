@@ -6,7 +6,6 @@
         <div class="kt-subheader__main">
             <h3 class="kt-subheader__title">颱風預報圖資管理</h3>
             <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-            {{-- <h3 class="kt-subheader__title">{{$parent_name}}</h3> --}}
         </div>
 
     </div>
@@ -21,8 +20,8 @@
                     <thead>
                         <tr>
                             <th>排序</th>
-                            <th>設定</th>
                             <th>圖資名稱</th>
+                            <th>設定</th>
                         </tr>
                     </thead>
                 </table>

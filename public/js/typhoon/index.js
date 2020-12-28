@@ -16,6 +16,8 @@ $(document).ready(function() {
         destroy: true,
         autoWidth: true,
         ordering: false,
+        paging: false,
+        info: false,
         language: datatable_lang_tw,
         ajax: {
             url: queryUrl,
@@ -40,30 +42,30 @@ $(document).ready(function() {
             }
         },
         columns: [{
-                data: 'sequence',
-                width: '10px',
-                defaultContent: '',
-                mRender: function(data, type, full) {
-                    return '<span class="kt-badge kt-badge--inline"><i class="la la-sort" style="font-size:24px"></i></span>';
-                }
-            },
-            { //操作
                 data: null,
                 width: '10px',
+                className: 'text-center',
                 defaultContent: '',
                 mRender: function(data, type, full) {
-                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-primary" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
+                    return '<button class="btn btn-outline-secondary js-up" value="up_' + data.id + '"><i class="la la-long-arrow-up" style="font-size:20px"></i></button>\
+                           <button class="btn btn-outline-secondary js-down" value="down_' + data.id + '"><i class="la la-long-arrow-down " style="font-size:20px"></i></button>';
                 }
             },
             {
                 data: 'name',
-                width: '200px',
+                width: '250px',
             },
+            { //操作
+                data: null,
+                width: '10px',
+                className: 'text-center',
+                defaultContent: '',
+                mRender: function(data, type, full) {
+                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-primary" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
+                }
+            }
 
         ],
-        rowReorder: {
-            dataSrc: 'sequence'
-        },
         "rowCallback": function(row, data, index) {
 
         },
@@ -71,34 +73,51 @@ $(document).ready(function() {
 
     _typhoonTable = typhoonTable.DataTable(dataTableSettings);
 
-    _typhoonTable.on('row-reorder', function(e, moveData, edit) {
-        let id = edit.triggerRow.data().id;
-        let moveCount = moveData.length;
-        let moveType = 'up';
-
-        if (moveData[moveCount - 1].oldData == edit.triggerRow.data().sequence) {
-            moveType = 'down';
-        }
+    $(document).on("click", ".js-up", function() {
+        var _id = $(this).val().split('_')[1];
 
         $.ajax({
-            url: 'typhoon/sequence',
+            url: 'typhoon/upper',
             method: 'GET',
             dataType: 'json',
             data: {
-                id: id,
-                type: moveType,
-                num: moveCount - 1
+                id: _id,
             },
             success: function(response) {
                 if (response.success) {
                     toastr.success("Success!");
                 } else {
-                    toastr.error('error: ' + response.errors);
+                    toastr.error('error: ' + response.message);
                 }
+                _typhoonTable.ajax.reload();
             },
             error: function() {
                 toastr.error('error');
             }
         })
-    });
+    })
+
+    $(document).on("click", ".js-down", function() {
+        var _id = $(this).val().split('_')[1];
+
+        $.ajax({
+            url: 'typhoon/lower',
+            method: 'GET',
+            dataType: 'json',
+            data: {
+                id: _id,
+            },
+            success: function(response) {
+                if (response.success) {
+                    toastr.success("Success!");
+                } else {
+                    toastr.error('error: ' + response.message);
+                }
+                _typhoonTable.ajax.reload();
+            },
+            error: function() {
+                toastr.error('error');
+            }
+        })
+    })
 });
