@@ -29,14 +29,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('dashboard', 'DashboardController')->except(['show']);
 
     Route::group(['prefix' => 'anchor', 'as' => 'anchor.'], function () {
+        Route::get('/', ['as' => 'index', 'uses' => 'AnchorController@index']);
         Route::get('query', ['as' => 'query', 'uses' => 'AnchorController@query']);
+        Route::put('{id}/update', ['as' => 'update', 'uses' => 'AnchorController@update']);
+        Route::get('{id}/{device_id}/edit', ['as' => 'show', 'uses' => 'AnchorController@edit']);
     });
-    Route::resource('anchor', 'AnchorController')->except(['show']);
 
     Route::group(['prefix' => 'device', 'as' => 'device.'], function () {
         Route::get('/', ['as' => 'index', 'uses' => 'DeviceController@index']);
         Route::get('query', ['as' => 'query', 'uses' => 'DeviceController@query']);
-        Route::get('{id}/show', ['as' => 'show', 'uses' => 'DeviceController@show']);
+        Route::get('{id}/edit', ['as' => 'edit', 'uses' => 'DeviceController@edit']);
         Route::put('{id}/update', ['as' => 'update', 'uses' => 'DeviceController@update']);
     });
 

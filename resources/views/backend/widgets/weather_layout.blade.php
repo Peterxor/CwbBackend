@@ -62,7 +62,7 @@
                                         </td>
                                         @if($auchor)
                                             <td>
-                                                <button type="submit" class="btn btn-secondary">重回預設值</button>
+                                                <button type="submit" class="btn btn-secondary reset-default">重回預設值</button>
                                             </td>
                                         @endif
                                     </tr>

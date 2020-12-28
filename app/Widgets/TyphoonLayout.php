@@ -14,7 +14,8 @@ class TyphoonLayout extends AbstractWidget
     protected $config = [
         'update_url' => '',
         'auchor' => '',
-        'preference' => []
+        'preference' => [],
+        'default' => []
     ];
 
     public function __construct(array $config = [])
@@ -36,6 +37,7 @@ class TyphoonLayout extends AbstractWidget
             'update_url' => $this->config['update_url'],
             'items' => $layout,
             'preference' => $this->config['preference'],
+            'default' => $this->config['default'],
             'auchor' => $this->config['auchor']
         ]);
     }

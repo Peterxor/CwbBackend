@@ -33,6 +33,7 @@
                                                 @if($children['type'] == 1)
                                                     縮放
                                                     <label><input class="form-control" type="text"
+                                                                  data-default="{{$default[$item['name']][$children['name']]['zoom'][0] ?? '100'}}"
                                                                   value="{{$preference[$item['name']][$children['name']]['zoom'] ?? '100'}}"
                                                                   name="preference[{{$item['name']}}][{{$children['name']}}][zoom]"></label>
                                                     %
@@ -53,17 +54,19 @@
                                         <td>
                                             絕對座標
                                             <label><input class="form-control" type="text"
+                                                          data-default="{{$default[$item['name']][$children['name']]['point'][0] ?? '0'}}"
                                                           value="{{$preference[$item['name']][$children['name']]['point'][0] ?? '0'}}"
                                                           name="preference[{{$item['name']}}][{{$children['name']}}][point][0]"
                                                           placeholder="x"></label>
                                             <label><input class="form-control" type="text"
+                                                          data-default="{{$default[$item['name']][$children['name']]['point'][1] ?? '0'}}"
                                                           value="{{$preference[$item['name']][$children['name']]['point'][1] ?? '0'}}"
                                                           name="preference[{{$item['name']}}][{{$children['name']}}][point][1]"
                                                           placeholder="y"></label>
                                         </td>
                                         @if($auchor)
                                             <td>
-                                                <button type="submit" class="btn btn-secondary">重回預設值</button>
+                                                <button type="button" class="btn btn-secondary reset-default">重回預設值</button>
                                             </td>
                                         @endif
                                     </tr>

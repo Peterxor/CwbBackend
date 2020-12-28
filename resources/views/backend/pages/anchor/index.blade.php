@@ -18,7 +18,7 @@
     <div class="row">
         <div class="kt-portlet">
             <div class="kt-portlet__body">
-                <table id="anchor-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ env('URL_PREFIX','').route('anchor.update', ['_id'],false) }}">
+                <table id="anchor-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ env('URL_PREFIX','').route('anchor.show', ['id' => '_id', 'device_id' => '_device_id'],false) }}">
                     <thead>
                         <tr>
                             <th>預報主播</th>

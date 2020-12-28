@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\User;
 use App\Models\Role;
+use App\Models\User;
 use Egulias\EmailValidator\Exception\ExpectingQPair;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

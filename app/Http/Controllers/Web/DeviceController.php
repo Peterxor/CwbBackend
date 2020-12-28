@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Web;
 use App\Models\Device;
 use App\Http\Controllers\Web\Controller as Controller;
-use App\Models\TyphoonImage;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -11,7 +10,6 @@ class DeviceController extends Controller
 {
     public function index()
     {
-        // todo https://pl70hd.axshare.com/#id=1f8vbf&p=a_1_%E8%A3%9D%E7%BD%AE%E6%8E%92%E7%89%88%E7%AE%A1%E7%90%86
         return view("backend.pages.device.index");
     }
 
@@ -27,13 +25,13 @@ class DeviceController extends Controller
         })->toJson();
     }
 
-    public function show($id)
+    public function edit($id)
     {
         $device = Device::query()->find($id);
         $name = $device->name;
         $preference = $device->preference_json;
 
-        return view('backend.pages.device.info', compact('id', 'name', 'preference'));
+        return view('backend.pages.device.edit', compact('id', 'name', 'preference'));
     }
 
 
