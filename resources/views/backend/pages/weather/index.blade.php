@@ -33,9 +33,9 @@
                     <thead>
                         <tr>
                             <th>排序</th>
-                            <th>設定</th>
                             <th>分類</th>
                             <th>圖資名稱</th>
+                            <th>設定</th>
                         </tr>
                     </thead>
                 </table>
@@ -51,7 +51,6 @@
 @endsection
 
 @section('pages_scripts')
-    <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
+    {!! Html::script(env('URL_PREFIX','').'js/vendor/jquery-ui.js') !!}
     {!! Html::script(env('URL_PREFIX','').'js/weather/index.js') !!}
 @endsection

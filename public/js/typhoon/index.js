@@ -61,7 +61,7 @@ $(document).ready(function() {
                 className: 'text-center',
                 defaultContent: '',
                 mRender: function(data, type, full) {
-                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-primary" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
+                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-primary" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:20px"></i></a>';
                 }
             }
 

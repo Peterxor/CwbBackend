@@ -43,6 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/query', ['as' => 'query', 'uses' => 'WeatherController@query']);
         Route::get('/queryCategory', ['as' => 'queryCategory', 'uses' => 'WeatherController@queryCategory']);
         Route::post('/storeCategory', ['as' => 'storeCategory', 'uses' => 'WeatherController@storeCategory']);
+        Route::get('/upper', ['as' => 'upper', 'uses' => 'WeatherController@upper']);
+        Route::get('/lower', ['as' => 'lower', 'uses' => 'WeatherController@lower']);
     });
     Route::resource('weather', 'WeatherController')->except(['show']);
 

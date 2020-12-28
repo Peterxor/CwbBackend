@@ -28,10 +28,6 @@ class TyphoonController extends Controller
         })->toJson();
     }
 
-    public function updateOrder()
-    {
-    }
-
     public function upper()
     {
         $id = request()->get('id', false);

@@ -48,19 +48,11 @@ class WeatherController extends Controller
         })->toJson();
     }
 
-    public function updateOrder()
-    {
-    }
-
     public function edit(Request $request, $id)
     {
         $general = GeneralIMages::with(['category'])->where('id', $id)->first();
         $categorys = GeneralImagesCategory::pluck('name', 'id')->toArray();
         $json = json_decode($general->content ?? '');
-//        dd($general->toArray());
-//        dd($categorys);
-
-//        dd($json);
 
         return view('backend.pages.weather.edit', compact('general', 'categorys', 'json'));
     }
@@ -86,7 +78,6 @@ class WeatherController extends Controller
         return $this->sendResponse('', 'ok');
     }
 
-
     public function update(Request $request, $id)
     {
         $data = $request->all();
@@ -104,6 +95,44 @@ class WeatherController extends Controller
     {
     }
 
+    // 一般天氣列表排序
+    public function upper()
+    {
+        $id = request()->get('id', false);
+        $data = GeneralIMages::find($id);
+        $old_data = GeneralIMages::where('sort', '<', $data->sort)->orderBy('sort', 'desc')->limit(1)->first();
+
+        if (empty($old_data)) {
+            return response()->json(['success'=>false, 'message' => '此為第一筆資料']);
+        }
+
+        $old_data->sort = $data->sort;
+        $old_data->save();
+
+        $data->sort = (int)$data->sort-1;
+        $data->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function lower()
+    {
+        $id = request()->get('id', false);
+        $data = GeneralIMages::find($id);
+        $old_data = GeneralIMages::where('sort', '>', $data->sort)->orderBy('sort', 'asc')->limit(1)->first();
+
+        if (empty($old_data)) {
+            return response()->json(['success'=>false, 'message' => '此為最後一筆資料']);
+        }
+
+        $old_data->sort = $data->sort;
+        $old_data->save();
+
+        $data->sort = (int)$data->sort+1;
+        $data->save();
+
+        return response()->json(['success' => true]);
+    }
 
     public function weatherJson($type, $data)
     {
