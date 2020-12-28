@@ -32,7 +32,7 @@
                             </label>
                             <div class="col-3">
                                 <select class="form-control" id="device-host-{{$device->id}}" name="user" disabled>
-                                    <option selected>不指定主播</option>
+                                    <option value="0" selected>不指定主播</option>
                                     {{ Widget::UserSelect(['selected'=>$device->user_id ?? null])}}
                                 </select>
                             </div>
