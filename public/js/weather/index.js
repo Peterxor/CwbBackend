@@ -11,6 +11,9 @@ $(document).ready(function() {
     var categoryUrl = categoryForm.attr('data-search-category');
     var _categoryTable;
 
+    // 分類排序
+    $("#category_body").sortable();
+
     $.fn.dataTable.ext.errMode = 'none';
 
     var categorySetting = {
@@ -74,9 +77,6 @@ $(document).ready(function() {
                 }
             },
         ],
-        rowReorder: {
-            dataSrc: 'sequence'
-        },
         "rowCallback": function(row, data, index) {
 
         },
@@ -150,6 +150,7 @@ $(document).ready(function() {
 
     _weatherTable = weatherTable.DataTable(dataTableSettings);
 
+    // 天氣排序
     _weatherTable.on('row-reorder', function(e, moveData, edit) {
         let id = edit.triggerRow.data().id;
         let moveCount = moveData.length;
@@ -202,7 +203,7 @@ $(document).ready(function() {
                                         <th><a href="" class="btn btn-outline-secondary btn-sm"><i class="la la-sort" style="font-size:16px"></i></a></th>\
                                         <td><input class="form-control" type="text" value="" name="name[]" id="name-input" required\
                                        maxlength="30"></td>\
-                                        <td><a href="" class="btn btn-outline-secondary btn-sm text-center"><i class="la la-trash" style="font-size:16px"></i></a></td>\
+                                        <td class=" text-center"><a href="" class="btn btn-outline-secondary btn-sm"><i class="la la-trash" style="font-size:16px"></i></a></td>\
                                     </tr>');
     });
 
