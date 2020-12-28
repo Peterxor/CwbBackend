@@ -37,10 +37,10 @@
                                 </select>
                             </div>
                             <div class="col-3 kt-align-left">
-                                <button class="btn btn-primary js-submit-btn" data-device-id="{{$device->id}}"
+                                <button class="btn btn-primary" data-device-id="{{$device->id}}"
                                         name="save_btn" style="display:none;">儲存
                                 </button>
-                                <button class="btn btn-outline-secondary js-change-btn">變更</button>
+                                <button class="btn btn-outline-secondary" name="change_btn">變更</button>
                             </div>
                         </div>
 
