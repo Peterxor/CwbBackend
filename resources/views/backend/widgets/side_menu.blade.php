@@ -31,7 +31,7 @@ if ($user){
             </div>
         </li>
     @else
-        <li class="kt-menu__item {{($item['name']==Request::segment($item['level']))?'kt-menu__item--active': ''}}" aria-haspopup="true">
+        <li class="kt-menu__item {{($item['name']==Request::segment($item['level']) || ($item['name']=='dashboard' && empty(Request::segment($item['level']))))?'kt-menu__item--active': ''}}" aria-haspopup="true">
             @php
             if(isset($item['link']) ){
                 if(isset($item['param_key']) ){
