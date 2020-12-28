@@ -72,7 +72,7 @@ $(document).ready(function() {
                 className: 'text-center',
                 defaultContent: '',
                 mRender: function(data, type, full) {
-                    return '<td><a href="" class="btn btn-outline-secondary btn-sm"><i class="category-trash la la-trash" data-category-id="' + data.id + '" style="font-size:16px"></i></a></td>\
+                    return '<td><span class="btn btn-outline-secondary btn-sm category-trash"><i class="la la-trash" data-category-id="' + data.id + '" style="font-size:16px"></i></span></td>\
                                     </tr>';
                 }
             },
@@ -250,8 +250,6 @@ $(document).ready(function() {
 
     $(document).on('click', '.category-trash', function(e) {
         var _this = this;
-        console.log(_this.parentNode)
-        console.log(_this.parentNode.parentNode)
         _this.parentNode.parentNode.parentNode.removeChild(_this.parentNode.parentNode);
     })
 
