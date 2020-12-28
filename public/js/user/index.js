@@ -49,7 +49,7 @@ $(document).ready(function() {
                 width: '220px',
             },
             {
-                data: 'permission',
+                data: 'role_name',
                 width: '120px',
             },
             {

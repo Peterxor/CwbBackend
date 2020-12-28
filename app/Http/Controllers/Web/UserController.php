@@ -25,8 +25,6 @@ class UserController extends Controller
     {
         $query = User::orderBy('created_at');
 
-        // Log::debug('User '.print_r($query->get()->toArray(), true));
-
         $query->when(request()->get('name', false), function ($query) {
             $query->where('name', 'like', '%'.request()->get('name').'%');
         })->when(request()->get('role', false), function ($query) {
@@ -34,14 +32,14 @@ class UserController extends Controller
         });
 
         return DataTables::eloquent($query)->setTransformer(function ($item) {
-            foreach ($item->getAllPermissions() as $permission) {
-                $permissions[] = $permission->name;
-            }
+            // foreach ($item->getAllPermissions() as $permission) {
+            //     $permissions[] = $permission->name;
+            // }
             return [
                 'id' => $item->id,
                 'email' => $item->email,
                 'name'=>$item->name,
-                'permission'=>$permissions,
+                'role_name'=>$item->getRoleNames(),
                 'created_at' => $item->created_at ? Carbon::parse($item->created_at)->format('Y/m/d H:i:s') : '',
                 'updated_at'=>$item->updated_at ? Carbon::parse($item->updated_at)->format('Y/m/d H:i:s') : ''
             ];
@@ -58,12 +56,10 @@ class UserController extends Controller
     {
         // hash password
         $request->merge(['password' => Hash::make($request->get('password'))]);
-        $user = $request->except('roles', 'permissions');
-        $user['email_verified_at'] = Carbon::now();
+        $user = $request->except('role');
 
-        // Create the user
         if ($user = User::create($user)) {
-            $this->syncPermissions($request, $user);
+            $user->roles()->sync([$request->input('role')]);
         }
 
         return redirect()->route('users.index');
@@ -71,7 +67,6 @@ class UserController extends Controller
 
     public function edit($id)
     {
-//        dd(Auth::user()->getRoleNames());
         $user = User::find($id);
         $roles = Role::all();
         $userRoles = $user->getRoleNames()->toArray();
@@ -82,20 +77,15 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         try {
-            // Get the user
             $user = User::findOrFail($id);
-
-            // Update user
-            $user->fill($request->except('roles', 'permissions', 'password'));
+            $user->fill($request->except('role', 'permissions', 'password'));
 
             // check for password change
             if ($request->get('password')) {
                 $user->password = Hash::make($request->get('password'));
             }
 
-            // Handle the user roles
-            $this->syncPermissions($request, $user);
-
+            $user->roles()->sync([$request->input('role')]);
             $user->save();
         } catch (\Exception $e) {
             Log::error($e->getMessage());

@@ -57,7 +57,7 @@
                         <span class="kt-font-danger">*</span>密碼
                     </label>
                     <div class="col-3 kt-input-icon">
-                        <input class="form-control" type="password" value="" name="password" required minlength="8" maxlength="12">
+                        <input class="form-control" type="password" value="" name="password" minlength="8" maxlength="12">
                         <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
                     </div>
                 </div>
