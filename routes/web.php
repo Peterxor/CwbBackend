@@ -34,10 +34,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('anchor', 'AnchorController')->except(['show']);
 
     Route::group(['prefix' => 'device', 'as' => 'device.'], function () {
-        Route::get('query', ['as' => 'query', 'uses' => 'DeviceController@query']);
         Route::get('/', ['as' => 'index', 'uses' => 'DeviceController@index']);
-        Route::get('/info', ['as' => 'info', 'uses' => 'DeviceController@info']);
-        Route::put('/updateDeviceHost', ['as' => 'updateDeviceHost', 'uses' => 'DeviceController@updateDeviceHost']);
+        Route::get('query', ['as' => 'query', 'uses' => 'DeviceController@query']);
+        Route::get('{id}/show', ['as' => 'show', 'uses' => 'DeviceController@show']);
+        Route::put('{id}/update', ['as' => 'update', 'uses' => 'DeviceController@update']);
     });
 
     Route::group(['prefix' => 'weather', 'as' => 'weather.'], function () {

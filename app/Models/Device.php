@@ -11,8 +11,13 @@ class Device extends Model
     //
     protected $table = 'device';
     protected $fillable = [
-        'name', 'forecast_json', 'typhoon_json', 'created_at', 'updated_at', 'user_id'
+        'name', 'forecast_json', 'typhoon_json', 'preference_json', 'created_at', 'updated_at', 'user_id'
     ];
+
+    protected $casts = [
+        'preference_json' => 'array'
+    ];
+
     protected $appends = ['decode_forecast', 'decode_typhoon'];
 
     public function user()

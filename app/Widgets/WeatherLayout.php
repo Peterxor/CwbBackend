@@ -13,7 +13,9 @@ class WeatherLayout extends AbstractWidget
      * @var array
      */
     protected $config = [
-         'auchor'=>''
+        'update_url' => '',
+        'auchor' => '',
+        'preference' => []
      ];
 
     public function __construct(array $config = [])
@@ -32,7 +34,9 @@ class WeatherLayout extends AbstractWidget
         $layout = config('weatherlayout');
 
         return view('backend.widgets.weather_layout', [
+            'update_url' => $this->config['update_url'],
             'items' => $layout,
+            'preference' => $this->config['preference'],
             'auchor' => $this->config['auchor']
         ]);
     }
