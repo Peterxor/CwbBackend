@@ -25,6 +25,8 @@ class UserController extends Controller
     {
         $query = User::orderBy('created_at');
 
+        // Log::debug('User '.print_r($query->get()->toArray(), true));
+
         $query->when(request()->get('name', false), function ($query) {
             $query->where('name', 'like', '%'.request()->get('name').'%');
         })->when(request()->get('role', false), function ($query) {
@@ -54,18 +56,13 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-//        $this->validate($request, [
-//            'name' => 'bail|required|min:2',
-//            'email' => 'required|email|unique:users',
-//            'password' => 'required|min:6',
-//            'roles' => 'required|min:1'
-//        ]);
-
         // hash password
         $request->merge(['password' => Hash::make($request->get('password'))]);
+        $user = $request->except('roles', 'permissions');
+        $user['email_verified_at'] = Carbon::now();
 
         // Create the user
-        if ($user = User::create($request->except('roles', 'permissions'))) {
+        if ($user = User::create($user)) {
             $this->syncPermissions($request, $user);
         }
 

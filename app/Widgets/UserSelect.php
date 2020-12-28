@@ -23,20 +23,16 @@ class UserSelect extends AbstractWidget
      */
     public function run()
     {
-        $selectedUser = [];
+        $selected = '';
         if (!empty($this->config['selected'])) {
-            $selectedUser = array_column($this->config['selected']->toArray(), 'name');
+            $selected = $this->config['selected'];
         }
 
-        $datas = User::select(['id','name'])
-        ->get()
-        ->map(function ($item) use ($selectedUser) {
-            $item->selected = in_array($item->name, $selectedUser);
-            return $item;
-        });
+        $datas = User::select(['id','name'])->get();
 
         return view('backend.widgets.user_select', [
             'datas' => $datas,
+            'selected'=>$selected
         ]);
     }
 }

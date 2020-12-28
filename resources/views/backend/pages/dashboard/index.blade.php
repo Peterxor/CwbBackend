@@ -32,7 +32,7 @@
                         <div class="col-3">
                             <select class="form-control" name="user" disabled>
                                 <option selected>不指定主播</option>
-            					{{ Widget::UserSelect()}}
+            					{{ Widget::UserSelect(['selected'=>1])}}
                             </select>
                         </div>
                         <div class="col-3 kt-align-left">
