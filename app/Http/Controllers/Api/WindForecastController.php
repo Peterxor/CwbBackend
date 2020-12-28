@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Models\TyphoonImage;
 use Illuminate\Http\JsonResponse;
 
 class WindForecastController extends Controller
@@ -634,7 +635,7 @@ class WindForecastController extends Controller
 
         $defaultData['location'] = $defaultLocation;
 
-        $windForecast = simplexml_load_file(storage_path('data/wind/forecast/WindForecast.xml'));
+        $windForecast = simplexml_load_file(storage_path(json_decode(TyphoonImage::query()->where('name', '風力預測')->first()->content)->info->origin));
 
         $data = [];
 
