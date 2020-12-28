@@ -11,6 +11,9 @@ $(document).ready(function() {
     var categoryUrl = categoryForm.attr('data-search-category');
     var _categoryTable;
 
+    // 分類排序
+    $("#category_body").sortable();
+
     $.fn.dataTable.ext.errMode = 'none';
 
     var categorySetting = {
@@ -21,6 +24,8 @@ $(document).ready(function() {
         destroy: true,
         autoWidth: true,
         ordering: false,
+        paging: false,
+        info: false,
         language: datatable_lang_tw,
         ajax: {
             url: categoryUrl,
@@ -46,7 +51,7 @@ $(document).ready(function() {
         },
         columns: [{
                 data: null,
-                width: '250px',
+                width: '40px',
                 defaultContent: '',
                 mRender: function(data, type, full) {
                     return '<tr><th><a href="" class="btn btn-outline-secondary btn-sm"><i class="la la-sort" style="font-size:16px"></i></a></th>';
@@ -54,7 +59,7 @@ $(document).ready(function() {
             },
             {
                 data: null,
-                width: '250px',
+                width: '300px',
                 defaultContent: '',
                 mRender: function(data, type, full) {
                     return '<td><input class="form-control" type="text" value="' + data.name + '" name="name[]" id="name-input" required\
@@ -64,17 +69,14 @@ $(document).ready(function() {
             {
                 data: null,
                 width: '250px',
+                className: 'text-center',
                 defaultContent: '',
                 mRender: function(data, type, full) {
-                    return '<td><i class="category-trash la la-trash" data-category-id="' + data.id + '" style="font-size:16px"></i></td>\
+                    return '<td><a href="" class="btn btn-outline-secondary btn-sm"><i class="category-trash la la-trash" data-category-id="' + data.id + '" style="font-size:16px"></i></a></td>\
                                     </tr>';
                 }
             },
-
         ],
-        rowReorder: {
-            dataSrc: 'sequence'
-        },
         "rowCallback": function(row, data, index) {
 
         },
@@ -148,6 +150,7 @@ $(document).ready(function() {
 
     _weatherTable = weatherTable.DataTable(dataTableSettings);
 
+    // 天氣排序
     _weatherTable.on('row-reorder', function(e, moveData, edit) {
         let id = edit.triggerRow.data().id;
         let moveCount = moveData.length;
@@ -200,7 +203,7 @@ $(document).ready(function() {
                                         <th><a href="" class="btn btn-outline-secondary btn-sm"><i class="la la-sort" style="font-size:16px"></i></a></th>\
                                         <td><input class="form-control" type="text" value="" name="name[]" id="name-input" required\
                                        maxlength="30"></td>\
-                                        <td><a href="" class="btn btn-outline-secondary btn-sm"><i class="la la-trash" style="font-size:16px"></i></a></td>\
+                                        <td class=" text-center"><a href="" class="btn btn-outline-secondary btn-sm"><i class="la la-trash" style="font-size:16px"></i></a></td>\
                                     </tr>');
     });
 

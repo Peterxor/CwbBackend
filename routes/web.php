@@ -26,7 +26,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
         Route::get('query', ['as' => 'query', 'uses' => 'DashboardController@query']);
     });
-
     Route::resource('dashboard', 'DashboardController')->except(['show']);
 
     Route::group(['prefix' => 'anchor', 'as' => 'anchor.'], function () {
@@ -40,22 +39,25 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/info', ['as' => 'info', 'uses' => 'Devicecontroller@info']);
     });
 
-    Route::resource('weather', 'WeatherController')->except(['show']);
     Route::group(['prefix' => 'weather', 'as' => 'weather.'], function () {
         Route::get('/query', ['as' => 'query', 'uses' => 'WeatherController@query']);
         Route::get('/queryCategory', ['as' => 'queryCategory', 'uses' => 'WeatherController@queryCategory']);
         Route::post('/storeCategory', ['as' => 'storeCategory', 'uses' => 'WeatherController@storeCategory']);
     });
+    Route::resource('weather', 'WeatherController')->except(['show']);
 
-
-    Route::resource('typhoon', 'TyphoonController')->except(['show']);
     Route::group(['prefix' => 'typhoon', 'as' => 'typhoon.'], function () {
         Route::get('/query', ['as' => 'query', 'uses' => 'TyphoonController@query']);
     });
+    Route::resource('typhoon', 'TyphoonController')->except(['show']);
 
-
-    Route::resource('users', 'UserController')->except(['show']);
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::get('query', ['as' => 'query', 'uses' => 'UserController@query']);
     });
+    Route::resource('users', 'UserController')->except(['show']);
+
+    Route::group(['prefix' => 'active', 'as' => 'active.'], function () {
+        Route::get('/query', ['as' => 'query', 'uses' => 'ActiveController@query']);
+    });
+    Route::resource('active', 'ActiveController')->except(['show']);
 });

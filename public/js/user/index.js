@@ -124,4 +124,9 @@ $(document).ready(function() {
         })
     })
 
+    $('.js-role').on('click', function() {
+        $('input[name=role]').val($(this).attr('data-role'))
+        _userTable.ajax.reload();
+    });
+
 });

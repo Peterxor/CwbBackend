@@ -11,5 +11,5 @@ return array(
         ['name' => 'typhoon', 'permission'=>'', 'display_name' => '颱風預報圖資', 'link' => 'typhoon.index', 'display' => false, 'level'=>'2'],
     ]],
     ['name' => 'users', 'permission'=>'', 'display_name' => '使用者管理', 'link' => 'users.index', 'display' => true, 'level'=>'1' ,'icon'=>'<i class="la la-user"></i>'],
-    // ['name' => 'active', 'permission'=>'', 'display_name' => '事件紀錄', 'link' => 'active.index', 'display' => true, 'level'=>'1' ,'icon'=>'<i class="la la-file-text"></i>'],
+    ['name' => 'active', 'permission'=>'', 'display_name' => '事件紀錄', 'link' => 'active.index', 'display' => true, 'level'=>'1' ,'icon'=>'<i class="la la-file-text"></i>'],
 );

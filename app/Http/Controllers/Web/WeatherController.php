@@ -23,7 +23,6 @@ class WeatherController extends Controller
 
     public function query()
     {
-
         $generals = GeneralIMages::with(['category'])->orderBy('sort');
 //        dd($generals->get()->toArray());
         return DataTables::eloquent($generals)->setTransformer(function ($item) {
@@ -51,7 +50,6 @@ class WeatherController extends Controller
 
     public function updateOrder()
     {
-
     }
 
     public function edit(Request $request, $id)
@@ -92,19 +90,18 @@ class WeatherController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $json = $this->weatherJson($data['display_type'], $data);
         $image = GeneralImages::where('id', $id)->first();
+        $content = json_decode($image->content);
+        $json = $this->weatherJson($content->type, $data);
         $image->name = $request->name;
         $image->category_id = $request->category;
         $image->content = $json;
         $image->save();
         return redirect(route('weather.index'));
-
     }
 
     public function destroy()
     {
-
     }
 
 
