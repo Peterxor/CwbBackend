@@ -37,7 +37,8 @@
                                 </select>
                             </div>
                             <div class="col-3 kt-align-left">
-                                <button class="btn btn-primary js-submit-btn" data-device-id="{{$device->id}}" name="save_btn" style="display:none;">儲存
+                                <button class="btn btn-primary js-submit-btn" data-device-id="{{$device->id}}"
+                                        name="save_btn" style="display:none;">儲存
                                 </button>
                                 <button class="btn btn-outline-secondary js-change-btn">變更</button>
                             </div>
@@ -65,47 +66,27 @@
 
                             <div class="col-6 row">
                                 <div class="col-empty"></div>
-                                <div class="col-4 layout-container"
-                                     style="background-image:url(/images/login/logo.png);">
+                                @foreach($device->decode_forecast as $index => $f)
+                                    <div class="col-4 layout-container"
+                                         style="background-image:url({{$f->src ?? '/images/login/logo.png'}});">
 
-                                    <div class="row layout-text">
-                                        <label>1. 東亞IR</label>
+                                        <div class="row layout-text">
+                                            <label>{{$index + 1 }}. {{$f->name}}</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-4 layout-container"
-                                     style="background-image:url(/images/login/logo.png);">
-                                    <div class="row layout-text">
-                                        <label>2. 東亞MB</label>
-                                    </div>
-                                </div>
-                                <div class="col-4 layout-container"
-                                     style="background-image:url(/images/login/logo.png);">
-                                    <div class="row layout-text">
-                                        <label>3. 雨量</label>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                             <div class="col-6 row">
                                 <div class="col-empty"></div>
-                                <div class="col-4 layout-container"
-                                     style="background-image:url(/images/login/logo.png);">
+                                @foreach($device->decode_typhoon as $index => $f)
+                                    <div class="col-4 layout-container"
+                                         style="background-image:url({{$f->src ?? '/images/login/logo.png'}});">
 
-                                    <div class="row layout-text">
-                                        <label>1. 東亞IR</label>
+                                        <div class="row layout-text">
+                                            <label>{{$index + 1 }}. {{$f->name}}</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-4 layout-container"
-                                     style="background-image:url(/images/login/logo.png);">
-                                    <div class="row layout-text">
-                                        <label>2. 東亞MB</label>
-                                    </div>
-                                </div>
-                                <div class="col-4 layout-container"
-                                     style="background-image:url(/images/login/logo.png);">
-                                    <div class="row layout-text">
-                                        <label>3. 雨量</label>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
