@@ -33,7 +33,7 @@
                             <div class="col-3">
                                 <select class="form-control" id="device-host-{{$device->id}}" name="user" disabled>
                                     <option selected>不指定主播</option>
-                                    {{ Widget::UserSelect('selected' , $device->user_id ?? null)}}
+                                    {{ Widget::UserSelect(['selected'=>$device->user_id ?? null])}}
                                 </select>
                             </div>
                             <div class="col-3 kt-align-left">
@@ -49,7 +49,7 @@
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
                                         class="la la-desktop"></i></span>颱風主播圖卡
                                 </label>
-                                <a href="{{route('dashboard.update', ['dashboard'=>1])}}"
+                                <a href="{{route('dashboard.edit', ['dashboard'=>1])}}"
                                    class="btn btn-primary">編輯主播圖卡</a>
                             </div>
                             <div class="col-6">
@@ -57,7 +57,7 @@
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
                                         class="la la-desktop"></i></span>天氣預報排程
                                 </label>
-                                <a href="{{route('dashboard.update', ['dashboard'=>1])}}"
+                                <a href="{{route('dashboard.edit', ['dashboard'=>2])}}"
                                    class="btn btn-primary">編輯預報排程</a>
                             </div>
                         </div>
