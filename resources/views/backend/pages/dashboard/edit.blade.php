@@ -92,8 +92,8 @@
                                                 {{--                                        @endphp--}}
                                                 <input class="image_type" type="hidden" name="image_type[]" value="{{$data[$i]->type ?? 'origin'}}">
                                                 <input class="image_id" type="hidden" name="img_id[]" value="{{$data[$i]->img_id ?? ''}}">
-                                                <input class="hidden_name" type="hidden" name="img_name[]" value="{{$data[$i]->img_name ?? ''}}">
-                                                <input class="image_name" type="text" disabled value="{{$data[$i]->img_name ?? ''}}">
+                                                <input class="hidden_name" type="hidden" name="img_name[]" value="{{$data[$i]->type == 'upload' ? ($data[$i]->img_name ?? '') : ''}}">
+                                                <input class="image_name" type="text" disabled value="{{$data[$i]->type == 'upload' ? ($data[$i]->img_name ?? '') : ''}}">
                                                 <input class="image_url" type="hidden" name="img_url[]" value="{{$data[$i]->img_url ?? ''}}">
 
                                             </div>
