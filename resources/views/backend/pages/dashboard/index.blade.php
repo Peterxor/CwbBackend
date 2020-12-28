@@ -44,49 +44,60 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-6">
-                                <label for="example-search-input" class="col-4 col-form-label">
-                                <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
-                                        class="la la-desktop"></i></span>颱風主播圖卡
-                                </label>
-                                <a href="{{route('dashboard.edit', ['dashboard'=>1])}}"
-                                   class="btn btn-primary">編輯主播圖卡</a>
-                            </div>
-                            <div class="col-6">
-                                <label for="example-search-input" class="col-4 col-form-label">
-                                <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
-                                        class="la la-desktop"></i></span>天氣預報排程
-                                </label>
-                                <a href="{{route('dashboard.edit', ['dashboard'=>2])}}"
-                                   class="btn btn-primary">編輯預報排程</a>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="example-search-input" class="col-4 col-form-label">
+                                    <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
+                                            class="la la-desktop"></i></span>颱風主播圖卡
+                                    </label>
+                                    <a href="{{route('dashboard.edit', ['dashboard'=>1])}}"
+                                       class="btn btn-primary">編輯主播圖卡</a>
+                                </div>
+                                <div class="col-6">
+                                    <label for="example-search-input" class="col-4 col-form-label">
+                                    <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
+                                            class="la la-desktop"></i></span>天氣預報排程
+                                    </label>
+                                    <a href="{{route('dashboard.edit', ['dashboard'=>2])}}"
+                                       class="btn btn-primary">編輯預報排程</a>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row">
+                                    @foreach($device->decode_forecast as $index => $f)
+                                        @if(!($index%3))
+                                            <div class="col-empty"></div>
+                                        @endif
+                                            <div class="col-4 layout-container"
+                                                 style="background-image:url({{$f->src ?? '/images/login/logo.png'}});">
 
-                            <div class="col-6 row">
-                                <div class="col-empty"></div>
-                                @foreach($device->decode_forecast as $index => $f)
-                                    <div class="col-4 layout-container"
-                                         style="background-image:url({{$f->src ?? '/images/login/logo.png'}});">
-
-                                        <div class="row layout-text">
-                                            <label>{{$index + 1 }}. {{$f->name}}</label>
-                                        </div>
+                                                <div class="row layout-text">
+                                                    <label>{{$index + 1 }}. {{$f->name}}</label>
+                                                </div>
+                                            </div>
+                                    @endforeach
                                     </div>
-                                @endforeach
-                            </div>
-                            <div class="col-6 row">
-                                <div class="col-empty"></div>
-                                @foreach($device->decode_typhoon as $index => $f)
-                                    <div class="col-4 layout-container"
-                                         style="background-image:url({{$f->src ?? '/images/login/logo.png'}});">
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                    @foreach($device->decode_typhoon as $index => $f)
+                                        @if(!($index%3))
+                                            <div class="col-empty"></div>
+                                        @endif
+                                            <div class="col-4 layout-container"
+                                                 style="background-image:url({{$f->src ?? '/images/login/logo.png'}});">
 
-                                        <div class="row layout-text">
-                                            <label>{{$index + 1 }}. {{$f->name}}</label>
-                                        </div>
+                                                <div class="row layout-text">
+                                                    <label>{{$index + 1 }}. {{$f->name}}</label>
+                                                </div>
+                                            </div>
+                                    @endforeach
                                     </div>
-                                @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
