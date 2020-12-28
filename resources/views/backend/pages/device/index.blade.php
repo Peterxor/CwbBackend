@@ -19,11 +19,11 @@
     <div class="row">
         <div class="kt-portlet">
             <div class="kt-portlet__body">
-                <table id="device-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ env('URL_PREFIX','').route('device.info', ['_id'],false) }}">
+                <table id="device-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ env('URL_PREFIX','').route('device.edit', ['id' => '_id'],false) }}">
                     <thead>
                         <tr>
-                            <th>裝置名稱</th>
                             <th>管理</th>
+                            <th>裝置名稱</th>
                         </tr>
                     </thead>
                 </table>

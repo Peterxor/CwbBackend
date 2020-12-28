@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
 use Exception;
 
 class LoginController extends Controller
@@ -76,6 +77,12 @@ class LoginController extends Controller
 
             if ($this->attemptLogin($request)) {
                 Log::info('Login success' . json_encode($request->all()));
+
+                activity()
+                    ->causedBy(Auth::user()->id)
+                    ->withProperties(['ip' => $request->getClientIp()])
+                    ->log('登入');
+
                 return $this->sendLoginResponse($request);
             }
 
@@ -89,7 +96,6 @@ class LoginController extends Controller
             Log::error($e->getMessage());
             return $this->sendFailedLoginResponse($request);
         }
-
     }
 
     /**
@@ -117,7 +123,8 @@ class LoginController extends Controller
     protected function attemptLogin(Request $request)
     {
         return $this->guard()->attempt(
-            $this->credentials($request), $request->filled('remember')
+            $this->credentials($request),
+            $request->filled('remember')
         );
     }
 
@@ -173,8 +180,7 @@ class LoginController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function
-    sendFailedLoginResponse(Request $request)
+    protected function sendFailedLoginResponse(Request $request)
     {
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],

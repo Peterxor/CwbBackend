@@ -1,16 +1,16 @@
 $(document).ready(function() {
 
-    $('.js-change-btn').on('click', function() {
+    $('button[name=change_btn]').on('click', function() {
         $(this).parent().parent().find('select[name=user]').attr('disabled', false);
         $(this).parent().parent().find('button[name=save_btn]').show();
         $(this).hide();
     })
 
-    $('.js-submit-btn').on('click', function(e) {
+    $('button[name=save_btn]').on('click', function(e) {
+        var _this = $(this);
         var device_id = e.target.getAttribute('data-device-id')
-        console.log(device_id)
         var host_id = document.getElementById('device-host-' + device_id).value
-        console.log(host_id)
+
         $.ajax({
             url: '/device/updateDeviceHost',
             type: 'PUT',
@@ -20,8 +20,18 @@ $(document).ready(function() {
             },
             success: function(data) {
                 if (data.success) {
-                    swal.fire('success')
+                    toastr.success("Success!");
+
+                    _this.parent().parent().find('select[name=user]').attr('disabled', true);
+                    _this.parent().parent().find('button[name=change_btn]').show();
+                    _this.hide();
+
+                } else {
+                    toastr.error('error: ' + data.message);
                 }
+            },
+            error: function() {
+                toastr.error('error');
             }
         });
 

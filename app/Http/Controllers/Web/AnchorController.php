@@ -3,27 +3,61 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Web\Controller as Controller;
+use App\Models\Device;
+use App\Models\HostPreference;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class AnchorController extends Controller
 {
     public function index()
     {
-        // todo https://pl70hd.axshare.com/#id=h9u7bh&p=b_2_%E5%9C%96%E8%B3%87%E7%AE%A1%E7%90%86-%E5%A4%A9%E6%B0%A3
         return view("backend.pages.anchor.index");
     }
 
     public function query()
     {
+        $device = Device::all();
+
+        $query = User::query()->whereHas('roles', function ($query){
+            $query->where('name', 'User');
+        });
+
+        return DataTables::eloquent($query)->setTransformer(function ($item) use($device) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'device_id_1' => $device->where('name', '防災視訊室')->first()->id,
+                'device_id_2' => $device->where('name', '公關室')->first()->id,
+            ];
+        })->toJson();
     }
 
-    public function edit()
+    public function edit($id, $device_id)
     {
-        // todo https://pl70hd.axshare.com/#id=vue7xr&p=e_1_1_%E5%80%8B%E5%88%A5%E6%8E%92%E7%89%88%E5%81%8F%E5%A5%BD%E8%A8%AD%E5%AE%9A&g=1
+        $hostPreference = HostPreference::query()->with(['user', 'device'])->firstOrCreate([
+            'user_id' => $id,
+            'device_id' => $device_id
+        ]);
 
-        return view('backend.pages.anchor.edit');
+        return view('backend.pages.anchor.edit', compact('hostPreference'));
     }
 
-    public function update()
+
+    public function update($id, Request $request)
     {
+        $key = $request->get('key');
+        $device = HostPreference::query()->find($id);
+        $preference = $device->preference_json;
+
+        foreach ($request->get('preference', []) as $itemKey => $item){
+            $preference[$key][$itemKey] = $item;
+        }
+
+        $device->preference_json = $preference;
+        $device->save();
+
+        return redirect()->back();
     }
 }

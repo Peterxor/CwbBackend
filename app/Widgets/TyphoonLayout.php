@@ -3,7 +3,6 @@
 namespace App\Widgets;
 
 use Arrilot\Widgets\AbstractWidget;
-use Illuminate\Support\Facades\Config;
 
 class TyphoonLayout extends AbstractWidget
 {
@@ -13,8 +12,11 @@ class TyphoonLayout extends AbstractWidget
      * @var array
      */
     protected $config = [
-         'auchor'=>''
-     ];
+        'update_url' => '',
+        'auchor' => '',
+        'preference' => [],
+        'default' => []
+    ];
 
     public function __construct(array $config = [])
     {
@@ -32,7 +34,10 @@ class TyphoonLayout extends AbstractWidget
         $layout = config('typhoonlayout');
 
         return view('backend.widgets.typhoon_layout', [
+            'update_url' => $this->config['update_url'],
             'items' => $layout,
+            'preference' => $this->config['preference'],
+            'default' => $this->config['default'],
             'auchor' => $this->config['auchor']
         ]);
     }

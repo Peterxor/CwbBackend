@@ -37,13 +37,12 @@
                                 </select>
                             </div>
                             <div class="col-3 kt-align-left">
-                                <button class="btn btn-primary js-submit-btn" data-device-id="{{$device->id}}"
+                                <button class="btn btn-primary" data-device-id="{{$device->id}}"
                                         name="save_btn" style="display:none;">儲存
                                 </button>
-                                <button class="btn btn-outline-secondary js-change-btn">變更</button>
+                                <button class="btn btn-outline-secondary" name="change_btn">變更</button>
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <div class="col-6">
                                 <label for="example-search-input" class="col-4 col-form-label">
@@ -62,8 +61,8 @@
                                    class="btn btn-primary">編輯預報排程</a>
                             </div>
                         </div>
-                        <div class="form-group row">
-
+                        <div class="form-group">
+                            <div class="row">
                             <div class="col-6 row">
                                 <div class="col-empty"></div>
                                 @if(isset($device->decode_typhoon))
