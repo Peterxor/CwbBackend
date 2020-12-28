@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
         Route::get('query', ['as' => 'query', 'uses' => 'DashboardController@query']);
+        Route::put('updateDeviceHost', ['as' => 'updateDeviceHost', 'uses' => 'DashboardController@updateDeviceHost']);
     });
     Route::resource('dashboard', 'DashboardController')->except(['show']);
 

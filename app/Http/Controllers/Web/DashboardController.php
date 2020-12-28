@@ -90,8 +90,10 @@ class DashboardController extends Controller
         return 'ok';
     }
 
-    public function updateDeviceHost()
+    public function updateDeviceHost(Request $request)
     {
+        Device::where('id', $request->device_id)->update(['user_id' => $request->user_id]);
 
+        return $this->sendResponse('', 'success');
     }
 }

@@ -12,7 +12,7 @@ $(document).ready(function() {
         var host_id = document.getElementById('device-host-' + device_id).value
 
         $.ajax({
-            url: '/device/updateDeviceHost',
+            url: '/dashboard/updateDeviceHost',
             type: 'PUT',
             data: {
                 user_id: host_id,
@@ -21,7 +21,6 @@ $(document).ready(function() {
             success: function(data) {
                 if (data.success) {
                     toastr.success("Success!");
-
                     _this.parent().parent().find('select[name=user]').attr('disabled', true);
                     _this.parent().parent().find('button[name=change_btn]').show();
                     _this.hide();
