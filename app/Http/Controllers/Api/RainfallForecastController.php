@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Models\TyphoonImage;
 use Illuminate\Http\JsonResponse;
 
 class RainfallForecastController extends Controller
@@ -39,9 +40,10 @@ class RainfallForecastController extends Controller
      */
     public function index(): JsonResponse
     {
+        $content = json_decode(TyphoonImage::query()->where('name', '雨量預測')->first()->content);
         return response()->json([
-            'all' => $this->format(storage_path('data/rainfall/forecast/RainfallAllForecast.xml')),
-            '24h' => $this->format(storage_path('data/rainfall/forecast/Rainfall24HForecast.xml'))]);
+            'all' => $this->format(storage_path($content->info->origin)),
+            '24h' => $this->format(storage_path($content->info->origin24))]);
     }
 
     private function format(string $path): array
