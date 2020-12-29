@@ -25,15 +25,15 @@ class DashboardController extends Controller
         $pic_type = $request->pic_type ?? 'typhoon';
         $query = Device::where('id', $id)->first();
         $data = $pic_type === 'typhoon' ? $query->typhoon_json : $query->forecast_json;
-        $images = [];
-        if ($pic_type === 'typhoon') {
-            $images = TyphoonImage::get();
-        } else {
-            $images = GeneralImages::get();
-        }
+//        $images = [];
+//        if ($pic_type === 'typhoon') {
+//            $images = TyphoonImage::get();
+//        } else {
+//            $images = GeneralImages::get();
+//        }
+        $images = GeneralImages::get();
         $data = json_decode($data);
-        $loop_times = 10;
-//        dd($data);
+        $loop_times = 9;
 
         return view('backend.pages.dashboard.edit', compact('id', 'pic_type', 'data', 'loop_times', 'images'));
     }
@@ -48,16 +48,20 @@ class DashboardController extends Controller
         $upload_url = $request->img_url;
         $json_type = $request->pic_type;
         $db_origin_img = [];
-        if ($json_type == 'typhoon') {
-            $typhoons = TyphoonImage::get();
-            foreach ($typhoons as $t) {
-                $db_origin_img[$t->id] = $t->name;
-            }
-        } else {
-            $generals = GeneralImages::get();
-            foreach ($generals as $g) {
-                $db_origin_img[$g->id] = $g->name;
-            }
+//        if ($json_type == 'typhoon') {
+//            $typhoons = TyphoonImage::get();
+//            foreach ($typhoons as $t) {
+//                $db_origin_img[$t->id] = $t->name;
+//            }
+//        } else {
+//            $generals = GeneralImages::get();
+//            foreach ($generals as $g) {
+//                $db_origin_img[$g->id] = $g->name;
+//            }
+//        }
+        $generals = GeneralImages::get();
+        foreach ($generals as $g) {
+            $db_origin_img[$g->id] = $g->name;
         }
 
         $datas = [];
@@ -67,6 +71,7 @@ class DashboardController extends Controller
                 'type' => $type,
                 'img_id' => $origin_ids[$index],
                 'img_name' => $db_origin_img[$origin_ids[$index]],
+                'img_url' => $this->getWeatherImage($db_origin_img[$origin_ids[$index]])
             ] : [
                 'type' => $type,
                 'img_id' => $upload_ids[$index],
@@ -96,4 +101,28 @@ class DashboardController extends Controller
 
         return $this->sendResponse('', 'success');
     }
+
+    public function getWeatherImage($name) {
+        $map = [
+            '東亞VIS' => '/images/weather/東亞VIS.jpg',
+            '東亞MB' => '/images/weather/東亞MB.jpg',
+            '東亞IR' => '/images/weather/東亞IR.jpg',
+            '地面天氣圖' => '/images/weather/地面天氣圖.jpg',
+            '全球IR' => '/images/weather/全球IR.jpg',
+            '紫外線' => '/images/weather/紫外線.png',
+            '雷達回波' => '/images/weather/雷達回波圖.png',
+            '溫度' => '/images/weather/溫度.jpg',
+            '雨量' => '/images/weather/雨量.jpg',
+            '數值預報' => '/images/weather/數值預報.png',
+            '定量降水預報12小時' => '/images/weather/定量降水預報12小時.png',
+            '定量降水預報6小時' => '/images/weather/定量降水預報6小時.png',
+            '24H預測' => '/images/weather/24H預測.png',
+            '天氣預測' => '/images/weather/天氣預測.png',
+            '波浪分析圖' => '/images/weather/波浪分析圖.jpg',
+            '天氣警報' => '/images/weather/天氣警報.png'
+
+        ];
+        return $map[$name];
+    }
+
 }
