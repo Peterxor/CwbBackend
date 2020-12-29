@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     var searchForm = $('#search-form');
     var searchUrl = searchForm.attr('action');
@@ -19,15 +19,15 @@ $(document).ready(function() {
         ajax: {
             url: searchUrl,
             type: 'GET',
-            data: function(aoData) {
+            data: function (aoData) {
                 //把分頁的參數與自訂的搜尋結合
-                $.each(searchForm.serializeArray(), function(key, value) {
+                $.each(searchForm.serializeArray(), function (key, value) {
                     aoData[value.name] = value.value;
                 });
                 return aoData;
             },
             dataSrc: 'data',
-            error: function(xhr, error, code) {
+            error: function (xhr, error, code) {
                 // console.log('xhr',xhr);
                 // console.log('code',code);
                 // console.log('error',error);
@@ -39,20 +39,20 @@ $(document).ready(function() {
             }
         },
         columns: [{
-                data: null,
-                width: '10%',
-                className: 'text-center',
-                defaultContent: '',
-                mRender: function(data, type, full) {
-                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-primary" ><i class="la la-image"></i></a>';
-                }
-            }, {
-                data: 'name',
-                width: '250px',
-            },
+            data: null,
+            width: '10%',
+            className: 'text-center',
+            defaultContent: '',
+            mRender: function (data, type, full) {
+                return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-primary" ><i class="la la-image"></i></a>';
+            }
+        }, {
+            data: 'name',
+            width: '250px',
+        },
 
         ],
-        "rowCallback": function(row, data, index) {
+        "rowCallback": function (row, data, index) {
 
         },
     }

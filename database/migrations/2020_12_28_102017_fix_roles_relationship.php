@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AddPreferenceJsonInDevice extends Migration
+class FixRolesRelationship extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,7 @@ class AddPreferenceJsonInDevice extends Migration
      */
     public function up()
     {
-        Schema::table('device', function (Blueprint $table) {
-            $table->json('preference_json')->nullable()->comment('預設偏好json');
-        });
+        DB::table('model_has_roles')->where('model_type', 'App\User')->update([ 'model_type' => 'App\Models\User']);
     }
 
     /**
@@ -26,8 +24,6 @@ class AddPreferenceJsonInDevice extends Migration
      */
     public function down()
     {
-        Schema::table('device', function (Blueprint $table) {
-            $table->dropColumn('preference_json');
-        });
+        DB::table('model_has_roles')->where('model_type', 'App\Models\User')->update([ 'model_type' => 'App\User']);
     }
 }

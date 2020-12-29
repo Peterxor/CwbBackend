@@ -47,7 +47,7 @@ $(document).ready(function() {
                 width: '250px',
                 defaultContent: '',
                 mRender: function(data, type, full) {
-                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-success" title="Edit details" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
+                    return '<a href="' + editUrl.replace('_id', data.id).replace('_device_id', data.device_id_1) + '" class="btn btn-outline-success" title="Edit details" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
                 }
             },
             { //公關室
@@ -55,7 +55,7 @@ $(document).ready(function() {
                 width: '250px',
                 defaultContent: '',
                 mRender: function(data, type, full) {
-                    return '<a href="' + editUrl.replace('_id', data.id) + '" class="btn btn-outline-success" title="Edit details" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
+                    return '<a href="' + editUrl.replace('_id', data.id).replace('_device_id', data.device_id_2) + '" class="btn btn-outline-success" title="Edit details" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
                 }
             }
         ],
