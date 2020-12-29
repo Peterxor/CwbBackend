@@ -64,9 +64,11 @@
                         <div class="form-group">
                             <div class="row">
                             <div class="col-6 row">
-                                <div class="col-empty"></div>
                                 @if(isset($device->decode_typhoon))
                                     @foreach($device->decode_typhoon as $index => $f)
+                                        @if(!($index%3))
+                                            <div class="col-empty"></div>
+                                        @endif
                                         <div class="col-4 layout-container"
                                              style="background-image:url({{$f->img_url ?? '/images/login/logo.png'}});">
 
@@ -78,9 +80,11 @@
                                 @endif
                             </div>
                             <div class="col-6 row">
-                                <div class="col-empty"></div>
                                 @if(isset($device->decode_forecast))
                                     @foreach($device->decode_forecast as $index => $f)
+                                        @if(!($index%3))
+                                            <div class="col-empty"></div>
+                                        @endif
                                         <div class="col-4 layout-container"
                                              style="background-image:url({{$f->img_url ?? '/images/login/logo.png'}});">
 

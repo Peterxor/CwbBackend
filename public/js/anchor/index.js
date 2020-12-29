@@ -44,18 +44,20 @@ $(document).ready(function() {
             },
             { //防災視訊室
                 data: null,
-                width: '250px',
+                width: '10%',
                 defaultContent: '',
+                className: 'text-center',
                 mRender: function(data, type, full) {
-                    return '<a href="' + editUrl.replace('_id', data.id).replace('_device_id', data.device_id_1) + '" class="btn btn-outline-success" title="Edit details" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
+                    return '<a href="' + editUrl.replace('_id', data.id).replace('_device_id', data.device_id_1) + '" class="btn btn-outline-primary" title="Edit details" id="edit-' + data.id + '-btn"><i class="la la-edit"></i></a>';
                 }
             },
             { //公關室
                 data: null,
-                width: '250px',
+                width: '10%',
                 defaultContent: '',
+                className: 'text-center',
                 mRender: function(data, type, full) {
-                    return '<a href="' + editUrl.replace('_id', data.id).replace('_device_id', data.device_id_2) + '" class="btn btn-outline-success" title="Edit details" id="edit-' + data.id + '-btn"><i class="la la-edit" style="font-size:24px"></i></a>';
+                    return '<a href="' + editUrl.replace('_id', data.id).replace('_device_id', data.device_id_2) + '" class="btn btn-outline-primary" title="Edit details" id="edit-' + data.id + '-btn"><i class="la la-edit"></i></a>';
                 }
             }
         ],
