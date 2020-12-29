@@ -27,7 +27,6 @@
                         <div class="form-group row">
                             <div class="col-6">
                                 <a href="{{route('dashboard.index', [])}}" class="btn btn-secondary">回上一頁</a>
-                                <button type="submit" class="btn btn-primary" id="edit-btn">儲存變更</button>
                             </div>
                             <div class="col-6">
 
@@ -45,6 +44,14 @@
                         </div>
 
                         <div class="kt-portlet__body">
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <button type="submit" class="btn btn-primary" id="edit-btn">儲存變更</button>
+                                </div>
+                                <div class="col-6">
+
+                                </div>
+                            </div>
                             <table id="card_table"
                                    class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline"
                                    query-device-id="{{$id}}" query-device-type="{{$pic_type}}">
@@ -82,19 +89,23 @@
 {{--                                            <input type="file" class="js-ref js-avatar upload-image" id="file-upload"--}}
 {{--                                                   accept="image/gif, image/jpeg, image/png" style="display:none;"/>--}}
                                             <div class="imgHolder" style="{{($data[$i]->type ?? null) ? ($data[$i]->type == 'origin' ? 'display:none;' : 'display:block;') : 'display:none;'}}">
-                                                <label for="file-upload-avatar-{{$i}}" class="custom-file-upload">
-                                                    <i class="la la-cloud-upload" style="font-size:20px"></i>
-                                                </label>
-                                                <input type="file"  class="upload-image"
-                                                       id="file-upload-avatar-{{$i}}"
-                                                       accept="image/gif, image/jpeg, image/png" style="display:none;"/>
-                                                {{--                                        @php--}}
-                                                {{--                                            dd($value->media[0]->toArray())--}}
-                                                {{--                                        @endphp--}}
+                                                <div class="row">
+                                                    <div class="col-1">
+                                                        <label for="file-upload-avatar-{{$i}}" class="custom-file-upload">
+                                                            <i class="la la-cloud-upload" style="font-size:24px"></i>
+                                                        </label>
+                                                        <input type="file"  class="upload-image"
+                                                               id="file-upload-avatar-{{$i}}"
+                                                               accept="image/gif, image/jpeg, image/png" style="display:none;"/>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <span class="image_name">{{$data[$i]->type == 'upload' ? ($data[$i]->img_name ?? '') : ''}}</span>
+                                                    </div>
+                                                </div>
+
                                                 <input class="image_type" type="hidden" name="image_type[]" value="{{$data[$i]->type ?? 'origin'}}">
                                                 <input class="image_id" type="hidden" name="img_id[]" value="{{$data[$i]->img_id ?? ''}}">
                                                 <input class="hidden_name" type="hidden" name="img_name[]" value="{{$data[$i]->type == 'upload' ? ($data[$i]->img_name ?? '') : ''}}">
-                                                <input class="image_name" type="text" disabled value="{{$data[$i]->type == 'upload' ? ($data[$i]->img_name ?? '') : ''}}">
                                                 <input class="image_url" type="hidden" name="img_url[]" value="{{$data[$i]->img_url ?? ''}}">
 
                                             </div>

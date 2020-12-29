@@ -4,7 +4,7 @@ $(document).ready(function() {
     $('.js-change-btn').on('change', function() {
         var type = $(this).val();
         var type_name = type == 'weather' ? 'select' : '.imgHolder';
-        var hide_name = type_name == 'select' ? '.imgHolder': 'select';
+        var hide_name = type_name == 'select' ? '.imgHolder' : 'select';
         var data_type = type_name == 'select' ? 'origin' : 'upload';
 
         // $('.js-ref').hide();
@@ -16,10 +16,13 @@ $(document).ready(function() {
     });
 
     $('.upload-image').on('change', function(e) {
+        var _this = $(this);
         // console.log(e.target.files[0])
         var form = new FormData();
         form.append('file', e.target.files[0])
         var parentElement = this.parentElement
+
+
         $.ajax({
             type: 'POST',
             url: '/media/upload',
@@ -28,12 +31,10 @@ $(document).ready(function() {
             data: form,
             success: function(msg) {
                 if (msg.success) {
-                    parentElement.querySelector('.image_id').setAttribute('value', msg.data.image_id);
-                    parentElement.querySelector('.image_name').setAttribute('value', msg.data.name);
-                    parentElement.querySelector('.hidden_name').setAttribute('value', msg.data.name);
-                    parentElement.querySelector('.image_url').setAttribute('value', msg.data.url);
-                    console.log(msg.data.name)
-                    // parentElement.querySelector('.image_show').setAttribute('src', msg.data.url)
+                    _this.parent().parent().parent().find('.image_id').val(msg.data.image_id);
+                    _this.parent().parent().find('.image_name').html(msg.data.name);
+                    _this.parent().parent().parent().find('.hidden_name').val(msg.data.name);
+                    _this.parent().parent().parent().find('.image_url').val(msg.data.url);
                 } else {
                     alert('Data save error: ' + msg.message)
                 }
