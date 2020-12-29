@@ -67,6 +67,7 @@
                                     <input type="file" class="js-ref js-avatar" id="file-upload" accept="image/gif, image/jpeg, image/png" style="display:none;"/>
                                 </td>
                             </tr>
+                            
                         </table>
                 	</div>
                 </div>

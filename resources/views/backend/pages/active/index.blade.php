@@ -17,18 +17,17 @@
     <div class="row">
         <div class="kt-portlet">
         <form class="kt-form kt-form--label-right" id="search-form" action="{{env('URL_PREFIX','').route('active.query',[],false)}}">
-            <input type="hidden" name="role">
             <div class="kt-portlet__body">
                 <div class="form-group row">
                     <div class="col-lg-4">
                         <label>操作行為:</label>
                         <select name="active_type" class="form-control">
-                            <option value="all">所有行為</option>
-                            <option value="login">登入</option>
-                            <option value="logout">登出</option>
-                            <option value="add">新增</option>
-                            <option value="edit">修改</option>
-                            <option value="delete">刪除</option>
+                            <option value="">所有行為</option>
+                            <option value="登入">登入</option>
+                            <option value="登出">登出</option>
+                            <option value="新增">新增</option>
+                            <option value="修改">修改</option>
+                            <option value="刪除">刪除</option>
                         </select>
                     </div>
                     <div class="col-lg-6">

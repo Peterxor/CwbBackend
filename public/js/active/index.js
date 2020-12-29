@@ -19,6 +19,7 @@ $(document).ready(function() {
     });
 
     var searchForm = $('#search-form');
+    var searchFromBtn = $('#search-btn');
     var searchUrl = searchForm.attr('action');
     var activeTable = $('#active-table');
     var _activeTable;
@@ -58,7 +59,7 @@ $(document).ready(function() {
         },
         columns: [{
             data: 'date',
-            width: '100px',
+            width: '150px',
         }, {
             data: 'user',
             width: '150px',
@@ -78,4 +79,9 @@ $(document).ready(function() {
     }
 
     _activeTable = activeTable.DataTable(dataTableSettings);
+
+    searchFromBtn.on('click', function() {
+
+        _activeTable.ajax.reload();
+    });
 });
