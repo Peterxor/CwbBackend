@@ -6,7 +6,6 @@ COPY cwb.conf /etc/nginx/nginx.conf
 # 圖片處理
 RUN apk update \
     && apk add --no-cache imagemagick \
-    && apk del -f .build-deps \
     && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*
 
