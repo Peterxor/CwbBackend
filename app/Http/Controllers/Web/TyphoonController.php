@@ -149,7 +149,7 @@ class TyphoonController extends Controller
                     'info' => [
                         'origin_word' => $data['info-origin_word'],
                         'origin_pic' => $data['info-origin_pic'],
-                        'move_pages' => $data['info-origin_pic'],
+                        'move_pages' => $data['info-move_pages'],
                         'change_rate_second' => $data['info-change_rate_second'],
                     ],
                     'timezone_rain' => [
@@ -172,24 +172,6 @@ class TyphoonController extends Controller
                             'status' => $data['time_four_status'], // 1: 啟用 2: 停用
                             'word' => $data['time_four_word'],
                             'pic' => $data['time_four_pic'],
-                        ]
-                    ],
-                    'location_rain' => [
-                        'one_day_before' => [
-                            'status' => $data['location_one_status'], // 1: 啟用 2: 停用
-                            'word' => $data['location_one_word'],
-                        ],
-                        'two_day_before' => [
-                            'status' => $data['location_two_status'], // 1: 啟用 2: 停用
-                            'word' => $data['location_two_word'],
-                        ],
-                        'three_day_before' => [
-                            'status' => $data['location_three_status'], // 1: 啟用 2: 停用
-                            'word' => $data['location_three_word'],
-                        ],
-                        'four_day_before' => [
-                            'status' => $data['location_four_status'], // 1: 啟用 2: 停用
-                            'word' => $data['location_four_word'],
                         ]
                     ]
                 ];
