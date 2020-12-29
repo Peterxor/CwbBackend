@@ -1,6 +1,5 @@
 $(document).ready(function() {
-
-
+    $('#sort-table').sortable();
 
     $('.js-change-btn').on('change', function() {
         var type = $(this).val();
@@ -42,4 +41,6 @@ $(document).ready(function() {
             }
         });
     })
+
+
 });

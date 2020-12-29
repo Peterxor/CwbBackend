@@ -55,6 +55,7 @@
                                     <th>名稱</th>
                                 </tr>
                                 </thead>
+                                <tbody id="sort-table">
                                 @for($i = 0; $i < $loop_times; $i++)
                                     <tr>
                                         <td><span class="kt-badge kt-badge--inline"><i class="la la-sort"
@@ -101,6 +102,7 @@
 
                                     </tr>
                                 @endfor
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -114,5 +116,6 @@
 @endsection
 
 @section('pages_scripts')
+    {!! Html::script(env('URL_PREFIX','').'js/vendor/jquery-ui.js') !!}
     {!! Html::script(env('URL_PREFIX','').'js/dashboard/edit.js') !!}
 @endsection
