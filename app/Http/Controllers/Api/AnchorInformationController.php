@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Models\Device;
 use Illuminate\Http\JsonResponse;
 
 class AnchorInformationController extends Controller
@@ -13,23 +14,15 @@ class AnchorInformationController extends Controller
     public function index(): JsonResponse
     {
 
-        return response()->json([
-            [
-                'title' => '雷達波紋',
-                'image' => url('test/preci_radar.png')
-            ],
-            [
-                'title' => '天氣雲圖',
-                'image' => url('test/sat_weather_IR.gif')
-            ],
-            [
-                'title' => '氣壓圖',
-                'image' => url('test/2020-1108-1200_A012HD.png')
-            ],
-            [
-                'title' => '小叮嚀',
-                'image' => url('test/note.png')
-            ],
-        ]);
+        $device = Device::where('id', 1)->first();
+        $typhoon = json_decode($device->typhoon_json);
+        $data = [];
+        foreach ($typhoon as $index => $value) {
+            $data[] = [
+                'title' => $value->img_name,
+                'image' => env('APP_URL') . $value->img_url,
+            ];
+        }
+        return response()->json($data);
     }
 }
