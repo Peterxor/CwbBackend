@@ -99,8 +99,8 @@
                     </div>
                 </div>
             </div>
-        @endforeach
     </div>
+    @endforeach
     <style>
         .col-empty {
             flex: 0 0 50%;
