@@ -71,6 +71,18 @@ class MobileDeviceController extends Controller
             'typhoon' => [],
             'weather' => [],
         ];
+        $forecast = json_decode($device->forecast_json);
+        $typhoon = json_decode($device->typhoon_json);
+//        dd($typhoon);
+        $host_pics = [];
+
+        foreach ($typhoon as $index => $value) {
+            $host_pics[] = [
+                'name' => $value->img_name,
+                'value' => $index,
+                'pic_url' => env('APP_URL') . $value->img_url,
+            ];
+        }
 
         foreach ($typhoonImgs as $img) {
             $res['typhoon'][] = [
@@ -80,6 +92,11 @@ class MobileDeviceController extends Controller
                 'behavior' => $this->makeBehavior($img->name)
             ];
         }
+        $res['typhoon'][] = [
+            'name' => '主播圖卡',
+            'value' => 'anchor_slide',
+            'behaviour' => $host_pics,
+        ];
 
         foreach ($generalImgs as $img) {
             $res['weather'][] = [
