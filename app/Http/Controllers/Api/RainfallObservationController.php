@@ -74,30 +74,30 @@ class RainfallObservationController extends Controller
 
             if (count($data['top']['a']) < 5) {
                 $data['top']['a'][] = [
-                    'county' => $area[0],
+                    'city' => $area[0],
                     'area' => $strArr[1],
                     'value' => (float)$strArr[0]
                 ];
             }
 
-            if (count($data['top'][Transformer::parseRainfallObsCounty($area[0])]) < 5) {
-                $data['top'][Transformer::parseRainfallObsCounty($area[0])][] = [
-                    'county' => $area[0],
+            if (count($data['top'][Transformer::parseRainfallObsCity($area[0])]) < 5) {
+                $data['top'][Transformer::parseRainfallObsCity($area[0])][] = [
+                    'city' => $area[0],
                     'area' => $strArr[1],
                     'value' => (float)$strArr[0]
                 ];
             }
 
-            if (array_key_exists($area[0], $data['location'][Transformer::parseRainfallObsCounty($area[0])])) {
+            if (array_key_exists($area[0], $data['location'][Transformer::parseRainfallObsCity($area[0])])) {
                 continue;
             }
-            $data['location'][Transformer::parseRainfallObsCounty($area[0])][$area[0]] = [
+            $data['location'][Transformer::parseRainfallObsCity($area[0])][$area[0]] = [
                 'value' => (float)$strArr[0]
             ];
 
             if (count($data['top']['c']) < 5) {
                 $data['top']['c'][] = [
-                    'county' => $area[0],
+                    'city' => $area[0],
                     'area' => $area[1],
                     'value' => (float)$strArr[0]
                 ];

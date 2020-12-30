@@ -1198,7 +1198,7 @@ class Transformer
             ][$location] ?? '';
     }
 
-    static function parseWindCounty(string $county): string
+    static function parseWindCity(string $county): string
     {
         return [
                 '臺北市' => 'n',
@@ -1228,7 +1228,7 @@ class Transformer
             ][$county] ?? '';
     }
 
-    static function parseRainfallObsCounty(string $county): string
+    static function parseRainfallObsCity(string $county): string
     {
         return [
                 '臺北市' => 'n',
@@ -1259,7 +1259,7 @@ class Transformer
             ][$county] ?? '';
     }
 
-    static function parseRainfallFcstCounty(string $county): string
+    static function parseRainfallFcstCity(string $county): string
     {
         return [
                 '臺北市' => 'n',

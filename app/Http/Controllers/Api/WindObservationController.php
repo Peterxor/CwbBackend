@@ -28,10 +28,10 @@ class WindObservationController extends Controller
 
         $location = ['n' => [], 'm' => [], 's' => [], 'e' => []];
         foreach ($windObs->dataset->location ?? [] as $loc) {
-            if (empty($county = Transformer::parseLocation((string)$loc->locationName)))
+            if (empty($city = Transformer::parseLocation((string)$loc->locationName)))
                 continue;
 
-            $location[Transformer::parseWindCounty($county)][$county] = [
+            $location[Transformer::parseWindCity($city)][$city] = [
                 "wind" => (string)$loc->weatherElement[1]->time->parameter[2]->parameterValue,
                 "gust" => (string)$loc->weatherElement[2]->time->parameter[2]->parameterValue,
             ];

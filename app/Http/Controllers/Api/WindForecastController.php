@@ -31,9 +31,9 @@ class WindForecastController extends Controller
             }
 
             if (((string)$areaForecastData->WindData->attributes()['type']) == 'average') {
-                $data[$key]['location'][Transformer::parseWindCounty((string)$areaForecastData->attributes()['area'])][(string)$areaForecastData->attributes()['area']]['wind'] = (string)$areaForecastData->WindData->Level;
+                $data[$key]['location'][Transformer::parseWindCity((string)$areaForecastData->attributes()['area'])][(string)$areaForecastData->attributes()['area']]['wind'] = (string)$areaForecastData->WindData->Level;
             } else {
-                $data[$key]['location'][Transformer::parseWindCounty((string)$areaForecastData->attributes()['area'])][(string)$areaForecastData->attributes()['area']]['gust'] = (string)$areaForecastData->WindData->Level;
+                $data[$key]['location'][Transformer::parseWindCity((string)$areaForecastData->attributes()['area'])][(string)$areaForecastData->attributes()['area']]['gust'] = (string)$areaForecastData->WindData->Level;
             }
         }
 
