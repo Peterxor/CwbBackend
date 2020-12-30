@@ -31,7 +31,7 @@ class RainfallObservationController extends Controller
 
     private function format($pages, $second, $status, string $txtPath, string $imagePath, string $gifPath): array
     {
-        $data = ['enable' => $status, 'startTime' => '', 'endTime' => '', 'image' => '', 'top' => [], 'location' => ['n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []]];
+        $data = ['enable' => $status, 'startTime' => '', 'endTime' => '', 'image' => '', 'top' => ['c' => [],'a' => [], 'n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []], 'location' => ['n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []]];
 
         /** 圖片處理 */
         // 以名稱排序(A-Z)取最後一個
@@ -65,14 +65,29 @@ class RainfallObservationController extends Controller
             }
         }
 
-        $count = 0;
-
         while (!feof($rainfallTxt)) {
             $str = $this->txtDecode(fgets($rainfallTxt));
             if (empty($str))
                 continue;
             $strArr = explode(" ", $str);
             $area = Transformer::parseAddress($strArr[2]);
+
+            if (count($data['top']['a']) < 5) {
+                $data['top']['a'][] = [
+                    'county' => $area[0],
+                    'area' => $strArr[1],
+                    'value' => (float)$strArr[0]
+                ];
+            }
+
+            if (count($data['top'][Transformer::parseRainfallObsCounty($area[0])]) < 5) {
+                $data['top'][Transformer::parseRainfallObsCounty($area[0])][] = [
+                    'county' => $area[0],
+                    'area' => $strArr[1],
+                    'value' => (float)$strArr[0]
+                ];
+            }
+
             if (array_key_exists($area[0], $data['location'][Transformer::parseRainfallObsCounty($area[0])])) {
                 continue;
             }
@@ -80,15 +95,13 @@ class RainfallObservationController extends Controller
                 'value' => (float)$strArr[0]
             ];
 
-            if ($count < 5) {
-                $data['top'][] = [
+            if (count($data['top']['c']) < 5) {
+                $data['top']['c'][] = [
                     'county' => $area[0],
                     'area' => $area[1],
                     'value' => (float)$strArr[0]
                 ];
             }
-
-            $count++;
         }
 
         fclose($rainfallTxt);
