@@ -78,6 +78,6 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script('vendor/audit/bootstrap-datepicker.min.js') !!}
+    {!! Html::script('vendor/audit/bootstrap-timepicker.min.js') !!}
     {!! Html::script(env('URL_PREFIX','').'js/active/index.js') !!}
 @endsection
