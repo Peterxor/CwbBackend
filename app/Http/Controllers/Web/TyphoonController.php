@@ -94,9 +94,7 @@ class TyphoonController extends Controller
                 $temp = [
                     'type' => 1,
                     'info' => [
-                        'origin' => $data['info-origin'],
-                        'move_pages' => $data['info-move_pages'],
-                        'change_rate_second' => $data['info-change_rate_second'],
+                        'origin' => $data['info-origin']
                     ],
                     'show_info' => [
                         'ir' => [
