@@ -36,6 +36,20 @@
 							</div>
 						</div>
 					</div>
+					<div class="form-group row">
+						<div class="col-3 kt-align-right">
+							<label for="example-search-input" class="col-form-label">
+								背景
+							</label>
+						</div>
+						<div class="col-5">
+							<select class="form-control" name="background">
+								<option value="1" selected>雲朵版</option>
+								<option value="2">風格2</option>
+								<option value="3">風格3</option>
+							</select>
+						</div>
+					</div>
 					<div class="js-display-block js-default" style="display:block;">
 						<div class="form-group row">
 							<div class="col-3 kt-align-right">
