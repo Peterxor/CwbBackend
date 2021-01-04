@@ -19,3 +19,8 @@ readinessProbe:
   timeoutSeconds: 3
   scheme: "HTTP"
   probeType: "httpGet"
+persistence:
+  enabled: true
+  volumeMounts:
+    - mountPath: /var/www/storage/data
+      subPath: storage_data
