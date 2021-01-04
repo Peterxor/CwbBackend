@@ -21,6 +21,8 @@ Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group(['middleware' => 'auth'], function () {
+
+    // Dashboard
     Route::get('/', 'DashboardController@index')->name('index');
 
     Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
@@ -29,6 +31,13 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::resource('dashboard', 'DashboardController')->except(['show']);
 
+    // 人員簡介管理
+    Route::group(['prefix' => 'personnel', 'as' => 'personnel.'], function () {
+        Route::get('query', ['as' => 'query', 'uses' => 'PersonnelController@query']);
+    });
+    Route::resource('personnel', 'PersonnelController')->except(['show']);
+
+    // 主播偏好設定
     Route::group(['prefix' => 'anchor', 'as' => 'anchor.'], function () {
         Route::get('/', ['as' => 'index', 'uses' => 'AnchorController@index']);
         Route::get('query', ['as' => 'query', 'uses' => 'AnchorController@query']);
@@ -36,6 +45,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('{id}/{device_id}/edit', ['as' => 'show', 'uses' => 'AnchorController@edit']);
     });
 
+    // 裝置排版管理
     Route::group(['prefix' => 'device', 'as' => 'device.'], function () {
         Route::get('/', ['as' => 'index', 'uses' => 'DeviceController@index']);
         Route::get('query', ['as' => 'query', 'uses' => 'DeviceController@query']);
@@ -43,6 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('{id}/update', ['as' => 'update', 'uses' => 'DeviceController@update']);
     });
 
+    // 一般天氣預報
     Route::group(['prefix' => 'weather', 'as' => 'weather.'], function () {
         Route::get('/query', ['as' => 'query', 'uses' => 'WeatherController@query']);
         Route::get('/queryCategory', ['as' => 'queryCategory', 'uses' => 'WeatherController@queryCategory']);
@@ -52,6 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::resource('weather', 'WeatherController')->except(['show']);
 
+    // 颱風預報
     Route::group(['prefix' => 'typhoon', 'as' => 'typhoon.'], function () {
         Route::get('/query', ['as' => 'query', 'uses' => 'TyphoonController@query']);
         Route::get('/upper', ['as' => 'upper', 'uses' => 'TyphoonController@upper']);
@@ -59,11 +71,13 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::resource('typhoon', 'TyphoonController')->except(['show']);
 
+    // 使用者管理
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::get('query', ['as' => 'query', 'uses' => 'UserController@query']);
     });
     Route::resource('users', 'UserController')->except(['show']);
 
+    // 事件紀錄
     Route::group(['prefix' => 'active', 'as' => 'active.'], function () {
         Route::get('/query', ['as' => 'query', 'uses' => 'ActiveController@query']);
     });
@@ -72,5 +86,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'media', 'as' => 'media.'], function () {
         Route::post('upload', ['as' => 'upload', 'uses' => 'MediaController@upload']);
     });
-
 });

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Auth;
 
 return array(
     ['name' => 'dashboard', 'permission'=>'', 'display_name' => 'Dashboard', 'link' => 'index', 'display' => true , 'level'=>'1', 'icon'=>'<i class="la la-dashboard"></i>'],
-    // ['name' => 'device', 'permission'=>'', 'display_name' => '人員簡介管理', 'link' => 'device.index', 'display' => true, 'level'=>'1' ,'icon'=>'<i class="la la-user-plus"></i>'],
+    ['name' => 'personnel', 'permission'=>'', 'display_name' => '人員簡介管理', 'link' => 'personnel.index', 'display' => true, 'level'=>'1' ,'icon'=>'<i class="la la-user-plus"></i>'],
     ['name' => 'device', 'permission'=>'', 'display_name' => '裝置排版管理', 'link' => 'device.index', 'display' => true, 'level'=>'1' ,'icon'=>'<i class="la la-tv"></i>'],
     ['name' => 'anchor', 'permission'=>'', 'display_name' => '主播偏好設定', 'link' => 'anchor.index', 'display' => true, 'level'=>'1' ,'icon'=>'<i class="la la-bullhorn"></i>'],
     ['name' => 'media', 'permission'=>'', 'display_name' => '圖資管理', 'display' => true, 'level'=>'1', 'icon'=>'','children' => [
