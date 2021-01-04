@@ -113,12 +113,12 @@ class MobileDeviceController extends Controller
     {
         $room = $request->room ?? '';
         $screen = $request->screen ?? '';
+        $sub = $request->sub ?? '';
         $behaviour = $request->behaviour ?? '';
         $res['success'] = true;
         $res['data'] = $request->all();
-        broadcast(new MobileActionEvent($room, $screen, $behaviour));
+        broadcast(new MobileActionEvent($room, $screen, $sub, $behaviour));
         return response()->json($res);
-
     }
 
 

@@ -21,12 +21,14 @@ class MobileActionEvent implements ShouldBroadcast
      */
     public $room = null;
     public $screen = null;
+    public $sub = null;
     public $behaviour = null;
-    public function __construct($room, $screen, $behaviour)
+    public function __construct($room, $screen, $sub, $behaviour)
     {
         //
         $this->room = $room;
         $this->screen = $screen;
+        $this->sub = $sub;
         $this->behaviour = $behaviour;
     }
 
@@ -45,6 +47,7 @@ class MobileActionEvent implements ShouldBroadcast
         return [
             'room' => $this->room,
             'screen' => $this->screen,
+            'sub' => $this->sub,
             'behaviour' => $this->behaviour,
         ];
     }
