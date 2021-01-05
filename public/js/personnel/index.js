@@ -50,10 +50,10 @@ $(document).ready(function() {
             data: 'name',
             width: '250px',
         }, {
-            data: 'title',
+            data: 'nick_name',
             width: '250px',
         }, {
-            data: 'incumbent',
+            data: 'career',
             width: '250px',
         }, ],
         "rowCallback": function(row, data, index) {

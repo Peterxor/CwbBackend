@@ -56,7 +56,7 @@
                         <span class="kt-font-danger">*</span>角色稱呼
                     </label>
                     <div class="col-3 kt-input-icon">
-                        <input class="form-control" type="text" value="" name="nickname" required placeholder="請輸入角色稱呼">
+                        <input class="form-control" type="text" value="" name="nick_name" required placeholder="請輸入角色稱呼">
                         <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                         現職
                     </label>
                     <div class="col-3 kt-input-icon">
-                        <input class="form-control" type="text" value="" name="title" placeholder="請輸入現職">
+                        <input class="form-control" type="text" value="" name="career" placeholder="請輸入現職">
                         <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                         學歷
                     </label>
                     <div class="col-3 kt-input-icon">
-                        <input class="form-control" type="text" value="" name="edu" placeholder="請輸入學歷">
+                        <input class="form-control" type="text" value="" name="education" placeholder="請輸入學歷">
                         <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                         1.
                     </label>
                     <div class="col-3 kt-input-icon">
-                        <input class="form-control" type="text" value="" name="exp_1" placeholder="請輸入經歷">
+                        <input class="form-control" type="text" value="" name="exp[]" placeholder="請輸入經歷">
                         <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                         2.
                     </label>
                     <div class="col-3 kt-input-icon">
-                        <input class="form-control" type="text" value="" name="exp_2" placeholder="請輸入經歷">
+                        <input class="form-control" type="text" value="" name="exp[]" placeholder="請輸入經歷">
                         <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                         3.
                     </label>
                     <div class="col-3 kt-input-icon">
-                        <input class="form-control" type="text" value="" name="exp_3" placeholder="請輸入經歷">
+                        <input class="form-control" type="text" value="" name="exp[]" placeholder="請輸入經歷">
                         <span class="kt-input-icon__icon kt-input-icon__icon--right"></span>
                     </div>
                 </div>
