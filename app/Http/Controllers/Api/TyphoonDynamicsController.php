@@ -18,9 +18,9 @@ class TyphoonDynamicsController extends Controller
 
         return response()->json([
             'typhoon' => $this->typhoonFormat(storage_path($content->info->origin)),
-            'ir' => $this->imageFormat($content->show_info->ir, 'typhoon/ir'),
-            'mb' => $this->imageFormat($content->show_info->mb, 'typhoon/mb'),
-            'vis' => $this->imageFormat($content->show_info->vis, 'typhoon/vis')
+            'ir' => $this->imageFormat($content->show_info->ir, 'images/typhoon/ir'),
+            'mb' => $this->imageFormat($content->show_info->mb, 'images/typhoon/mb'),
+            'vis' => $this->imageFormat($content->show_info->vis, 'images/typhoon/vis')
         ]);
     }
 

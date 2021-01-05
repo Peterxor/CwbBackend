@@ -20,11 +20,11 @@ class RainfallObservationController extends Controller
         $pages = $content->info->move_pages;
         $second = $content->info->change_rate_second;
         $data = [
-            'today' => $this->format($pages, $second, $content->timezone_rain->one_day_before->status, storage_path($content->info->origin_word), storage_path($content->info->origin_pic), 'rainfall/today'),
-            'before1nd' => $this->format($pages, $second, $content->timezone_rain->one_day_before->status, storage_path($content->timezone_rain->one_day_before->word), storage_path($content->timezone_rain->one_day_before->pic), 'rainfall/before1nd'),
-            'before2nd' => $this->format($pages, $second, $content->timezone_rain->two_day_before->status, storage_path($content->timezone_rain->two_day_before->word), storage_path($content->timezone_rain->two_day_before->pic), 'rainfall/before2nd'),
-            'before3nd' => $this->format($pages, $second, $content->timezone_rain->three_day_before->status, storage_path($content->timezone_rain->three_day_before->word), storage_path($content->timezone_rain->three_day_before->pic), 'rainfall/before3nd'),
-            'before4nd' => $this->format($pages, $second, $content->timezone_rain->four_day_before->status, storage_path($content->timezone_rain->four_day_before->word), storage_path($content->timezone_rain->four_day_before->pic), 'rainfall/before4nd'),
+            'today' => $this->format($pages, $second, $content->timezone_rain->one_day_before->status, storage_path($content->info->origin_word), storage_path($content->info->origin_pic), 'images/rainfall/today'),
+            'before1nd' => $this->format($pages, $second, $content->timezone_rain->one_day_before->status, storage_path($content->timezone_rain->one_day_before->word), storage_path($content->timezone_rain->one_day_before->pic), 'images/rainfall/before1nd'),
+            'before2nd' => $this->format($pages, $second, $content->timezone_rain->two_day_before->status, storage_path($content->timezone_rain->two_day_before->word), storage_path($content->timezone_rain->two_day_before->pic), 'images/rainfall/before2nd'),
+            'before3nd' => $this->format($pages, $second, $content->timezone_rain->three_day_before->status, storage_path($content->timezone_rain->three_day_before->word), storage_path($content->timezone_rain->three_day_before->pic), 'images/rainfall/before3nd'),
+            'before4nd' => $this->format($pages, $second, $content->timezone_rain->four_day_before->status, storage_path($content->timezone_rain->four_day_before->word), storage_path($content->timezone_rain->four_day_before->pic), 'images/rainfall/before4nd'),
         ];
         return response()->json($data);
     }
