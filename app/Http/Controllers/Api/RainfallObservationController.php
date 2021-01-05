@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Jobs\GenerateGifJob;
 use App\Models\TyphoonImage;
 use App\Services\CWB\Transformer;
 use Carbon\Carbon;
@@ -43,7 +44,7 @@ class RainfallObservationController extends Controller
             $rainfallImages[] = $file->getPathname();
         }
 
-        shell_exec('convert -loop 1 -delay ' .(int)($second * 1000) .' ' .implode(' ', array_reverse($rainfallImages)) . ' ' .public_path($gifPath . '/output.gif'));
+        dispatch(new GenerateGifJob('convert -loop 1 -delay ' .(int)($second * 1000) .' ' .implode(' ', array_reverse($rainfallImages)) . ' ' .public_path($gifPath . '/output.gif')));
 
         $data['image'] = url($gifPath . '/output.gif');
 

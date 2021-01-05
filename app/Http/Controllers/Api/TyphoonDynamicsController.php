@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Jobs\GenerateGifJob;
 use App\Models\TyphoonImage;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\Finder\Finder;
@@ -64,7 +65,7 @@ class TyphoonDynamicsController extends Controller
             $typhoonImages[] = $file->getPathname();
         }
 
-        shell_exec('convert -loop 1 -delay ' . (int)($info->change_rate_page * 1000) . ' ' . implode(' ', array_reverse($typhoonImages)) . ' ' . public_path($gifPath . '/output.gif'));
+        dispatch(new GenerateGifJob('convert -loop 1 -delay ' . (int)($info->change_rate_page * 1000) . ' ' . implode(' ', array_reverse($typhoonImages)) . ' ' . public_path($gifPath . '/output.gif')));
 
         return ['image' => url($gifPath . '/output.gif')];
     }
