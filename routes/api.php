@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('setting', 'SettingController@index');
 
 Route::get('wind-observation', 'WindObservationController@index');
 
@@ -24,10 +25,8 @@ Route::get('rainfall-forecast', 'RainfallForecastController@index');
 
 Route::get('typhoon-dynamics', 'TyphoonDynamicsController@index');
 
-// TODO: 颱風潛勢
 Route::get('typhoon-potential', 'TyphoonPotentialController@index');
 
-// TODO: 主播圖卡
 Route::get('anchor-information', 'AnchorInformationController@index');
 
 

@@ -24,3 +24,5 @@ persistence:
   volumeMounts:
     - mountPath: /var/www/storage/data
       subPath: storage_data
+    - mountPath: /var/www/storage/app/public
+      subPath: storage_public

@@ -12,6 +12,13 @@ class GenerateGifJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * 任務在多久的時間內允許執行的最大秒數
+     *
+     * @var int
+     */
+    public $timeout = 10800;
+
     private $command;
 
     /**
