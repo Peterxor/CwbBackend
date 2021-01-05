@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Personnel;
+use App\Http\Requests\PersonnelRequest;
 
 class PersonnelController extends Controller
 {
@@ -34,7 +35,7 @@ class PersonnelController extends Controller
         return view("backend.pages.personnel.create");
     }
 
-    public function store(Request $request)
+    public function store(PersonnelRequest $request)
     {
         $create = [
             'name' => $request->name ?? '',
@@ -55,7 +56,7 @@ class PersonnelController extends Controller
         return view("backend.pages.personnel.edit", compact('person', 'experience'));
     }
 
-    public function update(Request $request, $id)
+    public function update(PersonnelRequest $request, $id)
     {
         $update = [
             'name' => $request->name ?? '',
