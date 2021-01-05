@@ -43,8 +43,7 @@ class RainfallObservationController extends Controller
             $rainfallImages[] = $file->getPathname();
         }
 
-
-        echo shell_exec('convert -loop 1 -delay ' .(int)($second * 1000) .' ' .implode(' ', array_reverse($rainfallImages)) . ' ' .public_path($gifPath . '/output.gif'));
+        shell_exec('convert -loop 1 -delay ' .(int)($second * 1000) .' ' .implode(' ', array_reverse($rainfallImages)) . ' ' .public_path($gifPath . '/output.gif'));
 
         $data['image'] = url($gifPath . '/output.gif');
 
