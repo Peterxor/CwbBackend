@@ -14,9 +14,9 @@ class DashboardController extends Controller
     public function index()
     {
         $devices = Device::with(['user'])->get();
-//        dd($devices->toArray());
+        $themes = getTheme(0);
 
-        return view("backend.pages.dashboard.index", compact('devices'));
+        return view("backend.pages.dashboard.index", compact('devices', 'themes'));
     }
 
 
@@ -25,12 +25,6 @@ class DashboardController extends Controller
         $pic_type = $request->pic_type ?? 'typhoon';
         $query = Device::where('id', $id)->first();
         $data = $pic_type === 'typhoon' ? $query->typhoon_json : $query->forecast_json;
-//        $images = [];
-//        if ($pic_type === 'typhoon') {
-//            $images = TyphoonImage::get();
-//        } else {
-//            $images = GeneralImages::get();
-//        }
         $images = GeneralImages::get();
         $data = json_decode($data);
         $loop_times = 9;
@@ -40,7 +34,6 @@ class DashboardController extends Controller
 
     public function update(Request $request, $id)
     {
-//        dd($request->all());
         $origin_ids = $request->origin_img_id;
         $image_types = $request->image_type;
         $upload_ids = $request->img_id;
@@ -48,17 +41,6 @@ class DashboardController extends Controller
         $upload_url = $request->img_url;
         $json_type = $request->pic_type;
         $db_origin_img = [];
-//        if ($json_type == 'typhoon') {
-//            $typhoons = TyphoonImage::get();
-//            foreach ($typhoons as $t) {
-//                $db_origin_img[$t->id] = $t->name;
-//            }
-//        } else {
-//            $generals = GeneralImages::get();
-//            foreach ($generals as $g) {
-//                $db_origin_img[$g->id] = $g->name;
-//            }
-//        }
         $generals = GeneralImages::get();
         foreach ($generals as $g) {
             $db_origin_img[$g->id] = $g->name;
@@ -102,7 +84,15 @@ class DashboardController extends Controller
         return $this->sendResponse('', 'success');
     }
 
-    public function getWeatherImage($name) {
+    public function updateDeviceTheme(Request $request)
+    {
+        Device::where('id', $request->device_id)->update(['theme' => $request->theme]);
+
+        return $this->sendResponse('', 'success');
+    }
+
+    public function getWeatherImage($name)
+    {
         $map = [
             '東亞VIS' => '/images/weather/東亞VIS.jpg',
             '東亞MB' => '/images/weather/東亞MB.jpg',

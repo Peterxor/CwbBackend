@@ -33,7 +33,8 @@
                                 </label>
                                 <div class="col-12 row">
                                     <div class="col-6">
-                                        <select class="form-control" id="device-host-{{$device->id}}" name="user" disabled>
+                                        <select class="form-control" id="device-host-{{$device->id}}" name="user"
+                                                disabled>
                                             <option value="0" selected>不指定主播</option>
                                             {{ Widget::UserSelect(['selected'=>$device->user_id ?? null])}}
                                         </select>
@@ -53,15 +54,14 @@
                                 </label>
                                 <div class="col-12 row">
                                     <div class="col-6">
-                                        <select class="form-control" name="layout" disabled>
-                                            <option value="1" selected>自然</option>
-                                            <option value="2">科技藍</option>
-                                            <option value="3">工業橘</option>
-                                            <option value="4">現代紅</option>
+                                        <select id="theme-select-{{$device->id}}" class="form-control" name="theme" disabled>
+                                            @foreach($themes as $theme)
+                                                <option value="{{$theme['value']}}" {{$device->theme == $theme['value'] ? 'selected' : ''}}>{{$theme['name']}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-3 kt-align-left">
-                                        <button class="btn btn-primary" name="save_layout_btn" style="display:none;">儲存
+                                        <button class="btn btn-primary" name="save_layout_btn" data-device-id="{{$device->id}}" style="display:none;">儲存
                                         </button>
                                         <button class="btn btn-outline-secondary" name="change_layout_btn">變更</button>
                                     </div>
@@ -75,7 +75,9 @@
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
                                         class="la la-commenting"></i></span>預報看板
                                 </label>
-                                <button class="btn btn-primary" name="edit_btn" data-toggle="modal" data-target="#edit-modal">編輯看板內容</button>
+                                <button class="btn btn-primary" name="edit_btn" data-toggle="modal"
+                                        data-target="#edit-modal">編輯看板內容
+                                </button>
                                 <input type="hidden" name="people_1" value="伍婉華">
                                 <input type="hidden" name="people_2" value="丘安">
                                 <input type="hidden" name="news_status" value="1">
@@ -92,7 +94,8 @@
                             <div class="col-6 row" style="background-color:#efefef">
                                 <div class="col-4">
                                     <label for="example-search-input" class="col-form-label">
-                                        <span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">人員1</span>
+                                        <span
+                                            class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">人員1</span>
                                     </label>
                                     <label for="example-search-input" class="col-form-label col-6">
                                         <span>伍婉華</span>
@@ -100,7 +103,8 @@
                                 </div>
                                 <div class="col-8">
                                     <label for="example-search-input" class="col-form-label">
-                                        <span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">本場次記者會</span>
+                                        <span
+                                            class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">本場次記者會</span>
                                     </label>
                                     <label for="example-search-input" class="col-form-label col-6">
                                         <span>11：40 AM</span>
@@ -113,7 +117,8 @@
                             <div class="col-6 row" style="background-color:#efefef">
                                 <div class="col-4">
                                     <label for="example-search-input" class="col-form-label">
-                                        <span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">人員2</span>
+                                        <span
+                                            class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">人員2</span>
                                     </label>
                                     <label for="example-search-input" class="col-form-label col-6">
                                         <span>丘安</span>
@@ -121,7 +126,8 @@
                                 </div>
                                 <div class="col-8">
                                     <label for="example-search-input" class="col-form-label">
-                                        <span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">下場次記者會</span>
+                                        <span
+                                            class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">下場次記者會</span>
                                     </label>
                                     <label for="example-search-input" class="col-form-label col-6">
                                         <span>無</span>
@@ -136,7 +142,8 @@
                         <div class="form-group row js-upload-block" style="padding-left:30px;display:none;">
                             <div class="col-4">
                                 <label for="example-search-input" class="col-form-label">
-                                    <span class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">上傳圖片</span>
+                                    <span
+                                        class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill kt-badge--rounded">上傳圖片</span>
                                 </label>
                                 <label for="example-search-input" class="col-form-label">
                                     <span>202012311140-press</span>
@@ -164,70 +171,70 @@
                         </div>
                         <div class="form-group">
                             <div class="row">
-                            <div class="col-6 row">
-                                @if(isset($device->decode_typhoon))
-                                    @foreach($device->decode_typhoon as $index => $f)
-                                        @if(!($index%3))
-                                            <div class="col-empty"></div>
-                                        @endif
-                                        <div class="col-4 layout-container"
-                                             style="background-image:url({{$f->img_url ?? '/images/login/logo.png'}});">
+                                <div class="col-6 row">
+                                    @if(isset($device->decode_typhoon))
+                                        @foreach($device->decode_typhoon as $index => $f)
+                                            @if(!($index%3))
+                                                <div class="col-empty"></div>
+                                            @endif
+                                            <div class="col-4 layout-container"
+                                                 style="background-image:url({{$f->img_url ?? '/images/login/logo.png'}});">
 
-                                            <div class="row layout-text">
-                                                <label>{{$index + 1 }}. {{$f->img_name ?? ''}}</label>
+                                                <div class="row layout-text">
+                                                    <label>{{$index + 1 }}. {{$f->img_name ?? ''}}</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                            <div class="col-6 row">
-                                @if(isset($device->decode_forecast))
-                                    @foreach($device->decode_forecast as $index => $f)
-                                        @if(!($index%3))
-                                            <div class="col-empty"></div>
-                                        @endif
-                                        <div class="col-4 layout-container"
-                                             style="background-image:url({{$f->img_url ?? '/images/login/logo.png'}});">
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <div class="col-6 row">
+                                    @if(isset($device->decode_forecast))
+                                        @foreach($device->decode_forecast as $index => $f)
+                                            @if(!($index%3))
+                                                <div class="col-empty"></div>
+                                            @endif
+                                            <div class="col-4 layout-container"
+                                                 style="background-image:url({{$f->img_url ?? '/images/login/logo.png'}});">
 
-                                            <div class="row layout-text">
-                                                <label>{{$index + 1 }}. {{$f->img_name ?? ''}}</label>
+                                                <div class="row layout-text">
+                                                    <label>{{$index + 1 }}. {{$f->img_name ?? ''}}</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                    @endforeach
-                                @endif
+                                        @endforeach
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    </div>
-    @endforeach
-    <style>
-        .col-empty {
-            flex: 0 0 50%;
-            max-width: 5%;
-        }
+        @endforeach
+        <style>
+            .col-empty {
+                flex: 0 0 50%;
+                max-width: 5%;
+            }
 
-        .layout-container {
-            max-width: 30%;
-            height: 100px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-            margin-bottom: 50px;
-            margin-left: 5px;
-            border-style: solid;
-            border-color: black;
-            border-width: 1px;
-        }
+            .layout-container {
+                max-width: 30%;
+                height: 100px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+                margin-bottom: 50px;
+                margin-left: 5px;
+                border-style: solid;
+                border-color: black;
+                border-width: 1px;
+            }
 
-        .layout-text {
-            margin-top: 110px;
-        }
+            .layout-text {
+                margin-top: 110px;
+            }
 
-    </style>
-    <!-- end:: Content -->
-@include('backend.pages.dashboard._index_modal')
+        </style>
+        <!-- end:: Content -->
+    @include('backend.pages.dashboard._index_modal')
 @endsection
 
 @section('pages_scripts')

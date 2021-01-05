@@ -38,14 +38,37 @@ $(document).ready(function() {
 
     // 變更佈景主題
     $('button[name=change_layout_btn]').on('click', function() {
-        $(this).parent().parent().find('select[name=layout]').attr('disabled', false);
+        $(this).parent().parent().find('select[name=theme]').attr('disabled', false);
         $(this).parent().parent().find('button[name=save_layout_btn]').show();
         $(this).hide();
     })
 
     // 儲存佈景主題
     $('button[name=save_layout_btn]').on('click', function(e) {
-
+        var _this = $(this);
+        var device_id = e.target.getAttribute('data-device-id')
+        var theme = document.getElementById('theme-select-' + device_id).value
+        $.ajax({
+            url: '/dashboard/updateDeviceTheme',
+            type: 'PUT',
+            data: {
+                theme,
+                device_id,
+            },
+            success: function(data) {
+                if (data.success) {
+                    toastr.success("Success!");
+                    _this.parent().parent().find('select[name=theme]').attr('disabled', true);
+                    _this.parent().parent().find('button[name=change_layout_btn]').show();
+                    _this.hide();
+                } else {
+                    toastr.error('error: ' + data.message);
+                }
+            },
+            error: function() {
+                toastr.error('error');
+            }
+        });
     })
 
     // 變更預報主播
@@ -72,7 +95,7 @@ $(document).ready(function() {
                 if (data.success) {
                     toastr.success("Success!");
                     _this.parent().parent().find('select[name=user]').attr('disabled', true);
-                    _this.parent().parent().find('button[name=change_btn]').show();
+                    _this.parent().parent().find('button[name=change_user_btn]').show();
                     _this.hide();
 
                 } else {
