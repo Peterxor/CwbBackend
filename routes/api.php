@@ -13,7 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('wfc-data', 'WFCDataController@index');
+Route::get('wfc-data/{device_id}', 'WFCDataController@index');
+
+Route::get('typhoon-dynamics/{device_id}', 'TyphoonDynamicsController@index');
+
+Route::get('typhoon-potential', 'TyphoonPotentialController@index');
 
 Route::get('wind-observation', 'WindObservationController@index');
 
@@ -22,10 +26,6 @@ Route::get('wind-forecast', 'WindForecastController@index');
 Route::get('rainfall-observation', 'RainfallObservationController@index');
 
 Route::get('rainfall-forecast', 'RainfallForecastController@index');
-
-Route::get('typhoon-dynamics', 'TyphoonDynamicsController@index');
-
-Route::get('typhoon-potential', 'TyphoonPotentialController@index');
 
 Route::get('anchor-information', 'AnchorInformationController@index');
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Web;
 use App\Models\Device;
 use App\Http\Controllers\Web\Controller as Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -13,7 +15,7 @@ class DeviceController extends Controller
         return view("backend.pages.device.index");
     }
 
-    public function query(): \Illuminate\Http\JsonResponse
+    public function query(): JsonResponse
     {
         $query = Device::query();
 
@@ -35,7 +37,7 @@ class DeviceController extends Controller
     }
 
 
-    public function update($id, Request $request)
+    public function update($id, Request $request): RedirectResponse
     {
         $key = $request->get('key');
         $device = Device::query()->find($id);

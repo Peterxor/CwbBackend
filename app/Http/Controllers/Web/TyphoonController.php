@@ -4,20 +4,26 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\TyphoonImage;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-use Log;
 
 class TyphoonController extends Controller
 {
-    public function index()
+    /**
+     * 颱風預報圖資管理
+     *
+     * @return View
+     */
+    public function index(): View
     {
         return view("backend.pages.typhoon.index");
     }
 
-    public function query()
+    public function query(): JsonResponse
     {
-        $query = TyphoonImage::orderBy('sort');
+        $query = TyphoonImage::query()->orderBy('sort');
 
         return DataTables::eloquent($query)->setTransformer(function ($item) {
             return [
@@ -28,47 +34,72 @@ class TyphoonController extends Controller
         })->toJson();
     }
 
-    public function upper()
+    /**
+     * 排序位置向上
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function upper(Request $request): JsonResponse
     {
-        $id = request()->get('id', false);
-        $data = TyphoonImage::find($id);
-        $old_data = TyphoonImage::where('sort', '<', $data->sort)->orderBy('sort', 'desc')->limit(1)->first();
+        /**
+         * @var TyphoonImage $data1
+         * @var TyphoonImage $data2
+         */
+        $id = $request->get('id', false);
+        $data1 = TyphoonImage::query()->find($id);
+        $data2 = TyphoonImage::query()->where('sort', '<', $data1->sort)->orderBy('sort', 'desc')->first();
 
-        if (empty($old_data)) {
-            return response()->json(['success'=>false, 'message' => '此為第一筆資料']);
-        }
+        if (empty($data2))
+            return response()->json(['success' => false, 'message' => '此為第一筆資料']);
 
-        $old_data->sort = $data->sort;
-        $old_data->save();
-
-        $data->sort = (int)$data->sort-1;
-        $data->save();
+        $tmp_sort = $data2->sort;
+        $data2->sort = $data1->sort;
+        $data1->sort = $tmp_sort;
+        $data1->save();
+        $data2->save();
 
         return response()->json(['success' => true]);
     }
 
-    public function lower()
+    /**
+     * 排序位置向下
+     *
+     * @return JsonResponse
+     */
+    public function lower(): JsonResponse
     {
+        /**
+         * @var TyphoonImage $data1
+         * @var TyphoonImage $data2
+         */
         $id = request()->get('id', false);
-        $data = TyphoonImage::find($id);
-        $old_data = TyphoonImage::where('sort', '>', $data->sort)->orderBy('sort', 'asc')->limit(1)->first();
+        $data1 = TyphoonImage::query()->find($id);
+        $data2 = TyphoonImage::query()->where('sort', '>', $data1->sort)->orderBy('sort')->first();
 
-        if (empty($old_data)) {
-            return response()->json(['success'=>false, 'message' => '此為最後一筆資料']);
+        if (empty($data2)) {
+            return response()->json(['success' => false, 'message' => '此為最後一筆資料']);
         }
 
-        $old_data->sort = $data->sort;
-        $old_data->save();
-
-        $data->sort = (int)$data->sort+1;
-        $data->save();
+        $tmp_sort = $data2->sort;
+        $data2->sort = $data1->sort;
+        $data1->sort = $tmp_sort;
+        $data1->save();
+        $data2->save();
 
         return response()->json(['success' => true]);
     }
 
-    public function edit(Request $request, $id)
+    /**
+     * 編輯颱風預報圖資
+     *
+     * @param $id
+     * @return View
+     */
+    public function edit($id): View
     {
-        $data = TyphoonImage::find($id);
+        /** @var TyphoonImage $data */
+        $data = TyphoonImage::query()->find($id);
         $json = json_decode($data->content);
         $type = $json->type;
 

@@ -4,7 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
+/**
+ * Class TyphoonImage
+ *
+ * @property int sort
+ * @property string content
+ *
+ * @package App\Models
+ */
 class TyphoonImage extends Model
 {
     //

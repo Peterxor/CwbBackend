@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
 use App\Models\TyphoonImage;
-use App\Services\CWB\Transformer;
+use App\Services\WFC\Transformer;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\Finder\Finder;
 

@@ -33,36 +33,26 @@
                                                 @if($children['type'] == 1)
                                                     縮放
                                                     <label><input class="form-control" type="text"
-                                                                  data-default="{{$default[$item['name']][$children['name']]['zoom'][0] ?? '100'}}"
-                                                                  value="{{$preference[$item['name']][$children['name']]['zoom'] ?? '100'}}"
-                                                                  name="preference[{{$item['name']}}][{{$children['name']}}][zoom]"></label>
+                                                                  data-default="{{$default[$item['name']][$children['name']]['scale'][0] ?? '100'}}"
+                                                                  value="{{$preference[$item['name']][$children['name']]['scale'] ?? '100'}}"
+                                                                  name="preference[{{$item['name']}}][{{$children['name']}}][scale]"></label>
                                                     %
                                                 @endif
                                             </td>
                                         @endif
                                         <td>
-                                            基準點
-                                            <label><select class="form-control" name="" disabled>
-                                                    {{-- <option>左上</option>
-                                                    <option>左下</option>
-                                                    <option>右上</option>
-                                                    <option>右下</option>
-                                                    <option>正中心</option> --}}
-                                                    <option>固定</option>
-                                                </select></label>
-                                        </td>
-                                        <td>
-                                            絕對座標
+                                            左右位置
                                             <label><input class="form-control" type="text"
                                                           data-default="{{$default[$item['name']][$children['name']]['point'][0] ?? '0'}}"
                                                           value="{{$preference[$item['name']][$children['name']]['point'][0] ?? '0'}}"
                                                           name="preference[{{$item['name']}}][{{$children['name']}}][point][0]"
-                                                          placeholder="x"></label>
+                                                          placeholder="x"></label>%
+                                            上下位置
                                             <label><input class="form-control" type="text"
                                                           data-default="{{$default[$item['name']][$children['name']]['point'][1] ?? '0'}}"
                                                           value="{{$preference[$item['name']][$children['name']]['point'][1] ?? '0'}}"
                                                           name="preference[{{$item['name']}}][{{$children['name']}}][point][1]"
-                                                          placeholder="y"></label>
+                                                          placeholder="y"></label>%
                                         </td>
                                         @if($auchor)
                                             <td>

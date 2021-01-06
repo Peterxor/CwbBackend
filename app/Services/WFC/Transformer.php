@@ -1,11 +1,17 @@
 <?php
 
 
-namespace App\Services\CWB;
+namespace App\Services\WFC;
 
 
 class Transformer
 {
+    /**
+     * 解析地址
+     *
+     * @param string $address
+     * @return array|string[]
+     */
     static function parseAddress(string $address): array
     {
         return [
@@ -640,6 +646,12 @@ class Transformer
             ][$address] ?? [];
     }
 
+    /**
+     * 解析地區
+     *
+     * @param string $location
+     * @return string
+     */
     static function parseLocation(string $location): string
     {
         return [
@@ -1200,6 +1212,12 @@ class Transformer
             ][$location] ?? '';
     }
 
+    /**
+     * 解析風力城市
+     *
+     * @param string $county
+     * @return string
+     */
     static function parseWindCity(string $county): string
     {
         return [
@@ -1230,6 +1248,12 @@ class Transformer
             ][$county] ?? '';
     }
 
+    /**
+     * 解析雨量觀測城市
+     *
+     * @param string $county
+     * @return string
+     */
     static function parseRainfallObsCity(string $county): string
     {
         return [
@@ -1261,6 +1285,12 @@ class Transformer
             ][$county] ?? '';
     }
 
+    /**
+     * 解析雨量預測城市
+     *
+     * @param string $county
+     * @return string
+     */
     static function parseRainfallFcstCity(string $county): string
     {
         return [

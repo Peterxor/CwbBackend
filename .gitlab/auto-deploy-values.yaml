@@ -22,7 +22,7 @@ readinessProbe:
 persistence:
   enabled: true
   volumeMounts:
-    - mountPath: /var/www/storage/data
+    - mountPath: /var/www/storage/app/public/data
       subPath: storage_data
-    - mountPath: /var/www/storage/app/public
-      subPath: storage_public
+    - mountPath: /var/www/storage/app/public/media
+      subPath: storage_media
