@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Web\Controller;
 use Illuminate\Http\JsonResponse;
 
-class SettingController extends Controller
+class WFCDataController extends Controller
 {
     /**
      * @return JsonResponse
