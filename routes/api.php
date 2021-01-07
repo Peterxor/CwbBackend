@@ -17,7 +17,7 @@ Route::get('wfc-data/{device_id}', 'WFCDataController@index');
 
 Route::get('typhoon-dynamics/{device_id}', 'TyphoonDynamicsController@index');
 
-Route::get('typhoon-potential', 'TyphoonPotentialController@index');
+Route::get('typhoon-potential/{device_id}', 'TyphoonPotentialController@index');
 
 Route::get('wind-observation', 'WindObservationController@index');
 

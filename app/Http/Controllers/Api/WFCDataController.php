@@ -8,6 +8,7 @@ use App\Models\HostPreference;
 use App\Models\TyphoonImage;
 use App\Services\WFC\Exceptions\WFCException;
 use App\Services\WFC\TyphoonDynamics;
+use App\Services\WFC\TyphoonPotential;
 use App\Services\WFC\WeatherInformation;
 use App\Services\WFC\WindForecast;
 use App\Services\WFC\WindObservation;
@@ -30,8 +31,8 @@ class WFCDataController extends Controller
             'meta' => [],
             'typhoon' => [
                 'information' => [],
-                'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first()->content, $preference),
-                'typhoon-potential' => [],
+                'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first(['content'])->content, $preference),
+                'typhoon-potential' => TyphoonPotential::get($typhoonImages->where('name', 'typhoon-potential')->first(['content'])->content, $preference),
                 'wind-observation' => WindObservation::get(),
                 'wind-forecast' => WindForecast::get(),
                 'rainfall-observation' => [],
