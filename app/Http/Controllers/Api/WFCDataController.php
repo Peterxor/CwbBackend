@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\Controller;
 use App\Models\Device;
 use App\Models\HostPreference;
 use App\Models\TyphoonImage;
+use App\Services\WFC\Exceptions\WFCException;
 use App\Services\WFC\TyphoonDynamics;
 use App\Services\WFC\WeatherInformation;
 use App\Services\WFC\WindForecast;
@@ -15,28 +16,21 @@ use Illuminate\Http\JsonResponse;
 class WFCDataController extends Controller
 {
     /**
-     * @param $device_id
+     * @param mixed $device_id 裝置ID
      * @return JsonResponse
+     * @throws WFCException
      */
     public function index($device_id): JsonResponse
     {
-        $device = Device::query()->find($device_id);
-        $preference = $device->preference_json;
+        $preference = preference($device_id);
 
-        $hostPreference = HostPreference::query()->firstOrCreate([
-            'user_id' => $device->user_id,
-            'device_id' => $device_id
-        ]);
-
-        $preference = array_merge($preference, $hostPreference->preference_json ?? []);
-
-        $typhoonImages = TyphoonImage::all();
+        $typhoonImages = TyphoonImage::all(['name', 'content']);
 
         return response()->json([
             'meta' => [],
             'typhoon' => [
                 'information' => [],
-                'typhoon-dynamics' => TyphoonDynamics::get(json_decode($typhoonImages->where('name', '颱風動態圖')->first()->content), $preference),
+                'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first()->content, $preference),
                 'typhoon-potential' => [],
                 'wind-observation' => WindObservation::get(),
                 'wind-forecast' => WindForecast::get(),

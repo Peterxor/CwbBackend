@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\TyphoonImage;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
@@ -25,10 +26,10 @@ class TyphoonController extends Controller
     {
         $query = TyphoonImage::query()->orderBy('sort');
 
-        return DataTables::eloquent($query)->setTransformer(function ($item) {
+        return DataTables::eloquent($query)->setTransformer(function (TyphoonImage $item) {
             return [
                 'id' => $item->id,
-                'name' => $item->name,
+                'name' => $item->content['display_name'] ?? '',
                 'sort' => $item->sort,
             ];
         })->toJson();
@@ -98,123 +99,114 @@ class TyphoonController extends Controller
      */
     public function edit($id): View
     {
-        /** @var TyphoonImage $data */
-        $data = TyphoonImage::query()->find($id);
-        $json = json_decode($data->content);
-        $type = $json->type;
-
-        return view('backend.pages.typhoon.edit', compact('json', 'type', 'data'));
+        return view('backend.pages.typhoon.edit', ['data' => TyphoonImage::query()->find($id)]);
     }
 
 
-    public function update(Request $request, $id)
+    /**
+     * 更新颱風預報圖資
+     *
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
+     */
+    public function update(Request $request, $id): RedirectResponse
     {
-        $json = $this->makeJson($request->all());
-        $image = TyphoonImage::find($id);
-        $image->content = $json;
+        /** @var TyphoonImage $image */
+        $image = TyphoonImage::query()->find($id);
+
+        $data = $request->all();
+
+        switch ($image->name ?? '') {
+            case('typhoon-dynamics'):
+                $image->content = array_merge($image->content, [
+                    'typhoon-dynamics' => [
+                        'origin' => $data['typhoon-dynamics']['origin']
+                    ],
+                    'typhoon-ir' => [
+                        'origin' => $data['typhoon-ir']['origin'],
+                        'amount' => $data['typhoon-ir']['amount'],
+                        'interval' => $data['typhoon-ir']['interval']
+                    ],
+                    'typhoon-mb' => [
+                        'origin' => $data['typhoon-mb']['origin'],
+                        'amount' => $data['typhoon-mb']['amount'],
+                        'interval' => $data['typhoon-mb']['interval']
+                    ],
+                    'typhoon-vis' => [
+                        'origin' => $data['typhoon-vis']['origin'],
+                        'amount' => $data['typhoon-vis']['amount'],
+                        'interval' => $data['typhoon-vis']['interval']
+                    ]
+                ]);
+                break;
+            case('typhoon-potential'):
+                $image->content = array_merge($image->content, [
+                    'typhoon-potential' => [
+                        'origin' => $data['typhoon-potential']['origin']
+                    ],
+                ]);
+                break;
+            case('wind-observation'):
+                $image->content = array_merge($image->content, [
+                    'wind-observation' => [
+                        'origin' => $data['wind-observation']['origin']
+                    ],
+                ]);
+                break;
+            case('wind-forecast'):
+                $image->content = array_merge($image->content, [
+                    'wind-forecast' => [
+                        'origin' => $data['wind-forecast']['origin']
+                    ],
+                ]);
+                break;
+            case('rainfall-observation'):
+                $image->content = array_merge($image->content, [
+                    'amount' => $data['today']['amount'],
+                    'interval' => $data['today']['interval'],
+                    'today' => [
+                        'status' => 1,
+                        'data-origin' => $data['today']['data-origin'],
+                        'image-origin' => $data['today']['image-origin']
+                    ],
+                    'before1nd' => [
+                        'status' => $data['before1nd']['status'],
+                        'data-origin' => $data['before1nd']['data-origin'],
+                        'image-origin' => $data['before1nd']['image-origin']
+                    ],
+                    'before2nd' => [
+                        'status' => $data['before2nd']['status'],
+                        'data-origin' => $data['before2nd']['data-origin'],
+                        'image-origin' => $data['before2nd']['image-origin']
+                    ],
+                    'before3nd' => [
+                        'status' => $data['before3nd']['status'],
+                        'data-origin' => $data['before3nd']['data-origin'],
+                        'image-origin' => $data['before3nd']['image-origin']
+                    ],
+                    'before4nd' => [
+                        'status' => $data['before4nd']['status'],
+                        'data-origin' => $data['before4nd']['data-origin'],
+                        'image-origin' => $data['before4nd']['image-origin']
+                    ]
+                ]);
+                break;
+            case('rainfall-forecast'):
+                $image->content = array_merge($image->content, [
+                    'all-rainfall' => [
+                        'origin' => $data['all-rainfall']['origin'],
+                        'alert_value' => $data['all-rainfall']['alert_value'],
+                    ],
+                    '24-rainfall' => [
+                        'origin' => $data['24-rainfall']['origin'],
+                        'alert_value' => $data['24-rainfall']['alert_value'],
+                    ],
+                ]);
+                break;
+            default:
+        }
         $image->save();
         return redirect(route('typhoon.index'));
-    }
-
-
-    public function makeJson($data)
-    {
-        $temp = [];
-        switch ($data['type']) {
-            case '1':
-                $temp = [
-                    'type' => 1,
-                    'info' => [
-                        'origin' => $data['info-origin']
-                    ],
-                    'show_info' => [
-                        'ir' => [
-                            'origin' => $data['ir-origin'],
-                            'move_pages' => $data['ir-move_pages'],
-                            'change_rate_page' => $data['ir-change_rate_page'],
-                        ],
-                        'mb' => [
-                            'origin' => $data['mb-origin'],
-                            'move_pages' => $data['mb-move_pages'],
-                            'change_rate_page' => $data['mb-change_rate_page'],
-                        ],
-                        'vis' => [
-                            'origin' => $data['vis-origin'],
-                            'move_pages' => $data['vis-move_pages'],
-                            'change_rate_page' => $data['vis-change_rate_page'],
-                        ]
-                    ]
-                ];
-                break;
-            case '2':
-                $temp = [
-                    'type' => 2,
-                    'info' => [
-                        'origin' => $data['info-origin']
-                    ]
-                ];
-                break;
-            case '3':
-                $temp = [
-                    'type' => 3,
-                    'info' => [
-                        'origin' => $data['info-origin'],
-                    ]
-                ];
-                break;
-            case '4':
-                $temp = [
-                    'type' => 4,
-                    'info' => [
-                        'origin' => $data['info-origin'],
-                    ]
-                ];
-                break;
-            case '5':
-                $temp = [
-                    'type' => 5,
-                    'info' => [
-                        'origin_word' => $data['info-origin_word'],
-                        'origin_pic' => $data['info-origin_pic'],
-                        'move_pages' => $data['info-move_pages'],
-                        'change_rate_second' => $data['info-change_rate_second'],
-                    ],
-                    'timezone_rain' => [
-                        'one_day_before' => [
-                            'status' => $data['time_one_status'], // 1: 啟用 2: 停用
-                            'word' => $data['time_one_word'],
-                            'pic' => $data['time_one_pic'],
-                        ],
-                        'two_day_before' => [
-                            'status' => $data['time_two_status'], // 1: 啟用 2: 停用
-                            'word' => $data['time_two_word'],
-                            'pic' => $data['time_two_pic'],
-                        ],
-                        'three_day_before' => [
-                            'status' => $data['time_three_status'], // 1: 啟用 2: 停用
-                            'word' => $data['time_three_word'],
-                            'pic' => $data['time_three_pic'],
-                        ],
-                        'four_day_before' => [
-                            'status' => $data['time_four_status'], // 1: 啟用 2: 停用
-                            'word' => $data['time_four_word'],
-                            'pic' => $data['time_four_pic'],
-                        ]
-                    ]
-                ];
-                break;
-            case '6':
-                $temp = [
-                    'type' => 6,
-                    'info' => [
-                        'origin' => $data['info-origin'],
-                        'alert_value' => $data['info-alert_value'],
-                        'origin24' => $data['info-origin24'],
-                        'alert_value_24' => $data['info-alert_value_24'],
-                    ]
-                ];
-                break;
-        }
-        return json_encode($temp);
     }
 }

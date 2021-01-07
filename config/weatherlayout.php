@@ -10,7 +10,7 @@ return array(
     ]], ['name' => 'images', 'display_name' => '圖資', 'children' => [
         ['name' => 'east-asia-vis', 'display_name' => '東亞VIS', 'class_name' => 'blcok_type_1', 'type' => '1'],
         ['name' => 'east-asia-mb', 'display_name' => '東亞MB', 'class_name' => 'blcok_type_1', 'type' => '1'],
-        ['name' => 'east-asia-ir', 'display_name' => '東亞MB', 'class_name' => 'blcok_type_1', 'type' => '1'],
+        ['name' => 'east-asia-ir', 'display_name' => '東亞IR', 'class_name' => 'blcok_type_1', 'type' => '1'],
         ['name' => 'surface-weather-map', 'display_name' => '地面天氣圖', 'class_name' => 'blcok_type_1', 'type' => '1'],
         ['name' => 'global-ir', 'display_name' => '全球IR', 'class_name' => 'blcok_type_1', 'type' => '1'],
         ['name' => 'ultraviolet-light', 'display_name' => '紫外線', 'class_name' => 'blcok_type_1', 'type' => '1'],

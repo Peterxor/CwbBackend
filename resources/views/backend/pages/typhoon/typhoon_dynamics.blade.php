@@ -13,10 +13,9 @@
     <!-- end:: Content Head -->
     <!-- begin:: Content -->
     <form class="kt-form kt-form--label-right" id="edit-form"
-          action="{{route('typhoon.update', ['typhoon' => $data->id])}}" method="post" enctype="multipart/form-data">
+          action="{{route('typhoon.update', ['typhoon' => $data->id ?? 0])}}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="_method" value="put"/>
-        <input type="hidden" name="type" value="{{$type}}"/>
 
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="row">
@@ -44,11 +43,11 @@
                             <div class="kt-section kt-section--first">
                                 <div class="form-group row">
                                     <label for="example-search-input" class="col-2 col-form-label">
-                                        <span class="kt-font-danger">*</span>颱風資料來源 (座標)
+                                        <span class="kt-font-danger">*</span>颱風座標資料來源 (檔案)
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control" type="text" value="{{$json->info->origin ?? ''}}"
-                                               name="info-origin" required>
+                                        <input class="form-control" type="text" value="{{$data->content['typhoon-dynamics']['origin'] ?? ''}}"
+                                               name="typhoon-dynamics[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -75,11 +74,11 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="example-search-input" class="col-2 col-form-label">
-                                        來源
+                                        來源 (資料夾)
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$json->show_info->ir->origin ?? ''}}" name="ir-origin" required>
+                                               value="{{$data->content['typhoon-ir']['origin'] ?? ''}}" name="typhoon-ir[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -90,7 +89,7 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$json->show_info->ir->move_pages ?? ''}}" name="ir-move_pages"
+                                               value="{{$data->content['typhoon-ir']['amount'] ?? 1}}" name="typhoon-ir[amount]"
                                                required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
@@ -103,11 +102,11 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$json->show_info->ir->change_rate_page ?? ''}}"
-                                               name="ir-change_rate_page" required>
+                                               value="{{$data->content['typhoon-ir']['interval'] ?? 1000}}"
+                                               name="typhoon-ir[interval]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
-                                        <label>張/秒</label>
+                                        <label>張/毫秒</label>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -118,11 +117,11 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="example-search-input" class="col-2 col-form-label">
-                                        來源
+                                        來源 (資料夾)
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$json->show_info->mb->origin ?? ''}}" name="mb-origin" required>
+                                               value="{{$data->content['typhoon-mb']['origin'] ?? ''}}" name="typhoon-mb[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -133,7 +132,7 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$json->show_info->mb->move_pages ?? ''}}" name="mb-move_pages"
+                                               value="{{$data->content['typhoon-mb']['amount'] ?? 1}}" name="typhoon-mb[amount]"
                                                required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
@@ -146,11 +145,11 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$json->show_info->mb->change_rate_page ?? ''}}"
-                                               name="mb-change_rate_page" required>
+                                               value="{{$data->content['typhoon-mb']['interval'] ?? 1000}}"
+                                               name="typhoon-mb[interval]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
-                                        <label>張/秒</label>
+                                        <label>張/毫秒</label>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -161,11 +160,11 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="example-search-input" class="col-2 col-form-label">
-                                        來源
+                                        來源 (資料夾)
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$json->show_info->vis->origin ?? ''}}" name="vis-origin"
+                                               value="{{$data->content['typhoon-vis']['origin'] ?? ''}}" name="typhoon-vis[origin]"
                                                required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
@@ -177,7 +176,7 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$json->show_info->vis->move_pages ?? ''}}" name="vis-move_pages"
+                                               value="{{$data->content['typhoon-vis']['amount'] ?? 1}}" name="typhoon-vis[amount]"
                                                required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
@@ -190,11 +189,11 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$json->show_info->vis->change_rate_page ?? ''}}"
-                                               name="vis-change_rate_page" required>
+                                               value="{{$data->content['typhoon-vis']['interval'] ?? 1000}}"
+                                               name="typhoon-vis[interval]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
-                                        <label>張/秒</label>
+                                        <label>張/毫秒</label>
                                     </div>
                                 </div>
                             </div>
