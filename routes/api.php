@@ -19,7 +19,7 @@ Route::get('typhoon-dynamics/{device_id}', 'TyphoonDynamicsController@index');
 
 Route::get('typhoon-potential/{device_id}', 'TyphoonPotentialController@index');
 
-Route::get('wind-observation', 'WindObservationController@index');
+Route::get('wind-observation/{device_id}', 'WindObservationController@index');
 
 Route::get('wind-forecast', 'WindForecastController@index');
 

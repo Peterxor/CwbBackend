@@ -44,7 +44,7 @@ class TyphoonDynamics
     }
 
     /**
-     *
+     * 颱風動勢格式
      *
      * @param string $path
      * @return array
@@ -111,6 +111,8 @@ class TyphoonDynamics
     }
 
     /**
+     * 颱風動態圖資顯示
+     *
      * @param string $title 圖資標題
      * @param array $setting 圖資設定
      * @param array $preference 裝置設定
@@ -119,6 +121,9 @@ class TyphoonDynamics
      */
     static private function imageFormat(string $title, array $setting, array $preference): array
     {
+        if(!isset($setting['origin']))
+            throw new WFCException('颱風動態['.$title.']資料解析錯誤', 500);
+
         try {
             $path = rtrim($setting['origin'] ?? '', '/');
 

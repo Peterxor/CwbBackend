@@ -3,16 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Models\TyphoonImage;
+use App\Services\WFC\Exceptions\WFCException;
 use App\Services\WFC\WindObservation;
 use Illuminate\Http\JsonResponse;
 
 class WindObservationController extends Controller
 {
     /**
+     * 風力觀測
+     *
+     * @param mixed $device_id 裝置ID
      * @return JsonResponse
+     * @throws WFCException
      */
-    public function index(): JsonResponse
+    public function index($device_id): JsonResponse
     {
-        return response()->json(WindObservation::get());
+        /** @var TyphoonImage $typhoonImage */
+        $typhoonImage = TyphoonImage::query()->where('name', 'wind-observation')->first(['content']);
+
+        return response()->json(WindObservation::get($typhoonImage->content, preference($device_id)));
     }
 }

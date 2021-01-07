@@ -33,7 +33,7 @@ class WFCDataController extends Controller
                 'information' => [],
                 'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first(['content'])->content, $preference),
                 'typhoon-potential' => TyphoonPotential::get($typhoonImages->where('name', 'typhoon-potential')->first(['content'])->content, $preference),
-                'wind-observation' => WindObservation::get(),
+                'wind-observation' => WindObservation::get($typhoonImages->where('name', 'wind-observation')->first(['content'])->content, $preference),
                 'wind-forecast' => WindForecast::get(),
                 'rainfall-observation' => [],
                 'rainfall-forecast' => [],

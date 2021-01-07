@@ -19,9 +19,7 @@ class TyphoonPotential
     static public function get(array $setting, array $preference): array
     {
         try {
-            $titlePreference = $preference['typhoon']['typhoon-potential']['title'];
-            $toolMiddlePreference = $preference['typhoon']['typhoon-potential']['tool-middle'];
-            $typhoonPotential = simplexml_load_file(Storage::disk('data')->path($setting['typhoon-potential']['origin'] ?? ''));
+            $typhoonPotential = simplexml_load_file(Storage::disk('data')->path($setting['typhoon-potential']['origin']));
 
             $typhoon['current']['center']['point']['lat'] = (float)$typhoonPotential->TY_TRACK_POINT->center->point->lat;
             $typhoon['current']['center']['point']['lon'] = (float)$typhoonPotential->TY_TRACK_POINT->center->point->lon;
@@ -58,6 +56,9 @@ class TyphoonPotential
                     'lon' => (float)$point->lon
                 ];
             }
+
+            $titlePreference = $preference['typhoon']['typhoon-potential']['title'];
+            $toolMiddlePreference = $preference['typhoon']['typhoon-potential']['tool-middle'];
 
             return [
                 'meta' => [
