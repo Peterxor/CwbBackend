@@ -13,10 +13,10 @@
     <!-- end:: Content Head -->
     <!-- begin:: Content -->
     <form class="kt-form kt-form--label-right" id="edit-form"
-          action="{{route('typhoon.update', ['typhoon' => $data->id])}}" method="post" enctype="multipart/form-data">
+          action="{{route('typhoon.update', ['typhoon' => $data->id ?? 0])}}" method="post"
+          enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="_method" value="put"/>
-        <input type="hidden" name="type" value="{{$type}}"/>
 
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="row">
@@ -44,10 +44,12 @@
                             <div class="kt-section kt-section--first">
                                 <div class="form-group row">
                                     <label for="example-search-input" class="col-3 col-form-label">
-                                        <span class="kt-font-danger">*</span>風力預測資料來源 (xml)
+                                        <span class="kt-font-danger">*</span>風力預測資料來源 (資料夾)
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$json->info->origin}}" name="info-origin" required>
+                                        <input class="form-control" type="text"
+                                               value="{{$data->content['wind-forecast']['origin'] ?? ''}}"
+                                               name="wind-forecast[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>

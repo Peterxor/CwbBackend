@@ -21,7 +21,7 @@ Route::get('typhoon-potential/{device_id}', 'TyphoonPotentialController@index');
 
 Route::get('wind-observation/{device_id}', 'WindObservationController@index');
 
-Route::get('wind-forecast', 'WindForecastController@index');
+Route::get('wind-forecast/{device_id}', 'WindForecastController@index');
 
 Route::get('rainfall-observation', 'RainfallObservationController@index');
 
