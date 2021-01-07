@@ -45,7 +45,7 @@
                                     <span class="kt-font-danger">*</span>圖資名稱
                                 </label>
                     			<div class="col-3">
-                                    <input class="form-control" type="text" value="{{$general->name}}" name="name" required>
+                                    <input class="form-control" type="text" value="{{$json['display_name']}}" name="display_name" required>
                                 </div>
                                 <div class="col-3 pt-3 col-form-label">
                                 </div>
@@ -70,19 +70,19 @@
                     			<div class="col-7">
                                     <div class="kt-radio-inline">
                     					<label class="kt-radio">
-                    						<input class="mr-1" type="radio" name="display_type" value="1" id="single" {{$json->type == 1 ? 'checked' : ''}} disabled/>單圖
+                    						<input class="mr-1" type="radio" name="display_type" value="1" id="single" {{$type == 1 ? 'checked' : ''}} disabled/>單圖
                                             <span></span>
                     					</label>
                     					<label class="kt-radio">
-                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="2" id="parallel" {{$json->type == 2 ? 'checked' : ''}} disabled/>雙圖並列
+                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="2" id="parallel" {{$type == 2 ? 'checked' : ''}} disabled/>雙圖並列
                                             <span></span>
                     					</label>
                                         <label class="kt-radio">
-                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="3" id="dynamic" {{$json->type == 3 ? 'checked' : '' }} disabled/>動態組圖
+                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="3" id="dynamic" {{$type == 3 ? 'checked' : '' }} disabled/>動態組圖
                                             <span></span>
                     					</label>
                                         <label class="kt-radio">
-                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="4" id="list" {{$json->type == 4 ? 'checked' : ''}} disabled/>圖片列表
+                    						<input class="ml-2 mr-1" type="radio" name="display_type" value="4" id="list" {{$type == 4 ? 'checked' : ''}} disabled/>圖片列表
                                             <span></span>
                     					</label>
                     				</div>
@@ -90,53 +90,53 @@
                                 <div class="col-3 pt-3 col-form-label">
                                 </div>
             		        </div>
-                            <div class="form-group row js-info-group js-single js-dynamic js-list" style="{{$json->type != 2 ? '' : 'display:none;'}}">
+                            <div class="form-group row js-info-group js-single js-dynamic js-list" style="{{$type != 2 ? '' : 'display:none;'}}">
                     			<label for="example-search-input" class="col-2 col-form-label">
                                     <span class="kt-font-danger">*</span>資料來源
                                 </label>
                     			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->data_origin ?? ''}}" name="data_origin">
+                                    <input class="form-control" type="text" value="{{$json['origin'] ?? ''}}" name="origin">
                                 </div>
                                 <div class="col-3 pt-3 col-form-label">
                                 </div>
             		        </div>
-                            <div class="form-group row js-info-group js-parallel" style="{{$json->type == 2 ? '' : 'display:none;'}}">
+                            <div class="form-group row js-info-group js-parallel" style="{{$type == 2 ? '' : 'display:none;'}}">
                     			<label for="example-search-input" class="col-2 col-form-label">
                                     <span class="kt-font-danger">*</span>資料來源(左)
                                 </label>
                     			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->data_left ?? ''}}" name="data_left">
+                                    <input class="form-control" type="text" value="{{$json['origin_left'] ?? ''}}" name="origin_left">
                                 </div>
                                 <div class="col-3 pt-3 col-form-label">
                                 </div>
             		        </div>
-                            <div class="form-group row js-info-group js-parallel" style="{{$json->type == 2 ? '' : 'display:none;'}}">
+                            <div class="form-group row js-info-group js-parallel" style="{{$type == 2 ? '' : 'display:none;'}}">
                     			<label for="example-search-input" class="col-2 col-form-label">
                                     <span class="kt-font-danger">*</span>資料來源(右)
                                 </label>
                     			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->data_right ?? ''}}" name="data_right">
+                                    <input class="form-control" type="text" value="{{$json['origin_right'] ?? ''}}" name="origin_right">
                                 </div>
                                 <div class="col-3 pt-3 col-form-label">
                                 </div>
             		        </div>
-                            <div class="form-group row js-info-group js-dynamic" style="{{$json->type == 3 ? '' : 'display:none;'}}">
+                            <div class="form-group row js-info-group js-dynamic" style="{{$type == 3 ? '' : 'display:none;'}}">
                     			<label for="example-search-input" class="col-2 col-form-label">
                                     <span class="kt-font-danger">*</span>動態組圖張數
                                 </label>
                     			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->move_pic_number ?? ''}}" name="move_pic_number">
+                                    <input class="form-control" type="text" value="{{$json['amount'] ?? 1}}" name="amount">
                                 </div>
                                 <div class="col-3 pt-3 col-form-label">
                                     <span>張</span>
                                 </div>
             		        </div>
-                            <div class="form-group row js-info-group js-dynamic" style="{{$json->type == 3 ? '' : 'display:none;'}}">
+                            <div class="form-group row js-info-group js-dynamic" style="{{$type == 3 ? '' : 'display:none;'}}">
                     			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>換圖速率 (秒/張)
+                                    <span class="kt-font-danger">*</span>換圖速率 (毫秒/張)
                                 </label>
                     			<div class="col-7">
-                                    <input class="form-control" type="text" value="{{$json->pic_change_rate ?? ''}}" name="pic_change_rate">
+                                    <input class="form-control" type="text" value="{{$json['interval'] ?? 1000}}" name="interval">
                                 </div>
                                 <div class="col-3 pt-3 col-form-label">
                                     <span>張/秒</span>

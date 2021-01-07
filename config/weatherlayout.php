@@ -1,7 +1,9 @@
 <?php
 
 return array(
-    ['name' => 'general', 'display_name' => '通用設定', 'children' => [
+    ['name' => 'weather-information', 'display_name' => '一般天氣預報', 'children' => [
+        ['name' => 'block', 'display_name' => '圖卡區塊', 'class_name' => 'blcok_type_1', 'type' => '1'],
+    ]], ['name' => 'general', 'display_name' => '通用設定', 'children' => [
         ['name' => 'title', 'display_name' => '標題', 'class_name' => 'blcok_type_2', 'type' => '2'],
         ['name' => 'tool-left', 'display_name' => '工具列 (左)', 'class_name' => 'blcok_type_2', 'type' => '2'],
         ['name' => 'tool-right', 'display_name' => '工具列 (右)', 'class_name' => 'blcok_type_2', 'type' => '2'],

@@ -2,11 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * Class User
+ * @package App\Models
+ *
+ * @property int id 使用者ID
+ * @property string email 使用者密碼
+ * @property string name 使用者名稱
+ * @property string password 使用者密碼
+ */
 class User extends Authenticatable
 {
     use Notifiable;

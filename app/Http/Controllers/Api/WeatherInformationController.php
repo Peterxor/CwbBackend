@@ -4,15 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
 use App\Models\Device;
-use App\Models\TyphoonImage;
 use App\Services\WFC\Exceptions\WFCException;
-use App\Services\WFC\WindForecast;
+use App\Services\WFC\WeatherInformation;
 use Illuminate\Http\JsonResponse;
 
-class WindForecastController extends Controller
+class WeatherInformationController extends Controller
 {
     /**
-     * 風力預測
+     * 一般天氣預報資料
      *
      * @param Device $device 裝置
      * @return JsonResponse
@@ -20,9 +19,6 @@ class WindForecastController extends Controller
      */
     public function index(Device $device): JsonResponse
     {
-        /** @var TyphoonImage $typhoonImage */
-        $typhoonImage = TyphoonImage::query()->where('name', 'wind-forecast')->first(['content']);
-
-        return response()->json(WindForecast::get($typhoonImage->content, preference($device)));
+        return response()->json(WeatherInformation::get([], preference($device)));
     }
 }

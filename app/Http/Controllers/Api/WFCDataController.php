@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Models\Device;
 use App\Models\TyphoonImage;
+use App\Services\WFC\AnchorInformation;
 use App\Services\WFC\Exceptions\WFCException;
 use App\Services\WFC\RainfallForecast;
 use App\Services\WFC\RainfallObservation;
@@ -17,20 +19,20 @@ use Illuminate\Http\JsonResponse;
 class WFCDataController extends Controller
 {
     /**
-     * @param mixed $device_id 裝置ID
+     * @param Device $device 裝置
      * @return JsonResponse
      * @throws WFCException
      */
-    public function index($device_id): JsonResponse
+    public function index(Device $device): JsonResponse
     {
-        $preference = preference($device_id);
+        $preference = preference($device);
 
         $typhoonImages = TyphoonImage::all(['name', 'content']);
 
         return response()->json([
             'meta' => [],
             'typhoon' => [
-                'information' => [],
+                'information' => AnchorInformation::get([], $preference),
                 'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first()->content, $preference),
                 'typhoon-potential' => TyphoonPotential::get($typhoonImages->where('name', 'typhoon-potential')->first()->content, $preference),
                 'wind-observation' => WindObservation::get($typhoonImages->where('name', 'wind-observation')->first()->content, $preference),
@@ -39,7 +41,7 @@ class WFCDataController extends Controller
                 'rainfall-forecast' => RainfallForecast::get($typhoonImages->where('name', 'rainfall-forecast')->first()->content, $preference),
             ],
             'weather' => [
-                'information' => WeatherInformation::get()
+                'information' => WeatherInformation::get([], $preference)
             ]
         ]);
     }

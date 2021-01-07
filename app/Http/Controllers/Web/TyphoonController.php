@@ -22,6 +22,11 @@ class TyphoonController extends Controller
         return view("backend.pages.typhoon.index");
     }
 
+    /**
+     * 查詢颱風預報圖資
+     *
+     * @return JsonResponse
+     */
     public function query(): JsonResponse
     {
         $query = TyphoonImage::query()->orderBy('sort');
@@ -94,12 +99,12 @@ class TyphoonController extends Controller
     /**
      * 編輯颱風預報圖資
      *
-     * @param $id
+     * @param TyphoonImage $typhoon
      * @return View
      */
-    public function edit($id): View
+    public function edit(TyphoonImage $typhoon): View
     {
-        return view('backend.pages.typhoon.edit', ['data' => TyphoonImage::query()->find($id)]);
+        return view('backend.pages.typhoon.edit', ['data' => $typhoon]);
     }
 
 
@@ -107,19 +112,16 @@ class TyphoonController extends Controller
      * 更新颱風預報圖資
      *
      * @param Request $request
-     * @param $id
+     * @param TyphoonImage $typhoon
      * @return RedirectResponse
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, TyphoonImage $typhoon): RedirectResponse
     {
-        /** @var TyphoonImage $image */
-        $image = TyphoonImage::query()->find($id);
-
         $data = $request->all();
 
-        switch ($image->name ?? '') {
+        switch ($typhoon->name ?? '') {
             case('typhoon-dynamics'):
-                $image->content = array_merge($image->content, [
+                $typhoon->content = array_merge($typhoon->content, [
                     'typhoon-dynamics' => [
                         'origin' => $data['typhoon-dynamics']['origin']
                     ],
@@ -141,28 +143,28 @@ class TyphoonController extends Controller
                 ]);
                 break;
             case('typhoon-potential'):
-                $image->content = array_merge($image->content, [
+                $typhoon->content = array_merge($typhoon->content, [
                     'typhoon-potential' => [
                         'origin' => $data['typhoon-potential']['origin']
                     ],
                 ]);
                 break;
             case('wind-observation'):
-                $image->content = array_merge($image->content, [
+                $typhoon->content = array_merge($typhoon->content, [
                     'wind-observation' => [
                         'origin' => $data['wind-observation']['origin']
                     ],
                 ]);
                 break;
             case('wind-forecast'):
-                $image->content = array_merge($image->content, [
+                $typhoon->content = array_merge($typhoon->content, [
                     'wind-forecast' => [
                         'origin' => $data['wind-forecast']['origin']
                     ],
                 ]);
                 break;
             case('rainfall-observation'):
-                $image->content = array_merge($image->content, [
+                $typhoon->content = array_merge($typhoon->content, [
                     'amount' => $data['amount'],
                     'interval' => $data['interval'],
                     'today' => [
@@ -193,7 +195,7 @@ class TyphoonController extends Controller
                 ]);
                 break;
             case('rainfall-forecast'):
-                $image->content = array_merge($image->content, [
+                $typhoon->content = array_merge($typhoon->content, [
                     'all-rainfall' => [
                         'origin' => $data['all-rainfall']['origin'],
                         'alert_value' => $data['all-rainfall']['alert_value'],
@@ -206,7 +208,7 @@ class TyphoonController extends Controller
                 break;
             default:
         }
-        $image->save();
+        $typhoon->save();
         return redirect(route('typhoon.index'));
     }
 }

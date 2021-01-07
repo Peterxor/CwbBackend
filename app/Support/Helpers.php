@@ -59,12 +59,10 @@ if (!function_exists('getTheme')) {
 
 
 if (!function_exists('preference')) {
-    function preference($device_id): array
+    function preference(Device $device): array
     {
-        /** @var Device $device */
-        $device = Device::query()->find($device_id);
         /** @var HostPreference $hostPreference */
-        $hostPreference = HostPreference::query()->firstOrCreate(['user_id' => $device->user_id, 'device_id' => $device_id]);
+        $hostPreference = HostPreference::query()->firstOrCreate(['user_id' => $device->user_id, 'device_id' => $device->id]);
 
         return array_merge($device->preference_json, $hostPreference->preference_json ?? []);
     }

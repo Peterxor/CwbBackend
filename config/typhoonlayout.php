@@ -60,6 +60,7 @@ return array(
         ['name' => 'tool-left', 'display_name' => '工具列 (左)', 'class_name'=>'blcok_type_2', 'type'=>'2'],
         ['name' => 'tool-right', 'display_name' => '工具列 (右)', 'class_name'=>'blcok_type_2', 'type'=>'2'],
         ['name' => 'tool-middle', 'display_name' => '工具列 (中間)', 'class_name'=>'blcok_type_2', 'type'=>'2'],
+    ]],['name' => 'anchor-information', 'display_name' => '主播圖卡','children' => [
+        ['name' => 'block', 'display_name' => '圖卡區塊', 'class_name'=>'blcok_type_1', 'type' => '1'],
     ]]
-
 );

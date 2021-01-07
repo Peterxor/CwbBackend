@@ -1,23 +1,26 @@
 <?php
+
 namespace App\Traits;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
 
-trait ApiResponserTraits{
-
-
-    protected function sendResponse($result, $message, $code = 200)
+trait ApiResponserTraits
+{
+    /**
+     * return response.
+     *
+     * @param $result
+     * @param $message
+     * @param int $code
+     * @return JsonResponse
+     */
+    protected function sendResponse($result, $message, $code = 200): JsonResponse
     {
         $response = [
             'success' => true,
-            'data'    => $result,
+            'data' => $result,
             'message' => $message
         ];
-
 
         return response()->json($response, $code);
     }
@@ -26,21 +29,23 @@ trait ApiResponserTraits{
     /**
      * return error response.
      *
-     * @return \Illuminate\Http\Response
+     * @param $error
+     * @param array $errorMessages
+     * @param int $code
+     * @param string $productionError
+     * @return JsonResponse
      */
-    public function sendError($error, $errorMessages = [], $code = 400, $productionError = 'Unexpected Error')
+    public function sendError($error, $errorMessages = [], $code = 400, $productionError = 'Unexpected Error'): JsonResponse
     {
         $response = [
             'success' => false,
             'message' => config('app.debug') ? $error : $productionError,
         ];
 
-        if(!empty($errorMessages) && config('app.debug')){
+        if (!empty($errorMessages) && config('app.debug')) {
             $response['data'] = $errorMessages;
         }
 
-
         return response()->json($response, $code);
     }
-
 }

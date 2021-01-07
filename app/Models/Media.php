@@ -5,6 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Class Media
+ * @package App\Models
+ *
+ * @property int id 媒體庫ID
+ */
 class Media extends Model
 {
     //

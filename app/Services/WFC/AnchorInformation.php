@@ -1,21 +1,25 @@
 <?php
 
-
 namespace App\Services\WFC;
 
+use App\Services\WFC\Exceptions\WFCException;
+use Exception;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Finder\Finder;
 
-class WeatherInformation
+class AnchorInformation
 {
     /**
-     * 一般天氣預報資料
+     * 主播圖卡
      *
      * @param array $setting 圖資設定
      * @param array $preference 裝置設定
      * @return array
+     * @throws WFCException
      */
     static public function get(array $setting, array $preference): array
     {
-        $blockPreference = $preference['weather']['weather-information']['block'];
+        $blockPreference = $preference['typhoon']['anchor-information']['block'];
         return [
             'meta' => [
                 'block' => [
@@ -84,5 +88,40 @@ class WeatherInformation
                 ],
             ]
         ];
+    }
+
+    /**
+     * 雨量格式整理
+     *
+     * @param array $setting 圖資設定
+     * @param string $title 圖資名稱
+     * @return array
+     * @throws WFCException
+     */
+    static private function format(array $setting, string $title): array
+    {
+        if (empty($setting))
+            throw new WFCException('雨量預測[' . $title . ']資料解析錯誤', 500);
+
+        try {
+            $path = rtrim($setting['origin'], '/');
+
+            // 以名稱排序(A-Z)取最後一個
+            $files = iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($path))->sortByName(), false);
+            $rainfallForecast = simplexml_load_file($files[count($files) - 1]->getPathname());
+
+            $data = ['alert_value' => (int)$setting['alert_value'],'location' =>  ['n' => [], 'm' => [], 's' => [], 'e' => []]];
+            foreach ($rainfallForecast->PrecipitationInformation->AreaForecastData ?? [] as $areaForecastData) {
+                if(((string) $areaForecastData->Precipitation->attributes()['region']) == 'flat'){
+                    $data['location'][Transformer::parseRainfallFcstCity((string) $areaForecastData->attributes()['area'])][(string) $areaForecastData->attributes()['area']]['flat'] =  (string) $areaForecastData->Precipitation->Value;
+                } else {
+                    $data['location'][Transformer::parseRainfallFcstCity((string) $areaForecastData->attributes()['area'])][(string) $areaForecastData->attributes()['area']]['mountain'] =  (string) $areaForecastData->Precipitation->Value;
+                }
+            }
+
+            return $data;
+        } catch (Exception $exception) {
+            throw new WFCException('雨量預測[' . $title . ']資料解析錯誤', 500, $exception);
+        }
     }
 }
