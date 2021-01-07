@@ -25,7 +25,7 @@ Route::get('wind-forecast/{device_id}', 'WindForecastController@index');
 
 Route::get('rainfall-observation/{device_id}', 'RainfallObservationController@index');
 
-Route::get('rainfall-forecast', 'RainfallForecastController@index');
+Route::get('rainfall-forecast/{device_id}', 'RainfallForecastController@index');
 
 Route::get('anchor-information', 'AnchorInformationController@index');
 

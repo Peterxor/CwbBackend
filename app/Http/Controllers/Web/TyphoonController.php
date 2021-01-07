@@ -198,9 +198,9 @@ class TyphoonController extends Controller
                         'origin' => $data['all-rainfall']['origin'],
                         'alert_value' => $data['all-rainfall']['alert_value'],
                     ],
-                    '24-rainfall' => [
-                        'origin' => $data['24-rainfall']['origin'],
-                        'alert_value' => $data['24-rainfall']['alert_value'],
+                    '24h-rainfall' => [
+                        'origin' => $data['24h-rainfall']['origin'],
+                        'alert_value' => $data['24h-rainfall']['alert_value'],
                     ],
                 ]);
                 break;
