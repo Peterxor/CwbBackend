@@ -13,10 +13,9 @@
     <!-- end:: Content Head -->
     <!-- begin:: Content -->
     <form class="kt-form kt-form--label-right" id="edit-form"
-          action="{{route('typhoon.update', ['typhoon' => $data->id])}}" method="post" enctype="multipart/form-data">
+          action="{{route('typhoon.update', ['typhoon' => $data->id ?? 0])}}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="_method" value="put"/>
-        <input type="hidden" name="type" value="{{$type}}"/>
 
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="row">
@@ -47,7 +46,7 @@
                                         <span class="kt-font-danger">*</span>今日雨量資料來源 (文字)
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$json->info->origin_word}}" name="info-origin_word" required>
+                                        <input class="form-control" type="text" value="{{$data->content['today']['data-origin'] ?? ''}}" name="today[data-origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -57,7 +56,7 @@
                                         <span class="kt-font-danger">*</span>今日雨量資料來源 (圖片)
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$json->info->origin_pic}}" name="info-origin_pic" required>
+                                        <input class="form-control" type="text" value="{{$data->content['today']['image-origin'] ?? ''}}" name="today[image-origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -67,7 +66,7 @@
                                         <span class="kt-font-danger">*</span>動態組圖張數
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control" type="text" value="{{$json->info->move_pages}}" name="info-move_pages" required>
+                                        <input class="form-control" type="text" value="{{$data->content['amount'] ?? 1}}" name="amount" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                         <span>張</span>
@@ -75,13 +74,13 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="example-search-input" class="col-2 col-form-label">
-                                        <span class="kt-font-danger">*</span>換圖速率 (秒/張)
+                                        <span class="kt-font-danger">*</span>換圖速率
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control" type="text" value="{{$json->info->change_rate_second}}" name="info-change_rate_second" required>
+                                        <input class="form-control" type="text" value="{{$data->content['interval'] ?? 1000}}" name="interval" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
-                                        <span>張/秒</span>
+                                        <span>毫秒/秒</span>
                                     </div>
                                 </div>
                             </div>
@@ -102,9 +101,9 @@
                                         <span class="kt-font-danger">*</span>前一日雨量觀測
                                     </label>
                                     <div class="col-2">
-                                        <select class="form-control" name="time_one_status">
-                                            <option value="1" {{$json->timezone_rain->one_day_before->status == 1 ? 'selected' : ''}}>啟用</option>
-                                            <option value="2" {{$json->timezone_rain->one_day_before->status == 2 ? 'selected' : ''}}>停用</option>
+                                        <select class="form-control" name="before1nd[status]">
+                                            <option value="1" {{($data->content['before1nd']['status'] ?? 2) == 1 ? 'selected' : ''}}>啟用</option>
+                                            <option value="2" {{($data->content['before1nd']['status'] ?? 2) == 2 ? 'selected' : ''}}>停用</option>
                                         </select>
                                     </div>
                                 </div>
@@ -116,7 +115,7 @@
                                         文字
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$json->timezone_rain->one_day_before->word}}" name="time_one_word" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before1nd']['data-origin'] ?? ''}}" name="before1nd[data-origin]" required>
                                     </div>
                                 </div>
 
@@ -127,7 +126,7 @@
                                         圖片
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$json->timezone_rain->one_day_before->pic}}" name="time_one_pic" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before1nd']['image-origin'] ?? ''}}" name="before1nd[image-origin]" required>
                                     </div>
                                 </div>
 
@@ -136,9 +135,9 @@
                                         <span class="kt-font-danger">*</span>前二日雨量觀測
                                     </label>
                                     <div class="col-2">
-                                        <select class="form-control" name="time_two_status">
-                                            <option value="1" {{$json->timezone_rain->two_day_before->status == 1 ? 'selected' : ''}}>啟用</option>
-                                            <option value="2" {{$json->timezone_rain->two_day_before->status == 2 ? 'selected' : ''}}>停用</option>
+                                        <select class="form-control" name="before2nd[status]">
+                                            <option value="1" {{($data->content['before2nd']['status'] ?? 2) == 1 ? 'selected' : ''}}>啟用</option>
+                                            <option value="2" {{($data->content['before2nd']['status'] ?? 2) == 2 ? 'selected' : ''}}>停用</option>
                                         </select>
                                     </div>
                                 </div>
@@ -150,7 +149,7 @@
                                         文字
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$json->timezone_rain->two_day_before->word}}" name="time_two_word" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before2nd']['data-origin'] ?? ''}}" name="before2nd[data-origin]" required>
                                     </div>
                                 </div>
 
@@ -161,7 +160,7 @@
                                         圖片
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$json->timezone_rain->two_day_before->pic}}" name="time_two_pic" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before2nd']['image-origin'] ?? ''}}" name="before2nd[image-origin]" required>
                                     </div>
                                 </div>
 
@@ -170,9 +169,9 @@
                                         <span class="kt-font-danger">*</span>前三日雨量觀測
                                     </label>
                                     <div class="col-2">
-                                        <select class="form-control" name="time_three_status">
-                                            <option value="1" {{$json->timezone_rain->three_day_before->status == 1 ? 'selected' : ''}}>啟用</option>
-                                            <option value="2" {{$json->timezone_rain->three_day_before->status == 2 ? 'selected' : ''}}>停用</option>
+                                        <select class="form-control" name="before3nd[status]">
+                                            <option value="1" {{($data->content['before3nd']['status'] ?? 2) == 1 ? 'selected' : ''}}>啟用</option>
+                                            <option value="2" {{($data->content['before3nd']['status'] ?? 2) == 2 ? 'selected' : ''}}>停用</option>
                                         </select>
                                     </div>
                                 </div>
@@ -184,7 +183,7 @@
                                         文字
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$json->timezone_rain->three_day_before->word}}" name="time_three_word" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before3nd']['data-origin'] ?? ''}}" name="before3nd[data-origin]" required>
                                     </div>
                                 </div>
 
@@ -195,7 +194,7 @@
                                         圖片
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$json->timezone_rain->three_day_before->pic}}" name="time_three_pic" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before3nd']['image-origin'] ?? ''}}" name="before3nd[image-origin]" required>
                                     </div>
                                 </div>
 
@@ -204,9 +203,9 @@
                                         <span class="kt-font-danger">*</span>前四日雨量觀測
                                     </label>
                                     <div class="col-2">
-                                        <select class="form-control" name="time_four_status">
-                                            <option value="1" {{$json->timezone_rain->four_day_before->status == 1 ? 'selected' : ''}}>啟用</option>
-                                            <option value="2" {{$json->timezone_rain->four_day_before->status == 2 ? 'selected' : ''}}>停用</option>
+                                        <select class="form-control" name="before4nd[status]">
+                                            <option value="1" {{($data->content['before4nd']['status'] ?? 2) == 1 ? 'selected' : ''}}>啟用</option>
+                                            <option value="2" {{($data->content['before4nd']['status'] ?? 2) == 2 ? 'selected' : ''}}>停用</option>
                                         </select>
                                     </div>
                                 </div>
@@ -218,7 +217,7 @@
                                         文字
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$json->timezone_rain->four_day_before->word}}" name="time_four_word" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before4nd']['data-origin'] ?? ''}}" name="before4nd[data-origin]" required>
                                     </div>
                                 </div>
 
@@ -229,7 +228,7 @@
                                         圖片
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$json->timezone_rain->four_day_before->pic}}" name="time_four_pic" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before4nd']['image-origin'] ?? ''}}" name="before4nd[image-origin]" required>
                                     </div>
                                 </div>
 

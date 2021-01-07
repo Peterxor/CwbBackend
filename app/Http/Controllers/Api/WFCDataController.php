@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Web\Controller;
 use App\Models\TyphoonImage;
 use App\Services\WFC\Exceptions\WFCException;
+use App\Services\WFC\RainfallObservation;
 use App\Services\WFC\TyphoonDynamics;
 use App\Services\WFC\TyphoonPotential;
 use App\Services\WFC\WeatherInformation;
@@ -33,7 +34,7 @@ class WFCDataController extends Controller
                 'typhoon-potential' => TyphoonPotential::get($typhoonImages->where('name', 'typhoon-potential')->first(['content'])->content, $preference),
                 'wind-observation' => WindObservation::get($typhoonImages->where('name', 'wind-observation')->first(['content'])->content, $preference),
                 'wind-forecast' => WindForecast::get($typhoonImages->where('name', 'wind-forecast')->first(['content'])->content, $preference),
-                'rainfall-observation' => [],
+                'rainfall-observation' => RainfallObservation::get($typhoonImages->where('name', 'rainfall-observation')->first(['content'])->content, $preference),
                 'rainfall-forecast' => [],
             ],
             'weather' => [

@@ -23,7 +23,7 @@ Route::get('wind-observation/{device_id}', 'WindObservationController@index');
 
 Route::get('wind-forecast/{device_id}', 'WindForecastController@index');
 
-Route::get('rainfall-observation', 'RainfallObservationController@index');
+Route::get('rainfall-observation/{device_id}', 'RainfallObservationController@index');
 
 Route::get('rainfall-forecast', 'RainfallForecastController@index');
 

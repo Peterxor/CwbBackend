@@ -163,8 +163,8 @@ class TyphoonController extends Controller
                 break;
             case('rainfall-observation'):
                 $image->content = array_merge($image->content, [
-                    'amount' => $data['today']['amount'],
-                    'interval' => $data['today']['interval'],
+                    'amount' => $data['amount'],
+                    'interval' => $data['interval'],
                     'today' => [
                         'status' => 1,
                         'data-origin' => $data['today']['data-origin'],
