@@ -86,7 +86,7 @@
                                                     <option value="{{$image->id}}" {{$data[$i] ? ($data[$i]['type'] == 'origin' ? ($image->id == $data[$i]['img_id'] ? 'selected' : '') : '') : ''}}>{{$image->name}}</option>
                                                 @endforeach
                                             </select>
-                                            <div class="imgHolder" style="{{($data[$i]->type ?? null) ? ($data[$i]->type == 'origin' ? 'display:none;' : 'display:block;') : 'display:none;'}}">
+                                            <div class="imgHolder" style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'display:none;' : 'display:block;') : 'display:none;'}}">
                                                 <div class="row">
                                                     <div class="col-1">
                                                         <label for="file-upload-avatar-{{$i}}" class="custom-file-upload">
@@ -97,7 +97,7 @@
                                                                accept="image/gif, image/jpeg, image/png" style="display:none;"/>
                                                     </div>
                                                     <div class="col-3">
-                                                        <span class="image_name">{{$data[$i]['type'] == 'upload' ? ($data[$i]->img_name ?? '') : ''}}</span>
+                                                        <span class="image_name">{{$data[$i]['type'] == 'upload' ? ($data[$i]['img_name'] ?? '') : ''}}</span>
                                                     </div>
                                                 </div>
                                                 <input class="image_type" type="hidden" name="image_type[]" value="{{$data[$i]['type'] ?? 'origin'}}">
