@@ -6,17 +6,30 @@ use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\Device;
 use App\Models\HostPreference;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class AnchorController extends Controller
 {
-    public function index()
+    /**
+     * 主播偏好
+     *
+     * @return View
+     */
+    public function index(): View
     {
         return view("backend.pages.anchor.index");
     }
 
-    public function query()
+    /**
+     * 查詢主播偏好
+     *
+     * @return JsonResponse
+     */
+    public function query(): JsonResponse
     {
         $device = Device::all();
 
@@ -34,7 +47,14 @@ class AnchorController extends Controller
         })->toJson();
     }
 
-    public function edit($id, $device_id)
+    /**
+     * 編輯主播偏好
+     *
+     * @param $id
+     * @param $device_id
+     * @return View
+     */
+    public function edit($id, $device_id):View
     {
         $hostPreference = HostPreference::query()->with(['user', 'device'])->firstOrCreate([
             'user_id' => $id,
@@ -45,18 +65,22 @@ class AnchorController extends Controller
     }
 
 
-    public function update($id, Request $request)
+    /**
+     * 更新主播偏好
+     *
+     * @param Request $request
+     * @param HostPreference $hostPreference
+     * @return RedirectResponse
+     */
+    public function update(Request $request, HostPreference $hostPreference): RedirectResponse
     {
         $key = $request->get('key');
-        $device = HostPreference::query()->find($id);
-        $preference = $device->preference_json;
 
         foreach ($request->get('preference', []) as $itemKey => $item){
-            $preference[$key][$itemKey] = $item;
+            $hostPreference->preference_json[$key][$itemKey] = $item;
         }
 
-        $device->preference_json = $preference;
-        $device->save();
+        $hostPreference->save();
 
         return redirect()->back();
     }

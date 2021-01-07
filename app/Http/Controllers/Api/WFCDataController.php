@@ -3,87 +3,46 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Models\Device;
+use App\Models\TyphoonImage;
+use App\Services\WFC\AnchorInformation;
+use App\Services\WFC\Exceptions\WFCException;
+use App\Services\WFC\RainfallForecast;
+use App\Services\WFC\RainfallObservation;
+use App\Services\WFC\TyphoonDynamics;
+use App\Services\WFC\TyphoonPotential;
+use App\Services\WFC\WeatherInformation;
+use App\Services\WFC\WindForecast;
+use App\Services\WFC\WindObservation;
 use Illuminate\Http\JsonResponse;
 
 class WFCDataController extends Controller
 {
     /**
+     * @param Device $device 裝置
      * @return JsonResponse
+     * @throws WFCException
      */
-    public function index(): JsonResponse
+    public function index(Device $device): JsonResponse
     {
-        $data = [
+        $preference = preference($device);
+
+        $typhoonImages = TyphoonImage::all(['name', 'content']);
+
+        return response()->json([
             'meta' => [],
             'typhoon' => [
-                'information' => [],
-                'typhoon-dynamics' => [],
-                'typhoon-potential' => [],
-                'wind-observation' => [],
-                'wind-forecast' => [],
-                'rainfall-observation' => [],
-                'rainfall-forecast' => [],
+                'information' => AnchorInformation::get([], $preference),
+                'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first()->content, $preference),
+                'typhoon-potential' => TyphoonPotential::get($typhoonImages->where('name', 'typhoon-potential')->first()->content, $preference),
+                'wind-observation' => WindObservation::get($typhoonImages->where('name', 'wind-observation')->first()->content, $preference),
+                'wind-forecast' => WindForecast::get($typhoonImages->where('name', 'wind-forecast')->first()->content, $preference),
+                'rainfall-observation' => RainfallObservation::get($typhoonImages->where('name', 'rainfall-observation')->first()->content, $preference),
+                'rainfall-forecast' => RainfallForecast::get($typhoonImages->where('name', 'rainfall-forecast')->first()->content, $preference),
             ],
             'weather' => [
-                'information' => [
-                    'scale' => 100,
-                    "point" => [0, 0],
-                    'data' => [
-                        [
-                            'mode' => 'gif',
-                            'scale' => 150,
-                            'point' => [0, 0],
-                            'interval' => 2000,
-                            'title' => "東亞VIS",
-                            'description' => '11/30 11:50 ~ 11/30 12:00',
-                            'images' => [
-                                url('test/2020-11-10_1510.BVIS.jpg'),
-                                url('test/2020-11-10_1520.BVIS.jpg'),
-                                url('test/2020-11-10_1530.BVIS.jpg'),
-                            ],
-                            'thumbnail' => url('test/2020-11-10_1530.BVIS.jpg')
-                        ], [
-                            'mode' => 'abreast',
-                            'scale' => 100,
-                            'point' => [0, 0],
-                            'title' => "雨量",
-                            'description' => '11/30 11:50 ~ 11/30 12:00',
-                            'image_l' => url('test/2020-11-08_0540.QZJ4.png'),
-                            'image_r' => url('test/2020-11-10_1050.QZJ4.png'),
-                            'thumbnail' => url('test/2020-11-10_1050.QZJ4.png')
-                        ], [
-                            'mode' => 'list',
-                            'scale' => 100,
-                            'point' => [20, 20],
-                            'title' => "地面天氣圖",
-                            'description' => '11/30 11:50 ~ 11/30 12:00',
-                            'images' => [
-                                url('test/2020-1110-0000_SFCcomboHD.jpg'),
-                                url('test/2020-1109-1800_SFCcomboHD.jpg'),
-                                url('test/2020-1109-0000_SFCcomboHD.jpg'),
-                                url('test/2020-1108-1800_SFCcomboHD.jpg'),
-                            ],
-                            'thumbnail' => url('test/2020-1110-0000_SFCcomboHD.jpg')
-                        ], [
-                            'mode' => 'single',
-                            'scale' => 100,
-                            "point" => [0, 50],
-                            "title" => "紫外線",
-                            'description' => '11/30 11:50 ~ 11/30 12:00',
-                            'image' => url('test/UVI_Max.png'),
-                            'thumbnail' => url('test/UVI_Max.png')
-                        ], [
-                            'mode' => 'custom',
-                            'scale' => 100,
-                            "point" => [0, 0],
-                            "title" => "小叮嚀",
-                            'description' => '',
-                            'image' => url('test/天氣警報.png'),
-                            'thumbnail' => url('test/天氣警報.png')
-                        ],
-                    ]
-                ]
+                'information' => WeatherInformation::get([], $preference)
             ]
-        ];
-        return response()->json($data);
+        ]);
     }
 }

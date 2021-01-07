@@ -4,19 +4,18 @@
     <div class="kt-subheader  kt-grid__item" id="kt_subheader">
         <div class="kt-container  kt-container--fluid ">
             <div class="kt-subheader__main">
-                <h3 class="kt-subheader__title">設定風力觀測</h3>
+                <h3 class="kt-subheader__title">設定颱風潛勢</h3>
                 <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-                <a href="{{route('typhoon.index', [])}}">颱風預報圖資</a><span> / 設定風力觀測</span>
+                <a href="{{route('typhoon.index', [])}}">颱風預報圖資</a><span> / 設定颱風潛勢</span>
             </div>
         </div>
     </div>
     <!-- end:: Content Head -->
     <!-- begin:: Content -->
     <form class="kt-form kt-form--label-right" id="edit-form"
-          action="{{route('typhoon.update', ['typhoon' => $data->id])}}" method="post" enctype="multipart/form-data">
+          action="{{route('typhoon.update', ['typhoon' => $data->id ?? 0])}}" method="post" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="_method" value="put"/>
-        <input type="hidden" name="type" value="{{$type}}"/>
 
         <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
             <div class="row">
@@ -43,11 +42,11 @@
                         <div class="kt-portlet__body">
                             <div class="kt-section kt-section--first">
                                 <div class="form-group row">
-                                    <label for="example-search-input" class="col-3 col-form-label">
-                                        <span class="kt-font-danger">*</span>風力觀測資料來源 (xml)
+                                    <label for="example-search-input" class="col-2 col-form-label">
+                                        <span class="kt-font-danger">*</span>資料來源 (檔案)
                                     </label>
-                                    <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$json->info->origin ?? ''}}" name="info-origin" required>
+                                    <div class="col-7">
+                                        <input class="form-control" type="text" value="{{$data->content['typhoon-potential']['origin'] ?? ''}}" name="typhoon-potential[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>

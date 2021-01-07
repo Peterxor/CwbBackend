@@ -4,186 +4,211 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\TyphoonImage;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-use Log;
 
 class TyphoonController extends Controller
 {
-    public function index()
+    /**
+     * 颱風預報圖資管理
+     *
+     * @return View
+     */
+    public function index(): View
     {
         return view("backend.pages.typhoon.index");
     }
 
-    public function query()
+    /**
+     * 查詢颱風預報圖資
+     *
+     * @return JsonResponse
+     */
+    public function query(): JsonResponse
     {
-        $query = TyphoonImage::orderBy('sort');
+        $query = TyphoonImage::query()->orderBy('sort');
 
-        return DataTables::eloquent($query)->setTransformer(function ($item) {
+        return DataTables::eloquent($query)->setTransformer(function (TyphoonImage $item) {
             return [
                 'id' => $item->id,
-                'name' => $item->name,
+                'name' => $item->content['display_name'] ?? '',
                 'sort' => $item->sort,
             ];
         })->toJson();
     }
 
-    public function upper()
+    /**
+     * 排序位置向上
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function upper(Request $request): JsonResponse
     {
-        $id = request()->get('id', false);
-        $data = TyphoonImage::find($id);
-        $old_data = TyphoonImage::where('sort', '<', $data->sort)->orderBy('sort', 'desc')->limit(1)->first();
+        /**
+         * @var TyphoonImage $data1
+         * @var TyphoonImage $data2
+         */
+        $id = $request->get('id', false);
+        $data1 = TyphoonImage::query()->find($id);
+        $data2 = TyphoonImage::query()->where('sort', '<', $data1->sort)->orderBy('sort', 'desc')->first();
 
-        if (empty($old_data)) {
-            return response()->json(['success'=>false, 'message' => '此為第一筆資料']);
-        }
+        if (empty($data2))
+            return response()->json(['success' => false, 'message' => '此為第一筆資料']);
 
-        $old_data->sort = $data->sort;
-        $old_data->save();
-
-        $data->sort = (int)$data->sort-1;
-        $data->save();
+        $tmp_sort = $data2->sort;
+        $data2->sort = $data1->sort;
+        $data1->sort = $tmp_sort;
+        $data1->save();
+        $data2->save();
 
         return response()->json(['success' => true]);
     }
 
-    public function lower()
+    /**
+     * 排序位置向下
+     *
+     * @return JsonResponse
+     */
+    public function lower(): JsonResponse
     {
+        /**
+         * @var TyphoonImage $data1
+         * @var TyphoonImage $data2
+         */
         $id = request()->get('id', false);
-        $data = TyphoonImage::find($id);
-        $old_data = TyphoonImage::where('sort', '>', $data->sort)->orderBy('sort', 'asc')->limit(1)->first();
+        $data1 = TyphoonImage::query()->find($id);
+        $data2 = TyphoonImage::query()->where('sort', '>', $data1->sort)->orderBy('sort')->first();
 
-        if (empty($old_data)) {
-            return response()->json(['success'=>false, 'message' => '此為最後一筆資料']);
+        if (empty($data2)) {
+            return response()->json(['success' => false, 'message' => '此為最後一筆資料']);
         }
 
-        $old_data->sort = $data->sort;
-        $old_data->save();
-
-        $data->sort = (int)$data->sort+1;
-        $data->save();
+        $tmp_sort = $data2->sort;
+        $data2->sort = $data1->sort;
+        $data1->sort = $tmp_sort;
+        $data1->save();
+        $data2->save();
 
         return response()->json(['success' => true]);
     }
 
-    public function edit(Request $request, $id)
+    /**
+     * 編輯颱風預報圖資
+     *
+     * @param TyphoonImage $typhoon
+     * @return View
+     */
+    public function edit(TyphoonImage $typhoon): View
     {
-        $data = TyphoonImage::find($id);
-        $json = json_decode($data->content);
-        $type = $json->type;
-
-        return view('backend.pages.typhoon.edit', compact('json', 'type', 'data'));
+        return view('backend.pages.typhoon.edit', ['data' => $typhoon]);
     }
 
 
-    public function update(Request $request, $id)
+    /**
+     * 更新颱風預報圖資
+     *
+     * @param Request $request
+     * @param TyphoonImage $typhoon
+     * @return RedirectResponse
+     */
+    public function update(Request $request, TyphoonImage $typhoon): RedirectResponse
     {
-        $json = $this->makeJson($request->all());
-        $image = TyphoonImage::find($id);
-        $image->content = $json;
-        $image->save();
+        $data = $request->all();
+
+        switch ($typhoon->name ?? '') {
+            case('typhoon-dynamics'):
+                $typhoon->content = array_merge($typhoon->content, [
+                    'typhoon-dynamics' => [
+                        'origin' => $data['typhoon-dynamics']['origin']
+                    ],
+                    'typhoon-ir' => [
+                        'origin' => $data['typhoon-ir']['origin'],
+                        'amount' => $data['typhoon-ir']['amount'],
+                        'interval' => $data['typhoon-ir']['interval']
+                    ],
+                    'typhoon-mb' => [
+                        'origin' => $data['typhoon-mb']['origin'],
+                        'amount' => $data['typhoon-mb']['amount'],
+                        'interval' => $data['typhoon-mb']['interval']
+                    ],
+                    'typhoon-vis' => [
+                        'origin' => $data['typhoon-vis']['origin'],
+                        'amount' => $data['typhoon-vis']['amount'],
+                        'interval' => $data['typhoon-vis']['interval']
+                    ]
+                ]);
+                break;
+            case('typhoon-potential'):
+                $typhoon->content = array_merge($typhoon->content, [
+                    'typhoon-potential' => [
+                        'origin' => $data['typhoon-potential']['origin']
+                    ],
+                ]);
+                break;
+            case('wind-observation'):
+                $typhoon->content = array_merge($typhoon->content, [
+                    'wind-observation' => [
+                        'origin' => $data['wind-observation']['origin']
+                    ],
+                ]);
+                break;
+            case('wind-forecast'):
+                $typhoon->content = array_merge($typhoon->content, [
+                    'wind-forecast' => [
+                        'origin' => $data['wind-forecast']['origin']
+                    ],
+                ]);
+                break;
+            case('rainfall-observation'):
+                $typhoon->content = array_merge($typhoon->content, [
+                    'amount' => $data['amount'],
+                    'interval' => $data['interval'],
+                    'today' => [
+                        'status' => 1,
+                        'data-origin' => $data['today']['data-origin'],
+                        'image-origin' => $data['today']['image-origin']
+                    ],
+                    'before1nd' => [
+                        'status' => $data['before1nd']['status'],
+                        'data-origin' => $data['before1nd']['data-origin'],
+                        'image-origin' => $data['before1nd']['image-origin']
+                    ],
+                    'before2nd' => [
+                        'status' => $data['before2nd']['status'],
+                        'data-origin' => $data['before2nd']['data-origin'],
+                        'image-origin' => $data['before2nd']['image-origin']
+                    ],
+                    'before3nd' => [
+                        'status' => $data['before3nd']['status'],
+                        'data-origin' => $data['before3nd']['data-origin'],
+                        'image-origin' => $data['before3nd']['image-origin']
+                    ],
+                    'before4nd' => [
+                        'status' => $data['before4nd']['status'],
+                        'data-origin' => $data['before4nd']['data-origin'],
+                        'image-origin' => $data['before4nd']['image-origin']
+                    ]
+                ]);
+                break;
+            case('rainfall-forecast'):
+                $typhoon->content = array_merge($typhoon->content, [
+                    'all-rainfall' => [
+                        'origin' => $data['all-rainfall']['origin'],
+                        'alert_value' => $data['all-rainfall']['alert_value'],
+                    ],
+                    '24h-rainfall' => [
+                        'origin' => $data['24h-rainfall']['origin'],
+                        'alert_value' => $data['24h-rainfall']['alert_value'],
+                    ],
+                ]);
+                break;
+            default:
+        }
+        $typhoon->save();
         return redirect(route('typhoon.index'));
-    }
-
-
-    public function makeJson($data)
-    {
-        $temp = [];
-        switch ($data['type']) {
-            case '1':
-                $temp = [
-                    'type' => 1,
-                    'info' => [
-                        'origin' => $data['info-origin']
-                    ],
-                    'show_info' => [
-                        'ir' => [
-                            'origin' => $data['ir-origin'],
-                            'move_pages' => $data['ir-move_pages'],
-                            'change_rate_page' => $data['ir-change_rate_page'],
-                        ],
-                        'mb' => [
-                            'origin' => $data['mb-origin'],
-                            'move_pages' => $data['mb-move_pages'],
-                            'change_rate_page' => $data['mb-change_rate_page'],
-                        ],
-                        'vis' => [
-                            'origin' => $data['vis-origin'],
-                            'move_pages' => $data['vis-move_pages'],
-                            'change_rate_page' => $data['vis-change_rate_page'],
-                        ]
-                    ]
-                ];
-                break;
-            case '2':
-                $temp = [
-                    'type' => 2,
-                    'info' => [
-                        'origin' => $data['info-origin']
-                    ]
-                ];
-                break;
-            case '3':
-                $temp = [
-                    'type' => 3,
-                    'info' => [
-                        'origin' => $data['info-origin'],
-                    ]
-                ];
-                break;
-            case '4':
-                $temp = [
-                    'type' => 4,
-                    'info' => [
-                        'origin' => $data['info-origin'],
-                    ]
-                ];
-                break;
-            case '5':
-                $temp = [
-                    'type' => 5,
-                    'info' => [
-                        'origin_word' => $data['info-origin_word'],
-                        'origin_pic' => $data['info-origin_pic'],
-                        'move_pages' => $data['info-move_pages'],
-                        'change_rate_second' => $data['info-change_rate_second'],
-                    ],
-                    'timezone_rain' => [
-                        'one_day_before' => [
-                            'status' => $data['time_one_status'], // 1: 啟用 2: 停用
-                            'word' => $data['time_one_word'],
-                            'pic' => $data['time_one_pic'],
-                        ],
-                        'two_day_before' => [
-                            'status' => $data['time_two_status'], // 1: 啟用 2: 停用
-                            'word' => $data['time_two_word'],
-                            'pic' => $data['time_two_pic'],
-                        ],
-                        'three_day_before' => [
-                            'status' => $data['time_three_status'], // 1: 啟用 2: 停用
-                            'word' => $data['time_three_word'],
-                            'pic' => $data['time_three_pic'],
-                        ],
-                        'four_day_before' => [
-                            'status' => $data['time_four_status'], // 1: 啟用 2: 停用
-                            'word' => $data['time_four_word'],
-                            'pic' => $data['time_four_pic'],
-                        ]
-                    ]
-                ];
-                break;
-            case '6':
-                $temp = [
-                    'type' => 6,
-                    'info' => [
-                        'origin' => $data['info-origin'],
-                        'alert_value' => $data['info-alert_value'],
-                        'origin24' => $data['info-origin24'],
-                        'alert_value_24' => $data['info-alert_value_24'],
-                    ]
-                ];
-                break;
-        }
-        return json_encode($temp);
     }
 }

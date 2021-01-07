@@ -13,22 +13,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('wfc-data', 'WFCDataController@index');
+Route::get('wfc-data/{device}', 'WFCDataController@index');
 
-Route::get('wind-observation', 'WindObservationController@index');
+Route::get('typhoon-dynamics/{device}', 'TyphoonDynamicsController@index');
 
-Route::get('wind-forecast', 'WindForecastController@index');
+Route::get('typhoon-potential/{device}', 'TyphoonPotentialController@index');
 
-Route::get('rainfall-observation', 'RainfallObservationController@index');
+Route::get('wind-observation/{device}', 'WindObservationController@index');
 
-Route::get('rainfall-forecast', 'RainfallForecastController@index');
+Route::get('wind-forecast/{device}', 'WindForecastController@index');
 
-Route::get('typhoon-dynamics', 'TyphoonDynamicsController@index');
+Route::get('rainfall-observation/{device}', 'RainfallObservationController@index');
 
-Route::get('typhoon-potential', 'TyphoonPotentialController@index');
+Route::get('rainfall-forecast/{device}', 'RainfallForecastController@index');
 
-Route::get('anchor-information', 'AnchorInformationController@index');
+Route::get('anchor-information/{device}', 'AnchorInformationController@index');
 
+Route::get('weather-information/{device}', 'WeatherInformationController@index');
 
 
 Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () {

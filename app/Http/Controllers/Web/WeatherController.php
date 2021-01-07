@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\GeneralImages;
 use App\Models\GeneralImagesCategory;
-use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 use Exception;
@@ -14,30 +15,42 @@ use Illuminate\Support\Facades\Log;
 
 class WeatherController extends Controller
 {
-    public function index()
+    /**
+     * 一般天氣預報圖資管理
+     * @return View
+     */
+    public function index(): View
     {
-        // todo https://pl70hd.axshare.com/#id=6fribl&p=e_1_%E4%B8%BB%E6%92%AD%E5%88%97%E8%A1%A8&g=1
         return view("backend.pages.weather.index");
     }
 
 
-    public function query()
+    /**
+     * 查詢一般天氣預報圖資
+     *
+     * @return JsonResponse
+     */
+    public function query(): JsonResponse
     {
-        $generals = GeneralIMages::with(['category'])->orderBy('sort');
-//        dd($generals->get()->toArray());
-        return DataTables::eloquent($generals)->setTransformer(function ($item) {
+        $generals = GeneralImages::with(['category'])->orderBy('sort');
+        return DataTables::eloquent($generals)->setTransformer(function (GeneralImages $item) {
             return [
                 'id' => $item->id,
-                'name' => $item->name,
+                'name' => $item->content['display_name'] ?? '',
                 'sort' => $item->sort,
                 'category' => $item->category->name ?? '',
             ];
         })->toJson();
     }
 
-    public function queryCategory()
+    /**
+     * 查詢一般天氣預報圖資分類
+     *
+     * @return JsonResponse
+     */
+    public function queryCategory(): JsonResponse
     {
-        $generals = GeneralImagesCategory::orderBy('sort');
+        $generals = GeneralImagesCategory::query()->orderBy('sort');
 
         return DataTables::eloquent($generals)->setTransformer(function ($item) {
             return [
@@ -48,26 +61,64 @@ class WeatherController extends Controller
         })->toJson();
     }
 
-    public function edit(Request $request, $id)
+    /**
+     * 編輯一般天氣預報圖資分類
+     *
+     * @param $id
+     * @return View
+     */
+    public function edit($id): View
     {
-        $general = GeneralIMages::with(['category'])->where('id', $id)->first();
-        $categorys = GeneralImagesCategory::pluck('name', 'id')->toArray();
-        $json = json_decode($general->content ?? '');
+        /** @var GeneralImages $general */
+        $general = GeneralImages::with(['category'])->where('id', $id)->first();
+        $categorys = GeneralImagesCategory::query()->pluck('name', 'id')->toArray();
+        $json = $general->content;
 
-        return view('backend.pages.weather.edit', compact('general', 'categorys', 'json'));
+        switch ($general->name ?? '') {
+            default:
+            case 'east-asia-vis':
+            case 'east-asia-mb':
+            case 'east-asia-ir':
+            case 'surface-weather-map':
+            case 'global-ir':
+            case 'ultraviolet-light':
+            case 'radar-echo':
+            case 'rainfall':
+            case 'wave-analysis-chart':
+            case 'weather-alert':
+                $type = 1;
+                break;
+            case 'temperature':
+            case 'numerical-forecast':
+            case 'forecast-24h':
+            case 'weather-forecast':
+                $type = 2;
+                break;
+            case 'precipitation-forecast-12h':
+            case 'precipitation-forecast-6h':
+                $type = 3;
+                break;
+        }
+
+        return view('backend.pages.weather.edit', compact('type', 'general', 'categorys', 'json'));
     }
 
-    public function storeCategory(Request $request)
+    /**
+     * 儲存一般天氣預報圖資分類
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function storeCategory(Request $request): JsonResponse
     {
         $data = $request->all();
         try {
             if (count($data['name'] ?? []) > 0) {
                 DB::beginTransaction();
-                $insertData = [];
                 foreach ($data['name'] as $index => $value) {
-                    GeneralImagesCategory::updateOrCreate(['name' => $value], ['sort' => $index]);
+                    GeneralImagesCategory::query()->updateOrCreate(['name' => $value], ['sort' => $index]);
                 }
-                GeneralImagesCategory::whereNotIn('name', $data['name'])->delete();
+                GeneralImagesCategory::query()->whereNotIn('name', $data['name'])->delete();
                 DB::commit();
             }
         } catch (Exception $e) {
@@ -78,21 +129,55 @@ class WeatherController extends Controller
         return $this->sendResponse('', 'ok');
     }
 
-    public function update(Request $request, $id)
+    /**
+     * 更新一般天氣預報圖資
+     *
+     * @param Request $request
+     * @param GeneralImages $weather
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update(Request $request, GeneralImages $weather)
     {
         $data = $request->all();
-        $image = GeneralImages::where('id', $id)->first();
-        $content = json_decode($image->content);
-        $json = $this->weatherJson($content->type, $data);
-        $image->name = $request->name;
-        $image->category_id = $request->category;
-        $image->content = $json;
-        $image->save();
-        return redirect(route('weather.index'));
-    }
 
-    public function destroy()
-    {
+        $weather->content['display_name'] = $data['display_name'];
+        switch ($weather->name ?? '') {
+            case 'east-asia-vis':
+            case 'east-asia-mb':
+            case 'east-asia-ir':
+            case 'surface-weather-map':
+            case 'global-ir':
+            case 'ultraviolet-light':
+            case 'radar-echo':
+            case 'rainfall':
+            case 'wave-analysis-chart':
+            case 'weather-alert':
+                $weather->content = array_merge($weather->content, [
+                    'origin' => $data['origin'],
+                ]);
+                break;
+            case 'temperature':
+            case 'numerical-forecast':
+            case 'forecast-24h':
+            case 'weather-forecast':
+                $weather->content = array_merge($weather->content, [
+                    'origin_left' => $data['origin_left'],
+                    'origin_right' => $data['origin_right'],
+                ]);
+                break;
+            case 'precipitation-forecast-12h':
+            case 'precipitation-forecast-6h':
+                $weather->content = array_merge($weather->content, [
+                    'origin' => $data['origin'],
+                    'amount' => $data['amount'],
+                    'interval' => $data['interval'],
+                ]);
+                break;
+        }
+
+        $weather->category_id = $request->get('category');
+        $weather->save();
+        return redirect(route('weather.index'));
     }
 
     // 一般天氣列表排序
@@ -103,13 +188,13 @@ class WeatherController extends Controller
         $old_data = GeneralIMages::where('sort', '<', $data->sort)->orderBy('sort', 'desc')->limit(1)->first();
 
         if (empty($old_data)) {
-            return response()->json(['success'=>false, 'message' => '此為第一筆資料']);
+            return response()->json(['success' => false, 'message' => '此為第一筆資料']);
         }
 
         $old_data->sort = $data->sort;
         $old_data->save();
 
-        $data->sort = (int)$data->sort-1;
+        $data->sort = (int)$data->sort - 1;
         $data->save();
 
         return response()->json(['success' => true]);
@@ -122,37 +207,15 @@ class WeatherController extends Controller
         $old_data = GeneralIMages::where('sort', '>', $data->sort)->orderBy('sort', 'asc')->limit(1)->first();
 
         if (empty($old_data)) {
-            return response()->json(['success'=>false, 'message' => '此為最後一筆資料']);
+            return response()->json(['success' => false, 'message' => '此為最後一筆資料']);
         }
 
         $old_data->sort = $data->sort;
         $old_data->save();
 
-        $data->sort = (int)$data->sort+1;
+        $data->sort = (int)$data->sort + 1;
         $data->save();
 
         return response()->json(['success' => true]);
-    }
-
-    public function weatherJson($type, $data)
-    {
-        $temp = [];
-        $temp['type'] = $type;
-        switch ($type) {
-            case 1:
-            case 4:
-                $temp['data_origin'] = $data['data_origin'] ?? '';
-                break;
-            case 2:
-                $temp['data_left'] = $data['data_left'] ?? '';
-                $temp['data_right'] = $data['data_right'] ?? '';
-                break;
-            case 3:
-                $temp['data_origin'] = $data['data_origin'] ?? '';
-                $temp['move_pic_number'] = $data['move_pic_number'] ?? '';
-                $temp['pic_change_rate'] = $data['pic_change_rate'] ?? '';
-                break;
-        }
-        return json_encode($temp);
     }
 }

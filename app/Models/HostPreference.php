@@ -5,6 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
+/**
+ * Class HostPreference
+ * @package App\Models
+ * @property int|null user_id 使用者ID
+ * @property array preference_json 個人化設定
+ */
 class HostPreference extends Model
 {
     //

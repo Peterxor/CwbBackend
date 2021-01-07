@@ -28,7 +28,9 @@ class UserSelect extends AbstractWidget
             $selected = $this->config['selected'];
         }
 
-        $datas = User::select(['id','name'])->get();
+        $datas = User::query()->where(function ($query){
+            $query->role(2);
+        })->get(['id','name']);
 
         return view('backend.widgets.user_select', [
             'datas' => $datas,

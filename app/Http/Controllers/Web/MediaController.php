@@ -1,10 +1,9 @@
 <?php
 namespace App\Http\Controllers\Web;
 
-use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller as Controller;
 use Exception;
 use Illuminate\Support\Str;
@@ -17,7 +16,12 @@ class MediaController extends Controller
     /** @var string */
     private $filesystem = 'media';
 
-    public function upload(Request $request) {
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function upload(Request $request): JsonResponse
+    {
         try {
             if (env('MEDIA_TYPE', 'media') == 's3') {
                 $this->filesystem = 's3';
@@ -30,7 +34,6 @@ class MediaController extends Controller
             $origin_name = $file->getClientOriginalName();
             $name = Str::replaceLast('.' . $extension, '', $origin_name);
             $file_name = $name . '.' . $extension;
-            $user = $request->user();
             $path = '/cwb';
 
             $new_media = new Media([
@@ -40,7 +43,6 @@ class MediaController extends Controller
                 'path' => $path . '/' . $file_name,
                 'size' => $file->getSize(),
             ]);
-//            dd($path . '/' . $file_name);
 
             $new_media->save();
             if (env('MEDIA_TYPE', 'media') == 's3') {
@@ -61,10 +63,7 @@ class MediaController extends Controller
         } catch (Exception $e) {
             Log::error($e->getMessage());
             DB::rollBack();
-            return $this->sendError($e->getMessage(), [], 400);
-
+            return $this->sendError($e->getMessage(), []);
         }
-
-
     }
 }

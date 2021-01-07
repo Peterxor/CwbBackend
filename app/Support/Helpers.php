@@ -1,9 +1,13 @@
 <?php
 
+use App\Models\Device;
+use App\Models\HostPreference;
+
 if (!function_exists('getBackground')) {
     function getBackground($background)
     {
         switch ($background) {
+            default:
             case 0:
                 return [
                     [
@@ -40,6 +44,7 @@ if (!function_exists('getTheme')) {
                         'value' => 4,
                     ]
                 ];
+            default:
             case 1:
                 return '自然';
             case 2:
@@ -49,5 +54,16 @@ if (!function_exists('getTheme')) {
             case 4:
                 return '現代紅';
         }
+    }
+}
+
+
+if (!function_exists('preference')) {
+    function preference(Device $device): array
+    {
+        /** @var HostPreference $hostPreference */
+        $hostPreference = HostPreference::query()->firstOrCreate(['user_id' => $device->user_id, 'device_id' => $device->id]);
+
+        return array_merge($device->preference_json, $hostPreference->preference_json ?? []);
     }
 }
