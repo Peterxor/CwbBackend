@@ -5,11 +5,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\Device;
+use App\Models\HostPreference;
 
 if (!function_exists('getBackground')) {
     function getBackground($background)
     {
         switch ($background) {
+            default:
             case 0:
                 return [
                     [
@@ -52,6 +55,7 @@ if (!function_exists('getTheme')) {
                         'value' => 4,
                     ]
                 ];
+            default:
             case 1:
                 return '自然';
             case 2:
@@ -99,5 +103,15 @@ if (!function_exists('uploadMedia')) {
             'path' => $path,
             'file_name' => $file_name,
         ];
+    }
+}
+
+if (!function_exists('preference')) {
+    function preference(Device $device): array
+    {
+        /** @var HostPreference $hostPreference */
+        $hostPreference = HostPreference::query()->firstOrCreate(['user_id' => $device->user_id, 'device_id' => $device->id]);
+
+        return array_merge($device->preference_json, $hostPreference->preference_json ?? []);
     }
 }

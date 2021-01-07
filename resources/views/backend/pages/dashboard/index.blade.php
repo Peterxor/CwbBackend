@@ -163,7 +163,7 @@
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
                                         class="la la-desktop"></i></span>颱風主播圖卡
                                 </label>
-                                <a href="{{route('dashboard.edit', ['dashboard'=> $device->id, 'pic_type' => 'typhoon'])}}"
+                                <a href="{{route('dashboard.edit', ['device'=> $device->id, 'pic_type' => 'typhoon'])}}"
                                    class="btn btn-primary">編輯主播圖卡</a>
                             </div>
                             <div class="col-6">
@@ -171,39 +171,39 @@
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
                                         class="la la-desktop"></i></span>天氣預報排程
                                 </label>
-                                <a href="{{route('dashboard.edit', ['dashboard' => $device->id, 'pic_type' => 'forecast'])}}"
+                                <a href="{{route('dashboard.edit', ['device' => $device->id, 'pic_type' => 'forecast'])}}"
                                    class="btn btn-primary">編輯預報排程</a>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-6 row">
-                                    @if(isset($device->decode_typhoon))
-                                        @foreach($device->decode_typhoon as $index => $f)
+                                    @if(isset($device->typhoon_json))
+                                        @foreach($device->typhoon_json as $index => $typhoon)
                                             @if(!($index%3))
                                                 <div class="col-empty"></div>
                                             @endif
                                             <div class="col-4 layout-container"
-                                                 style="background-image:url({{$f->img_url ?? '/images/login/logo.png'}});">
+                                                 style="background-image:url({{$typhoon['img_url'] ?? '/images/login/logo.png'}});">
 
                                                 <div class="row layout-text">
-                                                    <label>{{$index + 1 }}. {{$f->img_name ?? ''}}</label>
+                                                    <label>{{$index + 1 }}. {{$typhoon['img_name'] ?? ''}}</label>
                                                 </div>
                                             </div>
                                         @endforeach
                                     @endif
                                 </div>
                                 <div class="col-6 row">
-                                    @if(isset($device->decode_forecast))
-                                        @foreach($device->decode_forecast as $index => $f)
+                                    @if(isset($device->forecast_json))
+                                        @foreach($device->forecast_json as $index => $forecast)
                                             @if(!($index%3))
                                                 <div class="col-empty"></div>
                                             @endif
                                             <div class="col-4 layout-container"
-                                                 style="background-image:url({{$f->img_url ?? '/images/login/logo.png'}});">
+                                                 style="background-image:url({{$forecast['img_url'] ?? '/images/login/logo.png'}});">
 
                                                 <div class="row layout-text">
-                                                    <label>{{$index + 1 }}. {{$f->img_name ?? ''}}</label>
+                                                    <label>{{$index + 1 }}. {{$forecast['img_name'] ?? ''}}</label>
                                                 </div>
                                             </div>
                                         @endforeach

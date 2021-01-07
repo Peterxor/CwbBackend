@@ -27,11 +27,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
         Route::get('query', ['as' => 'query', 'uses' => 'DashboardController@query']);
+        Route::get('{device}/edit', ['as' => 'edit', 'uses' => 'DashboardController@edit']);
         Route::put('updateDeviceHost', ['as' => 'updateDeviceHost', 'uses' => 'DashboardController@updateDeviceHost']);
         Route::put('updateDeviceTheme', ['as' => 'updateDeviceTheme', 'uses' => 'DashboardController@updateDeviceTheme']);
         Route::post('updateBoard', ['as' => 'updateBoard', 'uses' => 'DashboardController@updateBoard']);
+        Route::put('{device}', ['as' => 'update', 'uses' => 'DashboardController@update']);
     });
-    Route::resource('dashboard', 'DashboardController')->except(['show']);
+    Route::resource('dashboard', 'DashboardController')->except(['show', 'edit', 'update']);
 
     // 人員簡介管理
     Route::group(['prefix' => 'personnel', 'as' => 'personnel.'], function () {
@@ -51,8 +53,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'device', 'as' => 'device.'], function () {
         Route::get('/', ['as' => 'index', 'uses' => 'DeviceController@index']);
         Route::get('query', ['as' => 'query', 'uses' => 'DeviceController@query']);
-        Route::get('{id}/edit', ['as' => 'edit', 'uses' => 'DeviceController@edit']);
-        Route::put('{id}/update', ['as' => 'update', 'uses' => 'DeviceController@update']);
+        Route::get('{device}/edit', ['as' => 'edit', 'uses' => 'DeviceController@edit']);
+        Route::put('{device}', ['as' => 'update', 'uses' => 'DeviceController@update']);
     });
 
     // 一般天氣預報

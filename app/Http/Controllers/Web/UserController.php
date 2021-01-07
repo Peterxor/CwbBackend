@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Web;
 
 use App\Models\Role;
 use App\Models\User;
-use Egulias\EmailValidator\Exception\ExpectingQPair;
-use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -15,69 +17,99 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    public function index()
+    /**
+     * 使用者管理
+     *
+     * @return View
+     */
+    public function index(): View
     {
         $roles = Role::all();
         return view('backend.pages.user.index', compact('roles'));
     }
 
-    public function query()
+    /**
+     * 查詢使用者
+     *
+     * @return JsonResponse
+     */
+    public function query(): JsonResponse
     {
-        $query = User::orderBy('created_at');
+        $query = User::query();
 
         $query->when(request()->get('name', false), function ($query) {
-            $query->where('name', 'like', '%'.request()->get('name').'%');
+            $query->where('name', 'like', '%' . request()->get('name') . '%');
         })->when(request()->get('role', false), function ($query) {
             $query->role(request()->get('role'));
         });
 
         return DataTables::eloquent($query)->setTransformer(function ($item) {
-            // foreach ($item->getAllPermissions() as $permission) {
-            //     $permissions[] = $permission->name;
-            // }
             return [
                 'id' => $item->id,
                 'email' => $item->email,
-                'name'=>$item->name,
-                'role_name'=>$item->getRoleNames(),
+                'name' => $item->name,
+                'role_name' => $item->getRoleNames(),
                 'created_at' => $item->created_at ? Carbon::parse($item->created_at)->format('Y/m/d H:i:s') : '',
-                'updated_at'=>$item->updated_at ? Carbon::parse($item->updated_at)->format('Y/m/d H:i:s') : ''
+                'updated_at' => $item->updated_at ? Carbon::parse($item->updated_at)->format('Y/m/d H:i:s') : ''
             ];
         })->toJson();
     }
 
-    public function create()
+    /**
+     * 新增使用者UI
+     *
+     * @return View
+     */
+    public function create(): View
     {
         $roles = Role::all();
         return view('backend.pages.user.create', compact('roles'));
     }
 
+    /**
+     * 新增使用者
+     *
+     * @param UserRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function store(UserRequest $request)
     {
         // hash password
         $request->merge(['password' => Hash::make($request->get('password'))]);
-        $user = $request->except('role');
+        $input = $request->all();
 
-        if ($user = User::create($user)) {
-            $user->roles()->sync([$request->input('role')]);
+        /** @var User $user */
+        if ($user = User::query()->create($input)) {
+            $user->roles()->sync([$request->get('role')]);
         }
 
         return redirect()->route('users.index');
     }
 
-    public function edit($id)
+    /**
+     * 編輯使用者UI
+     *
+     * @param User $user
+     * @return View
+     */
+    public function edit(User $user): View
     {
-        $user = User::find($id);
         $roles = Role::all();
         $userRoles = $user->getRoleNames()->toArray();
 
         return view('backend.pages.user.edit', compact('user', 'roles', 'userRoles'));
     }
 
-    public function update(UserRequest $request, $id)
+    /**
+     * 更新使用者資訊
+     *
+     * @param UserRequest $request
+     * @param User $user
+     * @return RedirectResponse
+     */
+    public function update(UserRequest $request, User $user): RedirectResponse
     {
         try {
-            $user = User::findOrFail($id);
             $user->fill($request->except('role', 'permissions', 'password'));
 
             // check for password change
@@ -85,49 +117,34 @@ class UserController extends Controller
                 $user->password = Hash::make($request->get('password'));
             }
 
-            $user->roles()->sync([$request->input('role')]);
+            $user->roles()->sync([$request->get('role')]);
             $user->save();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e->getMessage());
-            return;
         }
 
         return redirect()->route('users.index');
     }
 
-    public function destroy($id)
+    /**
+     * 刪除使用者
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function destroy(User $user): JsonResponse
     {
+        /** @var User $auth */
+        $auth = Auth::user();
+        if ($auth->id == $user->id) {
+            return $this->sendError('無法刪除自己');
+        }
         try {
-            if (Auth::user()->id == $id) {
-                throw new \Exception('無法刪除自己');
-            }
-            User::findOrFail($id)->delete();
-        } catch (\Exception $e) {
-            Log::error(Auth::user()->name . '刪除' . $id . '失敗： ' . $e->getMessage());
+            $user->delete();
+        } catch (Exception $e) {
+            Log::error($auth->name . '刪除' . $user->id . '失敗： ' . $e->getMessage());
             return $this->sendError('刪除失敗');
         }
         return $this->sendResponse('', '刪除成功');
-    }
-
-    private function syncPermissions(Request $request, $user)
-    {
-        // Get the submitted roles
-        $roles = $request->get('roles', []);
-        $permissions = $request->get('permissions', []);
-
-        // Get the roles
-        $roles = Role::find($roles);
-
-        // check for current role changes
-        if (! $user->hasAllRoles($roles)) {
-            // reset all direct permissions for user
-            $user->permissions()->sync([]);
-        } else {
-            // handle permissions
-            $user->syncPermissions($permissions);
-        }
-
-        $user->syncRoles($roles);
-        return $user;
     }
 }

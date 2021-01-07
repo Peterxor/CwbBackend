@@ -1,19 +1,33 @@
 <?php
 
 namespace App\Http\Controllers\Web;
+
 use App\Models\Device;
 use App\Http\Controllers\Web\Controller as Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 
 class DeviceController extends Controller
 {
-    public function index()
+    /**
+     * 裝置排版管理
+     *
+     * @return View
+     */
+    public function index(): View
     {
         return view("backend.pages.device.index");
     }
 
-    public function query(): \Illuminate\Http\JsonResponse
+    /**
+     * 查詢裝置排版
+     *
+     * @return JsonResponse
+     */
+    public function query(): JsonResponse
     {
         $query = Device::query();
 
@@ -25,27 +39,36 @@ class DeviceController extends Controller
         })->toJson();
     }
 
-    public function edit($id)
+    /**
+     * 編輯裝置排版
+     *
+     * @param Device $device
+     * @return View
+     */
+    public function edit(Device $device): View
     {
-        $device = Device::query()->find($id);
         $name = $device->name;
         $preference = $device->preference_json;
 
-        return view('backend.pages.device.edit', compact('id', 'name', 'preference'));
+        return view('backend.pages.device.edit', compact( 'device','name', 'preference'));
     }
 
 
-    public function update($id, Request $request)
+    /**
+     * 更新裝置排版
+     *
+     * @param Request $request
+     * @param Device $device
+     * @return RedirectResponse
+     */
+    public function update(Request $request, Device $device): RedirectResponse
     {
         $key = $request->get('key');
-        $device = Device::query()->find($id);
-        $preference = $device->preference_json;
 
-        foreach ($request->get('preference', []) as $itemKey => $item){
-                $preference[$key][$itemKey] = $item;
+        foreach ($request->get('preference', []) as $itemKey => $item) {
+            $device->preference_json[$key][$itemKey] = $item;
         }
 
-        $device->preference_json = $preference;
         $device->save();
 
         return redirect()->back();

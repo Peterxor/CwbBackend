@@ -4,18 +4,23 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\Device;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
-use App\Models\TyphoonImage;
 use App\Models\GeneralImages;
 use App\Models\Personnel;
 use App\Models\Board;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index()
+    /**
+     * Dashboard
+     *
+     * @return View
+     */
+    public function index(): View
     {
         $devices = Device::with(['user', 'board' => function($query) {
             $query->with(['media']);
@@ -27,34 +32,45 @@ class DashboardController extends Controller
         return view("backend.pages.dashboard.index", compact('devices', 'themes', 'personnel', 'backgrounds'));
     }
 
-
-    public function edit(Request $request, $id)
+    /**
+     * 編輯颱風主播圖卡或天氣預報排程
+     *
+     * @param Request $request
+     * @param Device $device
+     * @return View
+     */
+    public function edit(Request $request, Device $device): View
     {
         $pic_type = $request->pic_type ?? 'typhoon';
-        $query = Device::where('id', $id)->first();
-        $data = $pic_type === 'typhoon' ? $query->typhoon_json : $query->forecast_json;
-        $images = GeneralImages::get();
-        $data = json_decode($data);
+        $data = $pic_type === 'typhoon' ? $device->typhoon_json : $device->forecast_json;
+        $images = GeneralImages::all();
         $loop_times = 9;
 
-        return view('backend.pages.dashboard.edit', compact('id', 'pic_type', 'data', 'loop_times', 'images'));
+        return view('backend.pages.dashboard.edit', compact('device', 'pic_type', 'data', 'loop_times', 'images'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * 更新颱風主播圖卡或天氣預報排程
+     *
+     * @param Request $request
+     * @param Device $device
+     * @return RedirectResponse
+     */
+    public function update(Request $request, Device $device)
     {
-        $origin_ids = $request->origin_img_id;
-        $image_types = $request->image_type;
-        $upload_ids = $request->img_id;
-        $upload_name = $request->img_name;
-        $upload_url = $request->img_url;
-        $json_type = $request->pic_type;
+        $origin_ids = $request->get('origin_img_id');
+        $image_types = $request->get('image_type');
+        $upload_ids = $request->get('img_id');
+        $upload_name = $request->get('img_name');
+        $upload_url = $request->get('img_url');
+        $json_type = $request->get('pic_type');
         $db_origin_img = [];
-        $generals = GeneralImages::get();
+        $generals = GeneralImages::all();
         foreach ($generals as $g) {
             $db_origin_img[$g->id] = $g->name;
         }
 
-        $datas = [];
+        $data = [];
 
         foreach ($image_types as $index => $type) {
             $temp = $type == 'origin' ? [
@@ -68,33 +84,24 @@ class DashboardController extends Controller
                 'img_name' => $upload_name[$index],
                 'img_url' => $upload_url[$index]
             ];
-            $datas[] = $temp;
+            $data[] = $temp;
         }
+        $update = $json_type == 'typhoon' ? ['typhoon_json' => $data] : ['forecast_json' => $data];
 
-        $json_data = json_encode($datas);
-        $update = $json_type == 'typhoon' ? ['typhoon_json' => $json_data] : ['forecast_json' => $json_data];
-
-        Device::where('id', $id)->update($update);
+        $device->update($update);
         return redirect(route('dashboard.index'));
-
-
-    }
-
-    public function probe()
-    {
-        return 'ok';
     }
 
     public function updateDeviceHost(Request $request)
     {
-        Device::where('id', $request->device_id)->update(['user_id' => $request->user_id]);
+        Device::query()->where('id', $request->get('device_id'))->update(['user_id' => $request->get('user_id')]);
 
         return $this->sendResponse('', 'success');
     }
 
     public function updateDeviceTheme(Request $request)
     {
-        Device::where('id', $request->device_id)->update(['theme' => $request->theme]);
+        Device::query()->where('id', $request->get('device_id'))->update(['theme' => $request->get('theme')]);
 
         return $this->sendResponse('', 'success');
     }
@@ -102,7 +109,6 @@ class DashboardController extends Controller
 
     public function updateBoard(Request $request)
     {
-//        dd($request->all());
         try {
             $board = Board::where('id', $request->board_id)->first();
             $board->type = $request->edition_type === 'default' ? 1 : 2;
@@ -129,28 +135,42 @@ class DashboardController extends Controller
         }
     }
 
-    public function getWeatherImage($name)
+    /**
+     * 取得範例圖
+     *
+     * @param $name
+     * @return string
+     */
+    private function getWeatherImage($name): string
     {
         $map = [
-            '東亞VIS' => '/images/weather/東亞VIS.jpg',
-            '東亞MB' => '/images/weather/東亞MB.jpg',
-            '東亞IR' => '/images/weather/東亞IR.jpg',
-            '地面天氣圖' => '/images/weather/地面天氣圖.jpg',
-            '全球IR' => '/images/weather/全球IR.jpg',
-            '紫外線' => '/images/weather/紫外線.png',
-            '雷達回波' => '/images/weather/雷達回波圖.png',
-            '溫度' => '/images/weather/溫度.jpg',
-            '雨量' => '/images/weather/雨量.jpg',
-            '數值預報' => '/images/weather/數值預報.png',
-            '定量降水預報12小時' => '/images/weather/定量降水預報12小時.png',
-            '定量降水預報6小時' => '/images/weather/定量降水預報6小時.png',
-            '24H預測' => '/images/weather/24H預測.png',
-            '天氣預測' => '/images/weather/天氣預測.png',
-            '波浪分析圖' => '/images/weather/波浪分析圖.jpg',
-            '天氣警報' => '/images/weather/天氣警報.png'
-
+            'east-asia-vis' => '/images/weather/東亞VIS.jpg',
+            'east-asia-mb' => '/images/weather/東亞MB.jpg',
+            'east-asia-ir' => '/images/weather/東亞IR.jpg',
+            'surface-weather-map' => '/images/weather/地面天氣圖.jpg',
+            'global-ir' => '/images/weather/全球IR.jpg',
+            'ultraviolet-light' => '/images/weather/紫外線.png',
+            'radar-echo' => '/images/weather/雷達回波圖.png',
+            'temperature' => '/images/weather/溫度.jpg',
+            'rainfall' => '/images/weather/雨量.jpg',
+            'numerical-forecast' => '/images/weather/數值預報.png',
+            'precipitation-forecast-12h' => '/images/weather/定量降水預報12小時.png',
+            'precipitation-forecast-6h' => '/images/weather/定量降水預報6小時.png',
+            'forecast-24h' => '/images/weather/24H預測.png',
+            'weather-forecast' => '/images/weather/天氣預測.png',
+            'wave-analysis-chart' => '/images/weather/波浪分析圖.jpg',
+            'weather-alert' => '/images/weather/天氣警報.png'
         ];
         return $map[$name];
     }
 
+    /**
+     * keepalive
+     *
+     * @return string
+     */
+    public function probe(): string
+    {
+        return 'ok';
+    }
 }
