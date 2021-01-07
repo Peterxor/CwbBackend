@@ -54,14 +54,17 @@
                                 </label>
                                 <div class="col-12 row">
                                     <div class="col-6">
-                                        <select id="theme-select-{{$device->id}}" class="form-control" name="theme" disabled>
+                                        <select id="theme-select-{{$device->id}}" class="form-control" name="theme"
+                                                disabled>
                                             @foreach($themes as $theme)
-                                                <option value="{{$theme['value']}}" {{$device->theme == $theme['value'] ? 'selected' : ''}}>{{$theme['name']}}</option>
+                                                <option
+                                                    value="{{$theme['value']}}" {{$device->theme == $theme['value'] ? 'selected' : ''}}>{{$theme['name']}}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-3 kt-align-left">
-                                        <button class="btn btn-primary" name="save_layout_btn" data-device-id="{{$device->id}}" style="display:none;">儲存
+                                        <button class="btn btn-primary" name="save_layout_btn"
+                                                data-device-id="{{$device->id}}" style="display:none;">儲存
                                         </button>
                                         <button class="btn btn-outline-secondary" name="change_layout_btn">變更</button>
                                     </div>
@@ -75,21 +78,27 @@
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
                                         class="la la-commenting"></i></span>預報看板
                                 </label>
-                                <button class="btn btn-primary" id="device_board_{{$device->id}}" name="edit_btn" data-toggle="modal"
+                                <button class="btn btn-primary" id="device_board_{{$device->id}}" name="edit_btn"
+                                        data-toggle="modal"
                                         data-target="#edit-modal">編輯看板內容
                                 </button>
                                 <input type="hidden" name="modal_title" value="{{$device->name ?? ''}}">
                                 <input type="hidden" name="board_id" value="{{$device->board->id ?? 0}}">
                                 <input type="hidden" name="board_device_id" value="{{$device->id ?? 0}}">
                                 <input type="hidden" name="modal_type" value="{{$device->board->type ?? 1}}">
-                                <input type="hidden" name="board_background" value="{{$device->board->background ?? 1}}">
+                                <input type="hidden" name="board_background"
+                                       value="{{$device->board->background ?? 1}}">
                                 <input type="hidden" name="people_1" value="{{$device->board->personnel_id_a ?? 0}}">
                                 <input type="hidden" name="people_2" value="{{$device->board->personnel_id_b ?? 0}}">
-                                <input type="hidden" name="news_status" value="{{$device->board->conference_status ?? 0}}">
-                                <input type="hidden" name="next_news_status" value="{{$device->board->next_conference_status ?? 0}}">
+                                <input type="hidden" name="news_status"
+                                       value="{{$device->board->conference_status ?? 0}}">
+                                <input type="hidden" name="next_news_status"
+                                       value="{{$device->board->next_conference_status ?? 0}}">
                                 <input type="hidden" name="news_time" value="{{$device->board->conference_time ?? ''}}">
-                                <input type="hidden" name="next_news_time" value="{{$device->board->next_conference_time ?? ''}}">
-                                <input type="hidden" name="media_name" value="{{ $device->board->media ?  $device->board->media->file_name . '.' . $device->board->media->mime_type : ''}}">
+                                <input type="hidden" name="next_news_time"
+                                       value="{{$device->board->next_conference_time ?? ''}}">
+                                <input type="hidden" name="media_name"
+                                       value="{{ $device->board->media ?  $device->board->media->file_name . '.' . $device->board->media->mime_type : ''}}">
                             </div>
                             <div class="col-6">
 
@@ -187,7 +196,8 @@
                                                  style="background-image:url({{$typhoon['img_url'] ?? '/images/login/logo.png'}});">
 
                                                 <div class="row layout-text">
-                                                    <label>{{$index + 1 }}. {{$typhoon['img_name'] ?? ''}}</label>
+                                                    <label>{{$index + 1 }}
+                                                        . {{$typhoon['type'] === 'origin' ? explode('.', explode('/', $typhoon['img_url'])[count(explode('/', $typhoon['img_url'])) - 1])[0] : $typhoon['img_name']}}</label>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -203,7 +213,7 @@
                                                  style="background-image:url({{$forecast['img_url'] ?? '/images/login/logo.png'}});">
 
                                                 <div class="row layout-text">
-                                                    <label>{{$index + 1 }}. {{$forecast['img_name'] ?? ''}}</label>
+                                                    <label>{{$index + 1 }}. {{$forecast['type'] === 'origin' ? explode('.', explode('/', $forecast['img_url'])[count(explode('/', $forecast['img_url'])) - 1])[0] : $forecast['img_name']}}</label>
                                                 </div>
                                             </div>
                                         @endforeach

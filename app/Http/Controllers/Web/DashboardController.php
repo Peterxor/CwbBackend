@@ -25,7 +25,6 @@ class DashboardController extends Controller
         $devices = Device::with(['user', 'board' => function($query) {
             $query->with(['media']);
         }])->get();
-//        dd($devices->toArray());
         $themes = getTheme(0);
         $backgrounds = getBackground(0);
         $personnel = Personnel::all();

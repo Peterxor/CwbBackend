@@ -83,7 +83,7 @@
                                         <td>
                                             <select name="origin_img_id[]" class="form-control js-ref js-weather" style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'display:block;' : 'display:none;') : 'display:block;'}}">
                                                 @foreach($images as $image)
-                                                    <option value="{{$image->id}}" {{$data[$i] ? ($data[$i]['type'] == 'origin' ? ($image->id == $data[$i]['img_id'] ? 'selected' : '') : '') : ''}}>{{$image->name}}</option>
+                                                    <option value="{{$image->id}}" {{$data[$i] ? ($data[$i]['type'] == 'origin' ? ($image->id == $data[$i]['img_id'] ? 'selected' : '') : '') : ''}}>{{$image->content['display_name']}}</option>
                                                 @endforeach
                                             </select>
                                             <div class="imgHolder" style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'display:none;' : 'display:block;') : 'display:none;'}}">
