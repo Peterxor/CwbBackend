@@ -1,0 +1,21 @@
+version: '3'
+networks:
+  backend:
+    driver: bridge
+services:
+  app:
+    ## read php image from our custom docker image ##
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+    # copy project files to /var/www ##
+      - D:/Contents/Broadcast:/var/www/storage/app/public/data
+      - ./storage/logs:/var/www/storage/logs
+      - ./storage/app/public/media:/var/www/storage/app/public/media
+    ports:
+      - "2488:80"
+      - "9001:9001"
+    networks:
+      - backend
+    command: "envoy run local"
