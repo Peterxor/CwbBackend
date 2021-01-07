@@ -75,15 +75,21 @@
                                 <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
                                         class="la la-commenting"></i></span>預報看板
                                 </label>
-                                <button class="btn btn-primary" name="edit_btn" data-toggle="modal"
+                                <button class="btn btn-primary" id="device_board_{{$device->id}}" name="edit_btn" data-toggle="modal"
                                         data-target="#edit-modal">編輯看板內容
                                 </button>
-                                <input type="hidden" name="people_1" value="伍婉華">
-                                <input type="hidden" name="people_2" value="丘安">
-                                <input type="hidden" name="news_status" value="1">
-                                <input type="hidden" name="next_news_status" value="0">
-                                <input type="hidden" name="news_time" value="11:40">
-                                <input type="hidden" name="next_news_time" value="">
+                                <input type="hidden" name="modal_title" value="{{$device->name ?? ''}}">
+                                <input type="hidden" name="board_id" value="{{$device->board->id ?? 0}}">
+                                <input type="hidden" name="board_device_id" value="{{$device->id ?? 0}}">
+                                <input type="hidden" name="modal_type" value="{{$device->board->type ?? 1}}">
+                                <input type="hidden" name="board_background" value="{{$device->board->background ?? 1}}">
+                                <input type="hidden" name="people_1" value="{{$device->board->personnel_id_a ?? 0}}">
+                                <input type="hidden" name="people_2" value="{{$device->board->personnel_id_b ?? 0}}">
+                                <input type="hidden" name="news_status" value="{{$device->board->conference_status ?? 0}}">
+                                <input type="hidden" name="next_news_status" value="{{$device->board->next_conference_status ?? 0}}">
+                                <input type="hidden" name="news_time" value="{{$device->board->conference_time ?? ''}}">
+                                <input type="hidden" name="next_news_time" value="{{$device->board->next_conference_time ?? ''}}">
+                                <input type="hidden" name="media_name" value="{{ $device->board->media ?  $device->board->media->file_name . '.' . $device->board->media->mime_type : ''}}">
                             </div>
                             <div class="col-6">
 

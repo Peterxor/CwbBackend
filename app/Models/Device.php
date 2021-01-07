@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Board;
 
 
 class Device extends Model
@@ -22,6 +23,11 @@ class Device extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function board()
+    {
+        return $this->hasOne(Board::class, 'device_id', 'id');
     }
 
     public function getDecodeForecastAttribute () {

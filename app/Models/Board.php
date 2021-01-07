@@ -3,32 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Device;
+use App\Models\Media;
 
 
-class Device extends Model
+class Board extends Model
 {
     //
-    protected $table = 'device';
+    protected $table = 'boards';
     protected $fillable = [
-        'name', 'forecast_json', 'typhoon_json', 'preference_json', 'created_at', 'updated_at', 'user_id'
+        'type', 'device_id', 'personnel_id_a', 'personnel_id_b', 'conference_time', 'conference_status',
+        'next_conference_time', 'next_conference_status', 'background', 'media_id', 'created_at', 'updated_at'
     ];
 
-    protected $casts = [
-        'preference_json' => 'array'
-    ];
+    public function device() {
+        return $this->belongsTo(Device::class, 'device_id', 'id');
+    }
 
-    protected $appends = ['decode_forecast', 'decode_typhoon'];
-
-    public function user()
+    public function media()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->hasOne(Media::class, 'id', 'media_id');
     }
 
-    public function getDecodeForecastAttribute () {
-        return json_decode($this->forecast_json);
-    }
-
-    public function getDecodeTyphoonAttribute () {
-        return json_decode($this->typhoon_json);
-    }
 }

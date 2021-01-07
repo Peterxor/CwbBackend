@@ -8,15 +8,23 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\TyphoonImage;
 use App\Models\GeneralImages;
+use App\Models\Personnel;
+use App\Models\Board;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $devices = Device::with(['user'])->get();
+        $devices = Device::with(['user', 'board' => function($query) {
+            $query->with(['media']);
+        }])->get();
+//        dd($devices->toArray());
         $themes = getTheme(0);
-
-        return view("backend.pages.dashboard.index", compact('devices', 'themes'));
+        $backgrounds = getBackground(0);
+        $personnel = Personnel::all();
+        return view("backend.pages.dashboard.index", compact('devices', 'themes', 'personnel', 'backgrounds'));
     }
 
 
@@ -89,6 +97,36 @@ class DashboardController extends Controller
         Device::where('id', $request->device_id)->update(['theme' => $request->theme]);
 
         return $this->sendResponse('', 'success');
+    }
+
+
+    public function updateBoard(Request $request)
+    {
+//        dd($request->all());
+        try {
+            $board = Board::where('id', $request->board_id)->first();
+            $board->type = $request->edition_type === 'default' ? 1 : 2;
+            $board->device_id = $request->device_id ?? $board->device_id;
+            $board->personnel_id_a = $request->people_1 ?? 0;
+            $board->personnel_id_b = $request->people_2 ?? 0;
+            $board->conference_time = $request->news_time ?? null;
+            $board->conference_status = $request->news_status ?? 0;
+            $board->next_conference_time = $request->next_news_time ?? null;
+            $board->next_conference_status = $request->next_news_status ?? 0;
+            $board->background = $request->board_background ?? 1;
+            $board->media_id = null;
+            if ($request->edition_type === 'upload') {
+                $res = uploadMedia($request->file('file'));
+                $board->media_id = $res['new_media']->id;
+            }
+            $board->save();
+            $response = $board->toArray();
+            $response['media_name'] = isset($res) ? $res['new_media']->file_name . '.' . $res['new_media']->mime_type : '';
+            return $this->sendResponse($response, 'update success');
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError($e->getMessage(), [], 400, '更新看板失敗');
+        }
     }
 
     public function getWeatherImage($name)
