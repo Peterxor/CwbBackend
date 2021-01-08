@@ -14,7 +14,7 @@ use App\Events\MobileActionEvent;
 
 class MobileDeviceController extends Controller
 {
-    public function deviceList()
+    public function deviceList():JsonResponse
     {
         $devices = Device::get();
         $devices = $devices->toArray();
@@ -28,12 +28,11 @@ class MobileDeviceController extends Controller
         return response()->json($data);
     }
 
-    public function getDeviceData(Request $request)
+    public function getDeviceData(Request $request):JsonResponse
     {
         $id = $request->id;
         $typhoonImgs = TyphoonImage::get();
         $generalImgs = GeneralImages::get();
-//        dd($generalImgs->toArray());
 
 
         $device = Device::with(['user'])->where('id', $id)->first();
@@ -44,45 +43,42 @@ class MobileDeviceController extends Controller
             'typhoon' => [],
             'weather' => [],
         ];
-        $forecast = json_decode($device->forecast_json);
-        $typhoon = json_decode($device->typhoon_json);
-//        dd($typhoon);
-        $host_pics = [];
+        $typhoon = $device->typhoon_json;
 
+//        主播圖卡
+        $host_pics = [];
         foreach ($typhoon as $index => $value) {
             $host_pics[] = [
-                'name' => $value->img_name,
+                'name' => transformWeatherName($value['img_url']),
                 'value' => $index,
-                'pic_url' => env('APP_URL') . $value->img_url,
+                'pic_url' => env('APP_URL') . $value['img_url'],
             ];
         }
 
         foreach ($typhoonImgs as $img) {
             $res['typhoon'][] = [
-                'name' => $img->name,
-                'value' => $this->findValue($img->name),
-                'pic_url' => Storage::disk('public')->url('wind_1.jpg'),
-                'behavior' => $this->makeBehavior($img->name)
+                'name' => $img->content['display_name'],
+                'value' => $img->name,
             ];
         }
         $res['typhoon'][] = [
             'name' => '主播圖卡',
             'value' => 'anchor_slide',
-            'behaviour' => $host_pics,
+            'list' => $host_pics,
         ];
 
         foreach ($generalImgs as $img) {
             $res['weather'][] = [
-                'name' => $img->name,
-                'value' => $this->findValue($img->name),
-                'pic_url' => Storage::disk('public')->url('wind_1.jpg'),
+                'name' => $img->content['display_name'],
+                'value' => $img->name,
+                'pic_url' => env('APP_URL') . getWeatherImage($img->name),
             ];
         }
 
         return response()->json($res);
     }
 
-    public function action(Request $request)
+    public function action(Request $request):JsonResponse
     {
         $room = $request->room ?? '';
         $screen = $request->screen ?? '';
@@ -104,332 +100,4 @@ class MobileDeviceController extends Controller
         return $map[$room] ?? '';
     }
 
-
-    public function makeBehavior($name)
-    {
-        $default = [
-            [
-                'name' => '畫筆',
-                'value' => 'draw_toggle'
-            ],
-            [
-                'name' => '上一步',
-                'value' => 'back'
-            ],
-            [
-                'name' => '清空',
-                'value' => 'clear',
-            ],
-            [
-                'name' => 'H',
-                'value' => 'high_pressure'
-            ],
-            [
-                'name' => 'L',
-                'value' => 'low_pressure'
-            ],
-            [
-                'name' => '颱風',
-                'value' => 'typhoon',
-            ],
-            [
-                'name' => '季風',
-                'value' => 'monsoon'
-            ],
-            [
-                'name' => '冷鋒',
-                'value' => 'cold_front'
-            ],
-            [
-                'name' => '軟鋒',
-                'value' => 'warm_front',
-            ],
-            [
-                'name' => '滯留鋒',
-                'value' => 'strand_front',
-            ],
-            [
-                'name' => '上一步',
-                'value' => 'back'
-            ],
-        ];
-        $map = [
-            '颱風動態圖' => [
-                [
-                    'name' => '畫筆',
-                    'value' => 'draw_toggle'
-                ],
-                [
-                    'name' => '上一步',
-                    'value' => 'back'
-                ],
-                [
-                    'name' => '清空',
-                    'value' => 'clear',
-                ],
-                [
-                    'name' => 'ORG',
-                    'value' => 'org',
-                ],
-                [
-                    'name' => 'IR',
-                    'value' => 'ir',
-                ],
-                [
-                    'name' => 'MB',
-                    'value' => 'mb',
-                ],
-                [
-                    'name' => 'VIS',
-                    'value' => 'vis',
-                ],
-                [
-                    'name' => '海',
-                    'value' => 'sea'
-                ],
-                [
-                    'name' => '陸',
-                    'value' => 'land'
-                ],
-            ],
-            '颱風潛勢圖' => [
-                [
-                    'name' => '畫筆',
-                    'value' => 'draw_toggle'
-                ],
-                [
-                    'name' => '上一步',
-                    'value' => 'back'
-                ],
-                [
-                    'name' => '清空',
-                    'value' => 'clear',
-                ]
-            ],
-            '風力觀測' => [
-                [
-                    'name' => '全',
-                    'value' => 'total',
-                ],
-                [
-                    'name' => '北',
-                    'value' => 'north',
-                ],
-                [
-                    'name' => '中',
-                    'value' => 'center',
-                ],
-                [
-                    'name' => '南',
-                    'value' => 'south',
-                ],
-                [
-                    'name' => '東',
-                    'value' => 'east'
-                ],
-                [
-                    'name' => '畫筆',
-                    'value' => 'draw_toggle'
-                ],
-                [
-                    'name' => '上一步',
-                    'value' => 'back'
-                ],
-                [
-                    'name' => '清空',
-                    'value' => 'clear',
-                ]
-            ],
-            '風力預測' => [
-                [
-                    'name' => '畫筆',
-                    'value' => 'draw_toggle'
-                ],
-                [
-                    'name' => '上一步',
-                    'value' => 'back'
-                ],
-                [
-                    'name' => '清空',
-                    'value' => 'clear',
-                ],
-                [
-                    'name' => '全',
-                    'value' => 'total',
-                ],
-                [
-                    'name' => '北',
-                    'value' => 'north',
-                ],
-                [
-                    'name' => '中',
-                    'value' => 'center',
-                ],
-                [
-                    'name' => '南',
-                    'value' => 'south',
-                ],
-                [
-                    'name' => '東',
-                    'value' => 'east'
-                ],
-                [
-                    'name' => '1',
-                    'value' => 0
-                ],
-                [
-                    'name' => '2',
-                    'value' => 1,
-                ],
-                [
-                    'name' => '3',
-                    'value' => 2
-                ]
-
-            ],
-            '雨量觀測' => [
-                [
-                    'name' => '畫筆',
-                    'value' => 'draw_toggle'
-                ],
-                [
-                    'name' => '上一步',
-                    'value' => 'back'
-                ],
-                [
-                    'name' => '清空',
-                    'value' => 'clear',
-                ],
-                [
-                    'name' => '全',
-                    'value' => 'total',
-                ],
-                [
-                    'name' => '北',
-                    'value' => 'north',
-                ],
-                [
-                    'name' => '中',
-                    'value' => 'center',
-                ],
-                [
-                    'name' => '南',
-                    'value' => 'south',
-                ],
-                [
-                    'name' => '宜',
-                    'value' => 'yilan',
-                ],
-                [
-                    'name' => '花',
-                    'value' => 'flower'
-                ],
-                [
-                    'name' => '東',
-                    'value' => 'east'
-                ],
-                [
-                    'name' => '今',
-                    'value' => 'today',
-                ],
-                [
-                    'name' => '1',
-                    'value' => 0
-                ],
-                [
-                    'name' => '2',
-                    'value' => 1,
-                ],
-                [
-                    'name' => '3',
-                    'value' => 2
-                ],
-                [
-                    'name' => '表',
-                    'value' => 'surface'
-                ]
-
-            ],
-            '雨量預測' => [
-                [
-                    'name' => '畫筆',
-                    'value' => 'draw_toggle'
-                ],
-                [
-                    'name' => '上一步',
-                    'value' => 'back'
-                ],
-                [
-                    'name' => '清空',
-                    'value' => 'clear',
-                ],
-                [
-                    'name' => '全',
-                    'value' => 'total',
-                ],
-                [
-                    'name' => '北',
-                    'value' => 'north',
-                ],
-                [
-                    'name' => '中',
-                    'value' => 'center',
-                ],
-                [
-                    'name' => '南',
-                    'value' => 'south',
-                ],
-                [
-                    'name' => '宜',
-                    'value' => 'yilan',
-                ],
-                [
-                    'name' => '花',
-                    'value' => 'flower'
-                ],
-                [
-                    'name' => '東',
-                    'value' => 'east'
-                ],
-                [
-                    'name' => 'all',
-                    'value' => 'all',
-                ],
-                [
-                    'name' => '24',
-                    'value' => 24
-                ],
-            ],
-        ];
-        return $map[$name] ?? $default;
-    }
-
-    public function findValue($name)
-    {
-        $map = [
-            '颱風動態圖' => 'typhoon_story',
-            '颱風潛勢圖' => 'typhoon_potential',
-            '風力觀測' => 'wind_observe',
-            '風力預測' => 'wind_forecast',
-            '雨量觀測' => 'rain_observe',
-            '雨量預測' => 'rain_forecast',
-            "東亞VIS" => 'east_asia_vis',
-            '東亞MB' => 'east_asia_mb',
-            '東亞IR' => 'east_asia_ir',
-            '地面天氣圖' => 'ground_weather',
-            '全球IR' => 'global_ir',
-            '紫外線' => 'ultraviolet',
-            '雷達回波' => 'radar_back',
-            '溫度' => 'temperature',
-            '雨量' => 'rain_amount',
-            '數值預報' => 'value_forecast',
-            '定量降水預報12小時' => 'rain_12',
-            '定量降水預報6小時' => 'rain_6',
-            '24H預測' => '24h_forecast',
-            '天氣預測' => 'weather_forecast',
-            '波浪分析圖' => 'wave_analyze',
-            '天氣警報' => 'weather_alert',
-        ];
-        return $map[$name] ?? '';
-    }
 }

@@ -197,7 +197,7 @@
 
                                                 <div class="row layout-text">
                                                     <label>{{$index + 1 }}
-                                                        . {{$typhoon['type'] === 'origin' ? explode('.', explode('/', $typhoon['img_url'])[count(explode('/', $typhoon['img_url'])) - 1])[0] : $typhoon['img_name']}}</label>
+                                                        . {{$typhoon['type'] === 'origin' ? transformWeatherName($typhoon['img_url']) : $typhoon['img_name']}}</label>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -213,7 +213,8 @@
                                                  style="background-image:url({{$forecast['img_url'] ?? '/images/login/logo.png'}});">
 
                                                 <div class="row layout-text">
-                                                    <label>{{$index + 1 }}. {{$forecast['type'] === 'origin' ? explode('.', explode('/', $forecast['img_url'])[count(explode('/', $forecast['img_url'])) - 1])[0] : $forecast['img_name']}}</label>
+                                                    <label>{{$index + 1 }}
+                                                        . {{$forecast['type'] === 'origin' ? transformWeatherName($forecast['img_url']) : $forecast['img_name']}}</label>
                                                 </div>
                                             </div>
                                         @endforeach

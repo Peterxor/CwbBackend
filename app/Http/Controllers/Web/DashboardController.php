@@ -76,7 +76,7 @@ class DashboardController extends Controller
                 'type' => $type,
                 'img_id' => $origin_ids[$index],
                 'img_name' => $db_origin_img[$origin_ids[$index]],
-                'img_url' => $this->getWeatherImage($db_origin_img[$origin_ids[$index]])
+                'img_url' => getWeatherImage($db_origin_img[$origin_ids[$index]])
             ] : [
                 'type' => $type,
                 'img_id' => $upload_ids[$index],
@@ -132,35 +132,6 @@ class DashboardController extends Controller
             Log::error($e->getMessage());
             return $this->sendError($e->getMessage(), [], 400, '更新看板失敗');
         }
-    }
-
-    /**
-     * 取得範例圖
-     *
-     * @param $name
-     * @return string
-     */
-    private function getWeatherImage($name): string
-    {
-        $map = [
-            'east-asia-vis' => '/images/weather/東亞VIS.jpg',
-            'east-asia-mb' => '/images/weather/東亞MB.jpg',
-            'east-asia-ir' => '/images/weather/東亞IR.jpg',
-            'surface-weather-map' => '/images/weather/地面天氣圖.jpg',
-            'global-ir' => '/images/weather/全球IR.jpg',
-            'ultraviolet-light' => '/images/weather/紫外線.png',
-            'radar-echo' => '/images/weather/雷達回波圖.png',
-            'temperature' => '/images/weather/溫度.jpg',
-            'rainfall' => '/images/weather/雨量.jpg',
-            'numerical-forecast' => '/images/weather/數值預報.png',
-            'precipitation-forecast-12h' => '/images/weather/定量降水預報12小時.png',
-            'precipitation-forecast-6h' => '/images/weather/定量降水預報6小時.png',
-            'forecast-24h' => '/images/weather/24H預測.png',
-            'weather-forecast' => '/images/weather/天氣預測.png',
-            'wave-analysis-chart' => '/images/weather/波浪分析圖.jpg',
-            'weather-alert' => '/images/weather/天氣警報.png'
-        ];
-        return $map[$name];
     }
 
     /**
