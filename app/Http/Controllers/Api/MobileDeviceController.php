@@ -12,6 +12,7 @@ use App\Models\GeneralImages;
 use App\Events\MobileActionEvent;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use App\Models\GeneralImagesCategory;
 
 class MobileDeviceController extends Controller
 {
@@ -103,7 +104,36 @@ class MobileDeviceController extends Controller
             Log::error($e->getMessage());
             return $this->sendError('請求失敗');
         }
+    }
 
+    /**
+     * 一般天氣總覽圖
+     * @return JsonResponse
+     */
+    public function weatherDetail(): JsonResponse
+    {
+        try {
+            $generalCategory = GeneralImagesCategory::query()->with('generalImage')->orderBy('sort')->get();
+            $res = [];
+            foreach ($generalCategory as $category) {
+                $temp = [
+                    'category_name' => $category->name,
+                    'list' => []
+                ];
+                foreach ($category->generalImage as $img) {
+                    $temp['list'][] = [
+                        'name' => $img->content['display_name'],
+                        'value' => $img->name,
+                        'pic_url' => env('APP_URL') . getWeatherImage($img->name),
+                    ];
+                }
+                $res[] = $temp;
+            }
+            return response()->json($res);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('請求失敗');
+        }
     }
 
     /**

@@ -36,5 +36,6 @@ Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () 
     Route::get('deviceList', ['as' => 'deviceList', 'uses' => 'MobileDeviceController@deviceList']);
     Route::get('data', ['as' => 'data', 'uses' => 'MobileDeviceController@getDeviceData']);
     Route::get('action', ['as' => 'action', 'uses' => 'MobileDeviceController@action']);
+    Route::get('weatherDetail', ['as' => 'weatherDetail', 'uses' => 'MobileDeviceController@weatherDetail']);
     Route::put('updateAnchor', ['as' => 'updateAnchor', 'uses' => 'MobileDeviceController@updateAnchor']);
 });

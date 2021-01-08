@@ -140,7 +140,7 @@ class WeatherController extends Controller
     {
         $data = $request->all();
 
-        $weather->content['display_name'] = $data['display_name'];
+        $weather->content = ['display_name' => $data['display_name']];
         switch ($weather->name ?? '') {
             case 'east-asia-vis':
             case 'east-asia-mb':
@@ -174,6 +174,7 @@ class WeatherController extends Controller
                 ]);
                 break;
         }
+
 
         $weather->category_id = $request->get('category');
         $weather->save();
