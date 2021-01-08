@@ -138,7 +138,7 @@ class RainfallObservation
             foreach ($files as $key => $file) {
                 if ($key >= $amount)
                     continue;
-                $images[] = Storage::disk('data')->url($imageOrigin . $file->getBasename());
+                $images[] = Storage::disk('data')->url($imageOrigin . '/' . $file->getBasename());
             }
 
             $dataOrigin = rtrim($setting['data-origin'], '/');

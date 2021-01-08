@@ -32,7 +32,7 @@ class WeatherInformation
                     'point_y' => 10,
                     'interval' => 2000,
                     'title' => "東亞VIS",
-                    'description' => '11/30 11:50 ~ 11/30 12:00',
+                    'description' => '11月30日 11:50 ~ 11月30日 12:00',
                     'images' => [
                         url('test/2020-11-10_1510.BVIS.jpg'),
                         url('test/2020-11-10_1520.BVIS.jpg'),
@@ -45,7 +45,7 @@ class WeatherInformation
                     'point_x' => 0,
                     'point_y' => 0,
                     'title' => "雨量",
-                    'description' => '11/30 11:50 ~ 11/30 12:00',
+                    'description' => '11月30日 11:50 ~ 11月30日 12:00',
                     'image_l' => url('test/2020-11-08_0540.QZJ4.png'),
                     'image_r' => url('test/2020-11-10_1050.QZJ4.png'),
                     'thumbnail' => url('test/2020-11-10_1050.QZJ4.png')
@@ -55,7 +55,7 @@ class WeatherInformation
                     'point_x' => 0,
                     'point_y' => 0,
                     'title' => "地面天氣圖",
-                    'description' => '11/30 11:50 ~ 11/30 12:00',
+                    'description' => '11月30日 11:50 ~ 11月30日 12:00',
                     'images' => [
                         url('test/2020-1110-0000_SFCcomboHD.jpg'),
                         url('test/2020-1109-1800_SFCcomboHD.jpg'),
@@ -69,7 +69,7 @@ class WeatherInformation
                     'point_x' => 5,
                     'point_y' => 0,
                     "title" => "紫外線",
-                    'description' => '11/30 11:50 ~ 11/30 12:00',
+                    'description' => '11月30日 11:50 ~ 11月30日 12:00',
                     'image' => url('test/UVI_Max.png'),
                     'thumbnail' => url('test/UVI_Max.png')
                 ], [

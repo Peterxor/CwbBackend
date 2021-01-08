@@ -37,7 +37,7 @@ class TyphoonPotential
                 $item['center']['point']['lat'] = (float)$circle->center->point->lat;
                 $item['center']['point']['lon'] = (float)$circle->center->point->lon;
                 $item['radius'] = (float)$circle->radius;
-                $item['hour'] = (int)$circle->hour;
+                $item['label'] = (int)$circle->hour;
                 $item['track']['points'] = [];
                 foreach ($circle->track->point as $point){
                     $item['track']['points'][] = [

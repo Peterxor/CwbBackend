@@ -68,7 +68,7 @@ class TyphoonDynamics
                     'lat' => (float)$typhoonDynamics->current->Point->Lat,
                     'lon' => (float)$typhoonDynamics->current->Point->Lon,
                     'intensity' => (int)$typhoonDynamics->current->Point->Intensity,
-                    'class7' => (int)$typhoonDynamics->current->Point->Class7,
+                    'radius' => (int)$typhoonDynamics->current->Point->Class7,
                 ]
             ];
 
@@ -82,7 +82,7 @@ class TyphoonDynamics
                     'lat' => (float)$point->Lat,
                     'lon' => (float)$point->Lon,
                     'intensity' => (int)$point->Intensity,
-                    'class7' => (int)$point->Class7,
+                    'radius' => (int)$point->Class7,
                 ];
             }
 
@@ -141,7 +141,7 @@ class TyphoonDynamics
                     $endTime = $file->getBasename();
                 }
                 $startTime = $file->getBasename();
-                $images[] = Storage::disk('data')->url($path . $file->getBasename());
+                $images[] = Storage::disk('data')->url($path . '/' . $file->getBasename());
             }
 
             $description = count($images) > 0 ?
