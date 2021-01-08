@@ -12,9 +12,14 @@ use App\Models\GeneralImages;
 use App\Events\MobileActionEvent;
 use Exception;
 use Illuminate\Support\Facades\Log;
+
 class MobileDeviceController extends Controller
 {
-    public function deviceList():JsonResponse
+    /**
+     * 裝置列表
+     * @return JsonResponse
+     */
+    public function deviceList(): JsonResponse
     {
         try {
             $devices = Device::get();
@@ -34,15 +39,20 @@ class MobileDeviceController extends Controller
 
     }
 
-    public function getDeviceData(Request $request):JsonResponse
+    /**
+     * 獲取裝置訊息
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getDeviceData(Request $request): JsonResponse
     {
         try {
             $id = $request->id;
             $typhoonImgs = TyphoonImage::get();
             $generalImgs = GeneralImages::get();
-            $users = User::query()->where(function ($query){
+            $users = User::query()->where(function ($query) {
                 $query->role(2);
-            })->get(['id','name']);
+            })->get(['id', 'name']);
 
 
             $device = Device::with(['user'])->where('id', $id)->first();
@@ -95,7 +105,12 @@ class MobileDeviceController extends Controller
 
     }
 
-    public function action(Request $request):JsonResponse
+    /**
+     * 行動請求
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function action(Request $request): JsonResponse
     {
         $room = $request->room ?? '';
         $screen = $request->screen ?? '';
@@ -105,6 +120,33 @@ class MobileDeviceController extends Controller
         $res['data'] = $request->all();
         broadcast(new MobileActionEvent($room, $screen, $sub, $behaviour));
         return response()->json($res);
+    }
+
+    /**
+     * 更新主播
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateAnchor(Request $request): JsonResponse
+    {
+        try {
+            $device_id = $request->get('device_id');
+            $user_id = $request->get('anchor_id');
+            $device = Device::find($device_id);
+            $user = User::query()->where(function ($query) {
+                $query->role(2);
+            })->where('id', $user_id)->first();
+            if ($device && $user) {
+                $device->user_id = $user_id;
+                $device->save();
+            } else {
+                throw new Exception('device_id or anchor_id wrong');
+            }
+            return $this->sendResponse('', '成功更新');
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('請求失敗');
+        }
     }
 
 
