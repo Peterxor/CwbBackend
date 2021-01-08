@@ -47,6 +47,7 @@ class MobileDeviceController extends Controller
     public function getDeviceData(Request $request): JsonResponse
     {
         try {
+            $request->validate(['id' => 'required|numeric|digits_between:1,10']);
             $id = $request->id;
             $typhoonImgs = TyphoonImage::get();
             $generalImgs = GeneralImages::get();
@@ -130,6 +131,10 @@ class MobileDeviceController extends Controller
     public function updateAnchor(Request $request): JsonResponse
     {
         try {
+            $request->validate([
+                'device_id' => 'required|numeric',
+                'anchor_id' => 'required|numeric',
+            ]);
             $device_id = $request->get('device_id');
             $user_id = $request->get('anchor_id');
             $device = Device::find($device_id);
