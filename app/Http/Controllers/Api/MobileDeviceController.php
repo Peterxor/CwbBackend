@@ -3,79 +3,96 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
-use SimpleXMLElement;
 use App\Models\Device;
 use Illuminate\Http\Request;
 use App\Models\TyphoonImage;
 use App\Models\GeneralImages;
 use App\Events\MobileActionEvent;
-
+use Exception;
+use Illuminate\Support\Facades\Log;
 class MobileDeviceController extends Controller
 {
     public function deviceList():JsonResponse
     {
-        $devices = Device::get();
-        $devices = $devices->toArray();
-        $data = [];
-        foreach ($devices as $device) {
-            $data[] = [
-                'device_id' => $device['id'],
-                'device_name' => $device['name']
-            ];
+        try {
+            $devices = Device::get();
+            $devices = $devices->toArray();
+            $data = [];
+            foreach ($devices as $device) {
+                $data[] = [
+                    'device_id' => $device['id'],
+                    'device_name' => $device['name']
+                ];
+            }
+            return response()->json($data);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('請求失敗');
         }
-        return response()->json($data);
+
     }
 
     public function getDeviceData(Request $request):JsonResponse
     {
-        $id = $request->id;
-        $typhoonImgs = TyphoonImage::get();
-        $generalImgs = GeneralImages::get();
+        try {
+            $id = $request->id;
+            $typhoonImgs = TyphoonImage::get();
+            $generalImgs = GeneralImages::get();
+            $users = User::query()->where(function ($query){
+                $query->role(2);
+            })->get(['id','name']);
 
 
-        $device = Device::with(['user'])->where('id', $id)->first();
-        $res = [
-            'room' => $device->name,
-            'room_value' => $this->roomValue($device->name),
-            'anchor' => $device->user->name ?? '',
-            'typhoon' => [],
-            'weather' => [],
-        ];
-        $typhoon = $device->typhoon_json;
+            $device = Device::with(['user'])->where('id', $id)->first();
+            $res = [
+                'room' => $device->name,
+                'room_value' => $this->roomValue($device->name),
+                'anchor' => $device->user->name ?? '',
+                'typhoon' => [],
+                'weather' => [],
+                'anchor_list' => [],
+            ];
 
+            $res['anchor_list'] = $users->toArray();
+            $typhoon = $device->typhoon_json;
 //        主播圖卡
-        $host_pics = [];
-        foreach ($typhoon as $index => $value) {
-            $host_pics[] = [
-                'name' => transformWeatherName($value['img_url']),
-                'value' => $index,
-                'pic_url' => env('APP_URL') . $value['img_url'],
-            ];
-        }
+            $host_pics = [];
+            foreach ($typhoon as $index => $value) {
+                $host_pics[] = [
+                    'name' => transformWeatherName($value['img_url']),
+                    'value' => $index,
+                    'pic_url' => env('APP_URL') . $value['img_url'],
+                ];
+            }
 
-        foreach ($typhoonImgs as $img) {
+            foreach ($typhoonImgs as $img) {
+                $res['typhoon'][] = [
+                    'name' => $img->content['display_name'],
+                    'value' => $img->name,
+                ];
+            }
             $res['typhoon'][] = [
-                'name' => $img->content['display_name'],
-                'value' => $img->name,
+                'name' => '主播圖卡',
+                'value' => 'anchor_slide',
+                'list' => $host_pics,
             ];
-        }
-        $res['typhoon'][] = [
-            'name' => '主播圖卡',
-            'value' => 'anchor_slide',
-            'list' => $host_pics,
-        ];
 
-        foreach ($generalImgs as $img) {
-            $res['weather'][] = [
-                'name' => $img->content['display_name'],
-                'value' => $img->name,
-                'pic_url' => env('APP_URL') . getWeatherImage($img->name),
-            ];
+            foreach ($generalImgs as $img) {
+                $res['weather'][] = [
+                    'name' => $img->content['display_name'],
+                    'value' => $img->name,
+                    'pic_url' => env('APP_URL') . getWeatherImage($img->name),
+                ];
+            }
+
+            return response()->json($res);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('請求失敗');
         }
 
-        return response()->json($res);
     }
 
     public function action(Request $request):JsonResponse

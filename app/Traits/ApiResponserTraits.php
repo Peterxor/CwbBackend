@@ -35,7 +35,7 @@ trait ApiResponserTraits
      * @param string $productionError
      * @return JsonResponse
      */
-    public function sendError($error, $errorMessages = [], $code = 400, $productionError = 'Unexpected Error'): JsonResponse
+    public function sendError($error, $errorMessages = [], $code = 400, $productionError = '伺服器錯誤'): JsonResponse
     {
         $response = [
             'success' => false,
