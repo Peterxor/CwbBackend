@@ -50,7 +50,7 @@ class WFCDataController extends Controller
                         ]
                     ],
                     'user-2' => null,
-                    'press-conference' => [
+                    'current-press-conference' => [
                         'enable' => true,
                         'time' => '11 : 40 AM',
                     ],
