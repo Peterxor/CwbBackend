@@ -28,8 +28,8 @@ class WeatherInformation
                 [
                     'mode' => 'gif',
                     'scale' => 150,
-                    'point_x' => 0,
-                    'point_y' => 0,
+                    'point_x' => -15,
+                    'point_y' => 10,
                     'interval' => 2000,
                     'title' => "東亞VIS",
                     'description' => '11/30 11:50 ~ 11/30 12:00',
@@ -66,7 +66,7 @@ class WeatherInformation
                 ], [
                     'mode' => 'single',
                     'scale' => 100,
-                    'point_x' => 0,
+                    'point_x' => 5,
                     'point_y' => 0,
                     "title" => "紫外線",
                     'description' => '11/30 11:50 ~ 11/30 12:00',
