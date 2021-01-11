@@ -23,7 +23,7 @@ class Dashboard
                 'background' => '還沒想好',
                 'user_1' => [
                     'name' => '伍婉華',
-                    'nick-name' => '簡任技正',
+                    'nick_name' => '簡任技正',
                     'career' => '秘書室簡任技正',
                     'education' => '中央大學大氣物理研究所碩士',
                     'experience' => [
@@ -34,13 +34,9 @@ class Dashboard
                 ],
                 'user_2' => null,
                 'current_press_conference' => [
-                    'enable' => true,
                     'time' => '11 : 40 AM',
                 ],
-                'next_press_conference' => [
-                    'enable' => true,
-                    'time' => '14 : 40 AM'
-                ]
+                'next_press_conference' => null
             ]
         ];
     }
