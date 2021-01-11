@@ -159,6 +159,10 @@ if (!function_exists('weatherType')) {
      */
     function weatherType(string $weatherName): int
     {
+        // 1:單圖
+        // 2:動態組圖
+        // 3:圖片列表
+        // 4:雙圖並列
         switch ($weatherName) {
             default:
             case 'surface-weather-map':

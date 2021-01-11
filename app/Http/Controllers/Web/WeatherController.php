@@ -122,18 +122,18 @@ class WeatherController extends Controller
 
         switch ($type) {
             case 1:
-            case 2:
+            case 3:
                 $weather->content = array_merge($weather->content, [
                     'origin' => $data['origin'],
                 ]);
                 break;
-            case 3:
+            case 4:
                 $weather->content = array_merge($weather->content, [
                     'origin_left' => $data['origin_left'],
                     'origin_right' => $data['origin_right'],
                 ]);
                 break;
-            case 4:
+            case 2:
                 $weather->content = array_merge($weather->content, [
                     'origin' => $data['origin'],
                     'amount' => $data['amount'],
