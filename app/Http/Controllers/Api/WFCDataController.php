@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\Controller;
 use App\Models\Device;
 use App\Models\TyphoonImage;
 use App\Services\WFC\AnchorInformation;
+use App\Services\WFC\Dashboard;
 use App\Services\WFC\Exceptions\WFCException;
 use App\Services\WFC\RainfallForecast;
 use App\Services\WFC\RainfallObservation;
@@ -34,32 +35,9 @@ class WFCDataController extends Controller
                 'theme' => '還沒想好',
                 'color' => [
                     '#FF4B4B','#26D6FF', '#FF9046', '#88D904', '#FF9046', '#AF16E6'
-                ],
-                'dashboard' => [
-                    'type' => 'default',
-                    'background' => '還沒想好',
-                    'user-1' => [
-                        'name' => '伍婉華',
-                        'nick-name' => '簡任技正',
-                        'career' => '秘書室簡任技正',
-                        'education' => '中央大學大氣物理研究所碩士',
-                        'experience' => [
-                            '第一組第二科科長',
-                            '氣象預報中心技正',
-                            '氣象預報中心資深預報員'
-                        ]
-                    ],
-                    'user-2' => null,
-                    'current-press-conference' => [
-                        'enable' => true,
-                        'time' => '11 : 40 AM',
-                    ],
-                    'next-press-conference' => [
-                        'enable' => true,
-                        'time' => '14 : 40 AM'
-                    ]
                 ]
             ],
+            'dashboard' => Dashboard::get([], $preference),
             'typhoon' => [
                 'information' => AnchorInformation::get([], $preference),
                 'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first()->content, $preference),

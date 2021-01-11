@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('wfc-data/{device}', 'WFCDataController@index');
 
+Route::get('dashboard/{device}', 'DashboardController@index');
+
 Route::get('typhoon-dynamics/{device}', 'TyphoonDynamicsController@index');
 
 Route::get('typhoon-potential/{device}', 'TyphoonPotentialController@index');
