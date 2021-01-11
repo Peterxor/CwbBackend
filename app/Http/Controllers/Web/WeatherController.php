@@ -74,31 +74,7 @@ class WeatherController extends Controller
         $categorys = GeneralImagesCategory::query()->pluck('name', 'id')->toArray();
         $json = $general->content;
 
-        switch ($general->name ?? '') {
-            default:
-            case 'east-asia-vis':
-            case 'east-asia-mb':
-            case 'east-asia-ir':
-            case 'surface-weather-map':
-            case 'global-ir':
-            case 'ultraviolet-light':
-            case 'radar-echo':
-            case 'rainfall':
-            case 'wave-analysis-chart':
-            case 'weather-alert':
-                $type = 1;
-                break;
-            case 'temperature':
-            case 'numerical-forecast':
-            case 'forecast-24h':
-            case 'weather-forecast':
-                $type = 2;
-                break;
-            case 'precipitation-forecast-12h':
-            case 'precipitation-forecast-6h':
-                $type = 3;
-                break;
-        }
+        $type = weatherType($general->name ?? '');
 
         return view('backend.pages.weather.edit', compact('type', 'general', 'categorys', 'json'));
     }
@@ -141,32 +117,23 @@ class WeatherController extends Controller
         $data = $request->all();
 
         $weather->content = ['display_name' => $data['display_name']];
-        switch ($weather->name ?? '') {
-            case 'east-asia-vis':
-            case 'east-asia-mb':
-            case 'east-asia-ir':
-            case 'surface-weather-map':
-            case 'global-ir':
-            case 'ultraviolet-light':
-            case 'radar-echo':
-            case 'rainfall':
-            case 'wave-analysis-chart':
-            case 'weather-alert':
+
+        $type = weatherType($weather->name ?? '');
+
+        switch ($type) {
+            case 1:
+            case 2:
                 $weather->content = array_merge($weather->content, [
                     'origin' => $data['origin'],
                 ]);
                 break;
-            case 'temperature':
-            case 'numerical-forecast':
-            case 'forecast-24h':
-            case 'weather-forecast':
+            case 3:
                 $weather->content = array_merge($weather->content, [
                     'origin_left' => $data['origin_left'],
                     'origin_right' => $data['origin_right'],
                 ]);
                 break;
-            case 'precipitation-forecast-12h':
-            case 'precipitation-forecast-6h':
+            case 4:
                 $weather->content = array_merge($weather->content, [
                     'origin' => $data['origin'],
                     'amount' => $data['amount'],
@@ -174,7 +141,6 @@ class WeatherController extends Controller
                 ]);
                 break;
         }
-
 
         $weather->category_id = $request->get('category');
         $weather->save();

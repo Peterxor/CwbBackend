@@ -69,7 +69,8 @@ if (!function_exists('getTheme')) {
 }
 
 if (!function_exists('uploadMedia')) {
-    function uploadMedia($file) {
+    function uploadMedia($file)
+    {
         $filesystem = 'media';
         if (env('MEDIA_TYPE', 'media') == 's3') {
             $filesystem = 's3';
@@ -91,7 +92,7 @@ if (!function_exists('uploadMedia')) {
         $new_media->save();
         if (env('MEDIA_TYPE', 'media') == 's3') {
             $s3_path = Storage::disk($filesystem)->put($path . '/' . $file_name, file_get_contents($file));
-            Log::info('save to s3: '. $s3_path);
+            Log::info('save to s3: ' . $s3_path);
         } else {
             $file->storeAs($path, $file_name, $filesystem);
         }
@@ -117,7 +118,8 @@ if (!function_exists('preference')) {
 }
 
 if (!function_exists('getWeatherImage')) {
-    function getWeatherImage($name): string {
+    function getWeatherImage($name): string
+    {
         $map = [
             'east-asia-vis' => '/images/weather/東亞VIS.jpg',
             'east-asia-mb' => '/images/weather/東亞MB.jpg',
@@ -141,7 +143,44 @@ if (!function_exists('getWeatherImage')) {
 }
 
 if (!function_exists('trasformWeatherName')) {
-    function transformWeatherName($img_url): string {
+    function transformWeatherName($img_url): string
+    {
         return explode('.', explode('/', $img_url)[count(explode('/', $img_url)) - 1])[0];
+    }
+}
+
+
+if (!function_exists('weatherType')) {
+    /**
+     * 取得天氣圖資類型
+     *
+     * @param string $weatherName
+     * @return int
+     */
+    function weatherType(string $weatherName): int
+    {
+        switch ($weatherName) {
+            default:
+            case 'surface-weather-map':
+            case 'ultraviolet-light':
+            case 'rainfall':
+            case 'wave-analysis-chart':
+            case 'weather-alert':
+                return 1;
+            case 'east-asia-vis':
+            case 'east-asia-mb':
+            case 'east-asia-ir':
+            case 'global-ir':
+            case 'radar-echo':
+                return 2;
+            case 'temperature':
+            case 'numerical-forecast':
+            case 'forecast-24h':
+            case 'weather-forecast':
+                return 3;
+            case 'precipitation-forecast-12h':
+            case 'precipitation-forecast-6h':
+                return 4;
+        }
     }
 }
