@@ -21,7 +21,7 @@ class Dashboard
             'data' => [
                 'type' => 'default',
                 'background' => '還沒想好',
-                'user-1' => [
+                'user_1' => [
                     'name' => '伍婉華',
                     'nick-name' => '簡任技正',
                     'career' => '秘書室簡任技正',
@@ -32,12 +32,12 @@ class Dashboard
                         '氣象預報中心資深預報員'
                     ]
                 ],
-                'user-2' => null,
-                'current-press-conference' => [
+                'user_2' => null,
+                'current_press_conference' => [
                     'enable' => true,
                     'time' => '11 : 40 AM',
                 ],
-                'next-press-conference' => [
+                'next_press_conference' => [
                     'enable' => true,
                     'time' => '14 : 40 AM'
                 ]

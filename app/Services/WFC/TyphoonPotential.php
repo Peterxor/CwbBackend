@@ -67,7 +67,7 @@ class TyphoonPotential
                         'point_x' => $titlePreference['point_x'] ?? 0,
                         'point_y' => $titlePreference['point_y'] ?? 0,
                     ],
-                    'tool-middle' => [
+                    'tool_middle' => [
                         'scale' => $toolMiddlePreference['scale'] ?? 100,
                         'point_x' => $toolMiddlePreference['point_x'] ?? 0,
                         'point_y' => $toolMiddlePreference['point_y'] ?? 0,
