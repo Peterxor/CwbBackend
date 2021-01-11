@@ -11,8 +11,11 @@ use App\Models\TyphoonImage;
 use App\Models\GeneralImages;
 use App\Events\MobileActionEvent;
 use Exception;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use App\Models\GeneralImagesCategory;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Finder\Finder;
 
 class MobileDeviceController extends Controller
 {
@@ -56,7 +59,6 @@ class MobileDeviceController extends Controller
                 $query->role(2);
             })->get(['id', 'name']);
 
-
             $device = Device::with(['user'])->where('id', $id)->first();
             $res = [
                 'room' => $device->name,
@@ -69,7 +71,7 @@ class MobileDeviceController extends Controller
 
             $res['anchor_list'] = $users->toArray();
             $typhoon = $device->typhoon_json;
-//        主播圖卡
+            // 主播圖卡
             $host_pics = [];
             foreach ($typhoon as $index => $value) {
                 $host_pics[] = [
@@ -92,11 +94,27 @@ class MobileDeviceController extends Controller
             ];
 
             foreach ($generalImgs as $img) {
-                $res['weather'][] = [
+
+                $tempWeather = [
                     'name' => $img->content['display_name'],
                     'value' => $img->name,
                     'pic_url' => env('APP_URL') . getWeatherImage($img->name),
                 ];
+
+                if (weatherType($img->name) === 3) {
+                    $files = Storage::disk('data')->allFiles($img->content['origin']);
+                    $tempWeather['list'] = [];
+                    foreach ($files as $index => $file) {
+                        if ($index > 5) {
+                            break;
+                        }
+                        $tempWeather['list'][] = [
+                            'name' => $index + 1,
+                            'value' => $index
+                        ];
+                    }
+                }
+                $res['weather'][] = $tempWeather;
             }
 
             return response()->json($res);
