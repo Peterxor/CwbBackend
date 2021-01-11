@@ -15,14 +15,27 @@ class Board extends Model
         'type', 'device_id', 'personnel_id_a', 'personnel_id_b', 'conference_time', 'conference_status',
         'next_conference_time', 'next_conference_status', 'background', 'media_id', 'created_at', 'updated_at'
     ];
+    protected $appends = [
+        'background_url'
+    ];
 
-    public function device() {
+    public function device()
+    {
         return $this->belongsTo(Device::class, 'device_id', 'id');
     }
 
     public function media()
     {
         return $this->hasOne(Media::class, 'id', 'media_id');
+    }
+
+    public function getBackgroundUrlAttribute()
+    {
+        $backgroundSet = [
+            'cloud.png', 'sunny.png', 'info.png', 'typhoon_eye.png'
+        ];
+        $backgroundFile = $backgroundSet[$this->background - 1] ?? 'cloud.png';
+        return env('APP_URL') . '/images/board_background/' . $backgroundFile;
     }
 
 }

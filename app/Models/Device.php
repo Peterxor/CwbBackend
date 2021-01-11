@@ -23,7 +23,11 @@ class Device extends Model
     //
     protected $table = 'device';
     protected $fillable = [
-        'name', 'forecast_json', 'typhoon_json', 'preference_json', 'user_id', 'created_at', 'updated_at'
+        'name', 'forecast_json', 'typhoon_json', 'preference_json', 'user_id', 'theme', 'created_at', 'updated_at'
+    ];
+
+    protected $appends = [
+        'theme_url'
     ];
 
     protected $casts = [
@@ -40,6 +44,19 @@ class Device extends Model
     public function board()
     {
         return $this->hasOne(Board::class, 'device_id', 'id');
+    }
+
+    public function getThemeUrlAttribute () {
+        $themeSet = [
+            'nature_blue', 'tech_blue', 'industry_orange', 'modern_red'
+        ];
+        $dirName = $themeSet[$this->theme - 1] ?? 'nature_blue';
+        return [
+            'main' => env('APP_URL') . '/images/theme/' . $dirName . '/bg_typhoon.jpg',
+            'left' => env('APP_URL') . '/images/theme/' . $dirName . '/left.png',
+            'right' => env('APP_URL') . '/images/theme/' . $dirName . '/right.png',
+        ];
+
     }
 
 //    public function getDecodeForecastAttribute () {

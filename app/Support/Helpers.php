@@ -16,18 +16,30 @@ if (!function_exists('getBackground')) {
             case 0:
                 return [
                     [
-                        'name' => '雲朵版',
+                        'name' => '多雲',
                         'value' => 1,
                     ],
                     [
-                        'name' => '彩虹版',
+                        'name' => '晴天',
                         'value' => 2,
+                    ],
+                    [
+                        'name' => '資訊',
+                        'value' => 3,
+                    ],
+                    [
+                        'name' => '颱風眼',
+                        'value' => 4,
                     ]
                 ];
             case 1:
-                return '雲朵版';
+                return '多雲';
             case 2:
-                return '彩虹版';
+                return '晴天';
+            case 3:
+                return '資訊';
+            case 4:
+                return '颱風眼';
         }
     }
 }
