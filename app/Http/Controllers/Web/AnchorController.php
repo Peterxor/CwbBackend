@@ -75,9 +75,11 @@ class AnchorController extends Controller
     public function update(Request $request, HostPreference $hostPreference): RedirectResponse
     {
         $key = $request->get('key');
-
         foreach ($request->get('preference', []) as $itemKey => $item){
-            $hostPreference->preference_json[$key][$itemKey] = $item;
+//            $hostPreference->preference_json[$key][$itemKey] = $item;
+            $tempPreferenceJson = $hostPreference->preference_json;
+            $tempPreferenceJson[$key][$itemKey] = $item;
+            $hostPreference->preference_json = $tempPreferenceJson;
         }
 
         $hostPreference->save();

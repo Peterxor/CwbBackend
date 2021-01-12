@@ -45,7 +45,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'anchor', 'as' => 'anchor.'], function () {
         Route::get('/', ['as' => 'index', 'uses' => 'AnchorController@index']);
         Route::get('query', ['as' => 'query', 'uses' => 'AnchorController@query']);
-        Route::put('{id}/update', ['as' => 'update', 'uses' => 'AnchorController@update']);
+        Route::put('{hostPreference}/update', ['as' => 'update', 'uses' => 'AnchorController@update']);
         Route::get('{id}/{device_id}/edit', ['as' => 'show', 'uses' => 'AnchorController@edit']);
     });
 
