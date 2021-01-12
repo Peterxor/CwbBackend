@@ -39,7 +39,7 @@ class WFCDataController extends Controller
             ],
             'dashboard' => Dashboard::get([], $preference),
             'typhoon' => [
-                'information' => AnchorInformation::get([], $preference),
+                'information' => AnchorInformation::get($device->typhoon_json, $preference),
                 'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first()->content, $preference),
                 'typhoon-potential' => TyphoonPotential::get($typhoonImages->where('name', 'typhoon-potential')->first()->content, $preference),
                 'wind-observation' => WindObservation::get($typhoonImages->where('name', 'wind-observation')->first()->content, $preference),
@@ -48,7 +48,12 @@ class WFCDataController extends Controller
                 'rainfall-forecast' => RainfallForecast::get($typhoonImages->where('name', 'rainfall-forecast')->first()->content, $preference),
             ],
             'weather' => [
-                'information' => WeatherInformation::get([], $preference)
+                'information' => WeatherInformation::get($device->forecast_json, $preference)
+            ],
+            'preload_images' => [
+                url('test/2020-11-10_1510.BVIS.jpg'),
+                url('test/2020-11-10_1520.BVIS.jpg'),
+                url('test/2020-11-10_1530.BVIS.jpg')
             ]
         ]);
     }
