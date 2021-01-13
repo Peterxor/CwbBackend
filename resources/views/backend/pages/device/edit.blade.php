@@ -29,6 +29,19 @@
                     <div class="kt-portlet__head">
                         <div class="kt-portlet__head-label">
                             <h3 class="kt-portlet__head-title">
+                                工具列
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__body">
+                        {{ Widget::BrushLayout(['update_url' => route('device.update', ['device' => $device->id])])}}
+                    </div>
+                </div>
+
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
                                 颱風預報圖資
                             </h3>
                         </div>
@@ -55,6 +68,7 @@
             </div>
         </div>
     </div>
+
     <!-- end:: Content -->
 
     <style>
@@ -65,9 +79,23 @@
         .blcok_type_2 {
             background-color: #6cb2eb
         }
+
+
+        .js-picker {
+        	margin:0;
+        	padding:0;
+        	border:0;
+        	width:60%;
+        	height:35px;
+            font-size: 16px;
+        	border-right:35px solid green;
+        	line-height:20px;
+        }
     </style>
 
 @endsection
 @section('pages_scripts')
-
+    <link href="/css/colpick.css" rel="stylesheet" type="text/css">
+    {!! Html::script(env('URL_PREFIX','').'js/vendor/colpick.js') !!}
+    {!! Html::script(env('URL_PREFIX','').'js/device/edit.js') !!}
 @endsection
