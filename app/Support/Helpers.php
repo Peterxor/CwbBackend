@@ -150,7 +150,7 @@ if (!function_exists('getWeatherImage')) {
             'wave-analysis-chart' => '/images/weather/波浪分析圖.jpg',
             'weather-alert' => '/images/weather/天氣警報.png'
         ];
-        return $map[$name];
+        return $map[$name] ?? '';
     }
 }
 

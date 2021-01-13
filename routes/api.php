@@ -35,9 +35,25 @@ Route::get('weather-information/{device}', 'WeatherInformationController@index')
 
 
 Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () {
-    Route::get('deviceList', ['as' => 'deviceList', 'uses' => 'MobileDeviceController@deviceList']);
+    // 裝置列表
+    Route::get('device-list', ['as' => 'device-list', 'uses' => 'MobileDeviceController@deviceList']);
+
+    // 裝置資料
     Route::get('data', ['as' => 'data', 'uses' => 'MobileDeviceController@getDeviceData']);
+
+    // 打websocket
     Route::get('action', ['as' => 'action', 'uses' => 'MobileDeviceController@action']);
-    Route::get('weatherDetail', ['as' => 'weatherDetail', 'uses' => 'MobileDeviceController@weatherDetail']);
-    Route::put('updateAnchor', ['as' => 'updateAnchor', 'uses' => 'MobileDeviceController@updateAnchor']);
+
+    // 天氣總覽
+    Route::get('weather-detail', ['as' => 'weather-detail', 'uses' => 'MobileDeviceController@weatherDetail']);
+
+    // 更新主播
+    Route::put('update-anchor', ['as' => 'update-anchor', 'uses' => 'MobileDeviceController@updateAnchor']);
+
+    // 獲取元件座標
+    Route::get('host-preference', ['as' => 'host-preference', 'uses' => 'MobileDeviceController@hostPreference']);
+    
+    // 更新元件座標
+    Route::put('update-preference', ['as' => 'update-preference', 'uses' => 'MobileDeviceController@updatePreference']);
+
 });

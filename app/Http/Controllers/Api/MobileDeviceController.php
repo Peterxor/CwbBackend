@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\GeneralImagesCategory;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Finder\Finder;
+use App\Models\HostPreference;
 
 class MobileDeviceController extends Controller
 {
@@ -63,6 +64,7 @@ class MobileDeviceController extends Controller
             $res = [
                 'room' => $device->name,
                 'room_value' => $this->roomValue($device->name),
+                'anchor_id' => $device->user->id ?? 0,
                 'anchor' => $device->user->name ?? '',
                 'typhoon' => [],
                 'weather' => [],
@@ -202,8 +204,108 @@ class MobileDeviceController extends Controller
         }
     }
 
+    /** 獲取主播的元件座標
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function hostPreference(Request $request): JsonResponse
+    {
+        try {
+            $request->validate([
+                'user_id' => 'required|numeric',
+                'device_id' => 'required|numeric',
+                'type' => 'required|string|max:255',
+                'key' => 'required|string|max:255',
+            ]);
+            $user_id = $request->get('user_id');
+            $device_id = $request->get('device_id');
+            $key = $request->get('key');
+            $type = $request->get('type');
+            $host = HostPreference::query()->where([
+                'user_id' => $user_id,
+                'device_id' => $device_id
+            ])->first();
+            // 檢查是否為 一般天氣-圖資
+            if (getWeatherImage($key)) {
+                $json = $host->preference_json[$type]['images'][$key];
+            } else {
+                // 颱風所有圖資， 一般天氣-一般天氣預報， 一般天氣-通用設定
+                $json = $host->preference_json[$type][$key];
+            }
+            return response()->json($json);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('請求失敗');
+        }
+    }
 
-    public function roomValue($room)
+    /** 更新主播的元件座標
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updatePreference(Request $request): JsonResponse
+    {
+        try {
+            $request->validate([
+                'user_id' => 'required|numeric',
+                'device_id' => 'required|numeric',
+                'type' => 'required|string|max:255',
+                'key' => 'required|string|max:255',
+                'preference' => 'required|array',
+            ]);
+            $user_id = $request->get('user_id');
+            $device_id = $request->get('device_id');
+            $key = $request->get('key');
+            $type = $request->get('type');
+
+            $preference = $request->get('preference');
+            $host = HostPreference::query()->where([
+                'user_id' => $user_id,
+                'device_id' => $device_id
+            ])->first();
+            $tempPreferenceJson = $host->preference_json;
+            // 檢查是否為 一般天氣-圖資
+            if (getWeatherImage($key) && $type === '一般天氣') {
+                $tempPreferenceJson[$type]['images'][$key] = $preference;
+            } else if ($this->checkKey($type, $key)) {
+                // 颱風所有圖資， 一般天氣-一般天氣預報， 一般天氣-通用設定
+                $tempPreferenceJson[$type][$key] = $preference;
+            } else {
+                throw new Exception('type,key,參數錯誤');
+            }
+            $host->preference_json = $tempPreferenceJson;
+            $host->save();
+            return $this->sendResponse('', '成功更新');
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return $this->sendError('請求失敗');
+        }
+    }
+
+    /** 檢查type,key對應是否正確
+     * @param $type
+     * @param $key
+     * @return bool
+     */
+    public function checkKey($type, $key): bool
+    {
+        $typhoon = ['typhoon-dynamics', 'typhoon-dynamics', 'wind-observation', 'wind-forecast', 'rainfall-observation', 'rainfall-forecast'];
+        $weather = ['general', 'weather-information'];
+        if ($type === '颱風預報') {
+            return in_array($key, $typhoon);
+
+        } else if ($type === '一般天氣') {
+            return in_array($key, $weather);
+        }
+        return false;
+    }
+
+
+    /** 獲取辦公室的value
+     * @param $room
+     * @return string
+     */
+    public function roomValue($room): string
     {
         $map = [
             '防災視訊室' => 'protect_disaster',
