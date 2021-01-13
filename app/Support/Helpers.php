@@ -176,7 +176,6 @@ if (!function_exists('weatherType')) {
         // 3:圖片列表
         // 4:雙圖並列
         switch ($weatherName) {
-            default:
             case 'surface-weather-map':
             case 'ultraviolet-light':
             case 'rainfall':
@@ -197,6 +196,33 @@ if (!function_exists('weatherType')) {
             case 'precipitation-forecast-12h':
             case 'precipitation-forecast-6h':
                 return 4;
+            default:
+                return 5;
         }
     }
 }
+
+if (!function_exists('imageUrl')) {
+    function imageUrl(string $path): string
+    {
+        $files = iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($path))->sortByName(), false);
+
+        return Storage::disk('data')->url($path . '/' . $files[count($files) - 1]->getBasename());
+    }
+}
+
+if (!function_exists('imagesUrl')) {
+    function imagesUrl(string $path, int $amount): array
+    {
+        $path = rtrim($path, '/');
+        $files = array_reverse(iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($path))->sortByName(), false));
+        $images = [];
+        foreach ($files as $key => $file) {
+            if ($key >= $amount)
+                continue;
+            $images[] = Storage::disk('data')->url($path . '/' . $file->getBasename());
+        }
+        return array_reverse($images);
+    }
+}
+

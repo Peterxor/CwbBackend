@@ -19,6 +19,6 @@ class WeatherInformationController extends Controller
      */
     public function index(Device $device): JsonResponse
     {
-        return response()->json(WeatherInformation::get([], preference($device)));
+        return response()->json(WeatherInformation::get($device->forecast_json, preference($device)));
     }
 }
