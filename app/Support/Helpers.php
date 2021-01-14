@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\Device;
 use App\Models\HostPreference;
+use Symfony\Component\Finder\Finder;
 
 if (!function_exists('getBackground')) {
     function getBackground($background)
