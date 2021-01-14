@@ -2,7 +2,9 @@
 
 namespace App\Services\WFC;
 
+use App\Models\TyphoonImage;
 use App\Services\WFC\Exceptions\WFCException;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,21 +27,26 @@ class TyphoonPotential
             $typhoon['current']['center']['point']['lon'] = (float)$typhoonPotential->TY_TRACK_POINT->center->point->lon;
             $typhoon['current']['track']['points'] = [];
 
-            foreach ($typhoonPotential->TY_TRACK_POINT->track->point as $point){
+            foreach ($typhoonPotential->TY_TRACK_POINT->track->point as $point) {
                 $typhoon['current']['track']['points'][] = [
                     'lat' => (float)$point->lat,
                     'lon' => (float)$point->lon
                 ];
             }
 
+            $currentTime = self::currentTime();
+
             $typhoon['fcst'] = [];
             foreach ($typhoonPotential->CIRCLE as $circle) {
+                $tempTime = clone $currentTime;
+                $tempTime->addHours((int)$circle->hour);
+
                 $item['center']['point']['lat'] = (float)$circle->center->point->lat;
                 $item['center']['point']['lon'] = (float)$circle->center->point->lon;
                 $item['radius'] = (float)$circle->radius;
-                $item['label'] = (int)$circle->hour;
+                $item['label'] =  $tempTime->format('m月d日 H:i');
                 $item['track']['points'] = [];
-                foreach ($circle->track->point as $point){
+                foreach ($circle->track->point as $point) {
                     $item['track']['points'][] = [
                         'lat' => (float)$point->lat,
                         'lon' => (float)$point->lon
@@ -77,6 +84,27 @@ class TyphoonPotential
             ];
         } catch (Exception $exception) {
             throw new WFCException('颱風潛勢資料解析錯誤', 500, $exception);
+        }
+    }
+
+    /**
+     * 取得目前時間
+     *
+     * @return Carbon|false
+     * @throws WFCException
+     */
+    static public function currentTime()
+    {
+        /** @var TyphoonImage $typhoonImage */
+        $typhoonImage = TyphoonImage::query()->where('name', 'typhoon-dynamics')->first();
+        $setting = $typhoonImage->content;
+        $path = Storage::disk('data')->path($setting['typhoon-dynamics']['origin'] ?? '');
+
+        try {
+            $typhoonDynamics = simplexml_load_file($path);
+            return Carbon::create((string)$typhoonDynamics->current->Point->Time);
+        } catch (Exception $exception) {
+            throw new WFCException('颱風潛勢[颱風動態]資料解析錯誤', 500, $exception);
         }
     }
 }
