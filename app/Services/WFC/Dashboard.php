@@ -16,28 +16,37 @@ class Dashboard
      */
     static public function get(array $setting, array $preference): array
     {
+//        dd($setting);
+        $data = [];
+
+        if ($setting['type'] === 1) {
+            $data['type'] = 'default';
+            $data['background'] = $setting['background_url'] ?? '';
+            $data['user_1'] = $setting['personnel_a'] ? [
+                'name' => $setting['personnel_a']['name'],
+                'nick_name' => $setting['personnel_a']['nick_name'],
+                'career' => $setting['personnel_a']['career'],
+                'education' => $setting['personnel_a']['education'],
+                'experience' => $setting['personnel_a']['experience'],
+            ] : [];
+            $data['user_2'] = $setting['personnel_b'] ? [
+                'name' => $setting['personnel_b']['name'],
+                'nick_name' => $setting['personnel_b']['nick_name'],
+                'career' => $setting['personnel_b']['career'],
+                'education' => $setting['personnel_b']['education'],
+                'experience' => $setting['personnel_b']['experience'],
+            ] : [];
+            $data['current_press_conference'] = $setting['conference_status'] === 1 ? $setting['conference_time'] ?? null : null;
+            $data['next_press_conference'] = $setting['next_conference_status'] === 1 ? $setting['next_conference_time'] ?? null : null;
+        } else {
+            $data['type'] = 'upload';
+            $data['media_url'] = $setting['media']['url'] ?? '';
+        }
         return [
-            'meta' => [],
-            'data' => [
-                'type' => 'default',
-                'background' => '還沒想好',
-                'user_1' => [
-                    'name' => '伍婉華',
-                    'nick_name' => '簡任技正',
-                    'career' => '秘書室簡任技正',
-                    'education' => '中央大學大氣物理研究所碩士',
-                    'experience' => [
-                        '第一組第二科科長',
-                        '氣象預報中心技正',
-                        '氣象預報中心資深預報員'
-                    ]
-                ],
-                'user_2' => null,
-                'current_press_conference' => [
-                    'time' => '11 : 40 AM',
-                ],
-                'next_press_conference' => null
-            ]
+            'meta' => [
+                'theme' => $setting['themes'] ?? [],
+            ],
+            'data' => $data
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Web\Controller;
+use App\Models\Board;
 use App\Models\Device;
 use App\Models\TyphoonImage;
 use App\Services\WFC\AnchorInformation;
@@ -30,14 +31,16 @@ class WFCDataController extends Controller
 
         $typhoonImages = TyphoonImage::all(['name', 'content']);
 
+        $board = Board::query()->with(['media', 'personnel_a', 'personnel_b'])->where('device_id', $device->id)->first()->toArray();
+
         return response()->json([
             'meta' => [
-                'theme' => '還沒想好',
+                'theme' => $device->theme_url,
                 'color' => [
                     '#FF4B4B','#26D6FF', '#FF9046', '#88D904', '#FF9046', '#AF16E6'
                 ]
             ],
-            'dashboard' => Dashboard::get([], $preference),
+            'dashboard' => Dashboard::get($board, $preference),
             'typhoon' => [
                 'information' => AnchorInformation::get($device->typhoon_json, $preference),
                 'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first()->content, $preference),

@@ -7,6 +7,7 @@ use App\Models\Device;
 use App\Services\WFC\Dashboard;
 use App\Services\WFC\Exceptions\WFCException;
 use Illuminate\Http\JsonResponse;
+use App\Models\Board;
 
 class DashboardController extends Controller
 {
@@ -19,6 +20,9 @@ class DashboardController extends Controller
      */
     public function index(Device $device): JsonResponse
     {
-        return response()->json(Dashboard::get([], preference($device)));
+        $board = Board::query()->with(['media', 'personnel_a', 'personnel_b'])->where('device_id', $device->id)->first()->toArray();
+        $theme_urls = $device->theme_url ?? [];
+        $board['themes'] = $theme_urls;
+        return response()->json(Dashboard::get($board, preference($device)));
     }
 }

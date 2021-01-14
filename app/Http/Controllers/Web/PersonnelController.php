@@ -37,12 +37,13 @@ class PersonnelController extends Controller
 
     public function store(PersonnelRequest $request)
     {
+        $exps = $this->checkExp($request->exp);
         $create = [
             'name' => $request->name ?? '',
             'nick_name' => $request->nick_name ?? '',
             'career' => $request->career ?? '',
             'education' => $request->education ?? '',
-            'experience' => json_encode($request->exp ?? [])
+            'experience' => json_encode($exps ?? [])
         ];
 
         Personnel::create($create);
@@ -52,22 +53,35 @@ class PersonnelController extends Controller
     public function edit($id)
     {
         $person = Personnel::find($id);
-        $experience = json_decode($person->experience);
+        $experience = $person->experience;
         return view("backend.pages.personnel.edit", compact('person', 'experience'));
     }
 
     public function update(PersonnelRequest $request, $id)
     {
+        $exps = $this->checkExp($request->exp);
         $update = [
             'name' => $request->name ?? '',
             'nick_name' => $request->nick_name ?? '',
             'career' => $request->career ?? '',
             'education' => $request->education ?? '',
-            'experience' => json_encode($request->exp ?? [])
+            'experience' => json_encode($exps ?? [])
         ];
 
         Personnel::where('id', $id)->update($update);
         return redirect(route('personnel.index'));
 
+    }
+
+    public function checkExp($experience)
+    {
+        $temp = $experience;
+        $exps = [];
+        foreach ($temp as $e) {
+            if ($e) {
+                $exps[] = $e;
+            }
+        }
+        return $exps;
     }
 }

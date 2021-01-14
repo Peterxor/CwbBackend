@@ -29,6 +29,16 @@ class Board extends Model
         return $this->hasOne(Media::class, 'id', 'media_id');
     }
 
+    public function personnel_a()
+    {
+        return $this->hasOne(Personnel::class, 'id', 'personnel_id_a');
+    }
+
+    public function personnel_b()
+    {
+        return $this->hasOne(Personnel::class, 'id', 'personnel_id_b');
+    }
+
     public function getBackgroundUrlAttribute()
     {
         $backgroundSet = [
