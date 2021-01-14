@@ -103,11 +103,11 @@ class RainfallObservation
                 ]
             ],
             'rainfall' => [
-                'today' => self::format($setting['today'] ?? [], $setting['amount'], $setting['interval'], '今日雨量'),
-                'before1nd' => self::format($setting['before1nd'] ?? [], $setting['amount'], $setting['interval'], '前一日雨量'),
-                'before2nd' => self::format($setting['before2nd'] ?? [], $setting['amount'], $setting['interval'], '前二日雨量'),
-                'before3nd' => self::format($setting['before3nd'] ?? [], $setting['amount'], $setting['interval'], '前三日雨量'),
-                'before4nd' => self::format($setting['before4nd'] ?? [], $setting['amount'], $setting['interval'], '前四日雨量'),
+                'today' => self::format('今日雨量', $setting['today'] ?? [], $setting['amount'], $setting['interval']),
+                'before1nd' => self::format('前一日雨量', $setting['before1nd'] ?? [], $setting['amount'], $setting['interval']),
+                'before2nd' => self::format('前二日雨量', $setting['before2nd'] ?? [], $setting['amount'], $setting['interval']),
+                'before3nd' => self::format('前三日雨量', $setting['before3nd'] ?? [], $setting['amount'], $setting['interval']),
+                'before4nd' => self::format('前四日雨量', $setting['before4nd'] ?? [], $setting['amount'], $setting['interval']),
             ]
         ];
     }
@@ -115,35 +115,31 @@ class RainfallObservation
     /**
      * 雨量格式整理
      *
+     * @param string $title 圖資名稱
      * @param array $setting 圖資設定
      * @param int $amount GIF張數
      * @param int $interval 間隔時間(毫秒)
-     * @param string $title 圖資名稱
      * @return array
      * @throws WFCException
      */
-    static private function format(array $setting, int $amount, int $interval, string $title): array
+    static private function format(string $title, array $setting, int $amount, int $interval): array
     {
         if (empty($setting))
             throw new WFCException('雨量觀測[' . $title . ']資料解析錯誤', 500);
 
         try {
-            $data = ['enable' => $setting['status'] == 1, 'title' => '雨量觀測', 'startTime' => '', 'endTime' => '', 'mode' => 'gif', 'interval' => $interval, 'images' => '', 'top' => ['c' => [], 'a' => [], 'n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []], 'location' => ['n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []]];
-
-            $imageOrigin = rtrim($setting['image-origin'], '/');
-
-            // 以名稱排序(A-Z)取最後一個
-            $files = array_reverse(iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($imageOrigin))->sortByName(), false));
-            $images = [];
-            foreach ($files as $key => $file) {
-                if ($key >= $amount)
-                    continue;
-                $images[] = Storage::disk('data')->url($imageOrigin . '/' . $file->getBasename());
-            }
+            $data = [
+                'enable' => $setting['status'] == 1,
+                'title' => '雨量觀測',
+                'startTime' => '',
+                'endTime' => '',
+                'mode' => 'gif',
+                'interval' => $interval,
+                'images' => imagesUrl($setting['image-origin'], $amount),
+                'top' => ['c' => [], 'a' => [], 'n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []],
+                'location' => ['n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []]];
 
             $dataOrigin = rtrim($setting['data-origin'], '/');
-
-            $data['images'] = array_reverse($images);
 
             // 以名稱排序(A-Z)取最後一個
             $files = iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($dataOrigin))->sortByName(), false);

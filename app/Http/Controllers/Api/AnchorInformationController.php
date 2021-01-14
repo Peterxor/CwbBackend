@@ -19,6 +19,6 @@ class AnchorInformationController extends Controller
      */
     public function index(Device $device): JsonResponse
     {
-        return response()->json(AnchorInformation::get([], preference($device)));
+        return response()->json(AnchorInformation::get($device->typhoon_json, preference($device)));
     }
 }

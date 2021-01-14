@@ -98,7 +98,7 @@
                                 <input type="hidden" name="next_news_time"
                                        value="{{$device->board->next_conference_time ?? ''}}">
                                 <input type="hidden" name="media_name"
-                                       value="{{ $device->board->media ?  $device->board->media->file_name . '.' . $device->board->media->mime_type : ''}}">
+                                       value="{{ ($device->board->media ?? false) ?  $device->board->media->file_name . '.' . $device->board->media->mime_type : ''}}">
                             </div>
                             <div class="col-6">
 

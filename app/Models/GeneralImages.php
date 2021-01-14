@@ -28,6 +28,13 @@ class GeneralImages extends Model
         'content' => 'array'
     ];
 
+    public static $mode = [
+        1 => 'single',
+        2 => 'gif',
+        3 => 'list',
+        4 => 'abreast'
+    ];
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(GeneralImagesCategory::class, 'category_id', 'id');
