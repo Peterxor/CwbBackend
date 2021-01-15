@@ -36,9 +36,7 @@ class WFCDataController extends Controller
         return response()->json([
             'meta' => [
                 'theme' => $device->theme_url,
-                'color' => [
-                    '#FF4B4B','#26D6FF', '#FF9046', '#88D904', '#FF9046', '#AF16E6'
-                ]
+                'color' => $preference['tool']['colors'] ?? []
             ],
             'dashboard' => Dashboard::get($board, $preference),
             'typhoon' => [

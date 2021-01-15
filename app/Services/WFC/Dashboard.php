@@ -45,6 +45,7 @@ class Dashboard
         return [
             'meta' => [
                 'theme' => $setting['themes'] ?? [],
+                'color' => $preference['tool']['colors'] ?? [],
             ],
             'data' => $data
         ];
