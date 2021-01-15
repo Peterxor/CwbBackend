@@ -33,11 +33,11 @@ class WFCDataController extends Controller
 
         $board = Board::query()->with(['media', 'personnel_a', 'personnel_b'])->where('device_id', $device->id)->first()->toArray();
 
-        return response()->json([
+        $data = [
             'meta' => [
                 'theme' => $device->theme_url,
                 'color' => [
-                    '#FF4B4B','#26D6FF', '#FF9046', '#88D904', '#FF9046', '#AF16E6'
+                    '#FF4B4B', '#26D6FF', '#FF9046', '#88D904', '#FF9046', '#AF16E6'
                 ]
             ],
             'dashboard' => Dashboard::get($board, $preference),
@@ -52,12 +52,61 @@ class WFCDataController extends Controller
             ],
             'weather' => [
                 'information' => WeatherInformation::get($device->forecast_json, $preference)
-            ],
-            'preload_images' => [
-                url('test/2020-11-10_1510.BVIS.jpg'),
-                url('test/2020-11-10_1520.BVIS.jpg'),
-                url('test/2020-11-10_1530.BVIS.jpg')
             ]
-        ]);
+        ];
+
+        $data['preload_images'] = $this->preloadImages($data);
+
+        return response()->json($data);
+    }
+
+    private function preloadImages(array $data): array
+    {
+        $images = [];
+
+        foreach ($data['meta']['theme'] ?? [] as $theme){
+            $images[] = $theme;
+        }
+
+        if($data['dashboard']['data']['type'] == 'default')
+            $images[] = $data['dashboard']['data']['background'];
+        else
+            $images[] = $data['dashboard']['data']['media_url'];
+
+        $imageList = $data['typhoon']['information']['information'] ?? [];
+
+        array_push($imageList,
+            $data['typhoon']['typhoon-dynamics']['ir'],
+            $data['typhoon']['typhoon-dynamics']['mb'],
+            $data['typhoon']['typhoon-dynamics']['vis'],
+            $data['typhoon']['rainfall-observation']['rainfall']['today'],
+            $data['typhoon']['rainfall-observation']['rainfall']['before1nd'],
+            $data['typhoon']['rainfall-observation']['rainfall']['before2nd'],
+            $data['typhoon']['rainfall-observation']['rainfall']['before3nd'],
+            $data['typhoon']['rainfall-observation']['rainfall']['before4nd']
+        );
+
+        $imageList = array_merge_recursive($imageList, $data['weather']['information']['information'] ?? []);
+
+        foreach ($imageList as $information){
+            if(array_key_exists('image_l', $information)){
+                $images[] = $information['image_l'];
+            }
+            if(array_key_exists('image_r', $information)){
+                $images[] = $information['image_r'];
+            }
+            if(array_key_exists('image', $information)){
+                $images[] = $information['image'];
+            }
+            if(array_key_exists('thumbnail', $information)){
+                $images[] = $information['thumbnail'];
+            }
+            if(array_key_exists('images', $information)){
+                foreach ($information['images'] as $image){
+                    $images[] = $image;
+                }
+            }
+        }
+        return array_values(array_unique($images));
     }
 }
