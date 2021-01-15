@@ -13,12 +13,12 @@ class BrushLayout extends AbstractWidget
      */
     protected $config = [
         'update_url' => '',
+        'preference' => []
     ];
 
     public function __construct(array $config = [])
     {
         $this->addConfigDefaults($config);
-
         parent::__construct($config);
     }
 
@@ -30,6 +30,7 @@ class BrushLayout extends AbstractWidget
     {
         return view('backend.widgets.brush_layout', [
             'update_url' => $this->config['update_url'],
+            'preference' => $this->config['preference']
         ]);
     }
 }

@@ -66,7 +66,6 @@ class DeviceController extends Controller
         $key = $request->get('key');
 
         foreach ($request->get('preference', []) as $itemKey => $item) {
-//            $device->preference_json[$key][$itemKey] = $item  error:;
             $tempPreferenceJson = $device->preference_json;
             $tempPreferenceJson[$key][$itemKey] = $item;
             $device->preference_json = $tempPreferenceJson;

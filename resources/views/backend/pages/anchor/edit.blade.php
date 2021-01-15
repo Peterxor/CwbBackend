@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="kt-portlet__body">
-                        {{ Widget::TyphoonLayout(['update_url' => route('anchor.update', ['hostPreference' => $hostPreference->id]), 'auchor'=>true, 'default' => $hostPreference->device->preference_json['颱風預報'] ?? [], 'preference' => $hostPreference->preference_json['颱風預報'] ?? []])}}
+                        {{ Widget::TyphoonLayout(['update_url' => route('anchor.update', ['hostPreference' => $hostPreference->id]), 'auchor'=>true, 'default' => $hostPreference->device->preference_json['typhoon'] ?? [], 'preference' => $hostPreference->preference_json['typhoon'] ?? []])}}
                     </div>
                 </div>
 
@@ -74,7 +74,7 @@
                     </div>
                     <div class="kt-portlet__body">
                         <div class="kt-section kt-section--first">
-                            {{ Widget::weatherLayout(['update_url' => route('anchor.update', ['hostPreference' => $hostPreference->id]), 'auchor'=>true, 'default' => $hostPreference->device->preference_json['一般天氣'] ?? [], 'preference' => $hostPreference->preference_json['一般天氣'] ?? []])}}
+                            {{ Widget::weatherLayout(['update_url' => route('anchor.update', ['hostPreference' => $hostPreference->id]), 'auchor'=>true, 'default' => $hostPreference->device->preference_json['weather'] ?? [], 'preference' => $hostPreference->preference_json['weather'] ?? []])}}
                         </div>
                     </div>
                 </div>
