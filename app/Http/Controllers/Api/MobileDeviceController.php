@@ -276,7 +276,7 @@ class MobileDeviceController extends Controller
 
             $tempPreferenceJson = $host->preference_json;
             // 檢查是否為 一般天氣-圖資
-            if (getWeatherImage($key) && $type === '一般天氣') {
+            if (getWeatherImage($key) && $type === 'weather') {
                 $tempPreferenceJson[$type]['images'][$key] = $preference;
             } else if ($this->checkKey($type, $key)) {
                 // 颱風所有圖資， 一般天氣-一般天氣預報， 一般天氣-通用設定
@@ -302,10 +302,10 @@ class MobileDeviceController extends Controller
     {
         $typhoon = ['typhoon-dynamics', 'typhoon-dynamics', 'wind-observation', 'wind-forecast', 'rainfall-observation', 'rainfall-forecast'];
         $weather = ['general', 'weather-information'];
-        if ($type === '颱風預報') {
+        if ($type === 'typhoon') {
             return in_array($key, $typhoon);
 
-        } else if ($type === '一般天氣') {
+        } else if ($type === 'weather') {
             return in_array($key, $weather);
         }
         return false;
