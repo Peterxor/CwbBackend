@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="kt-portlet__body">
-                        {{ Widget::BrushLayout(['update_url' => route('device.update', ['device' => $device->id])])}}
+                        {{ Widget::BrushLayout(['update_url' => route('device.update', ['device' => $device->id]), 'preference' => $preference['tool'] ?? []])}}
                     </div>
                 </div>
 
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="kt-portlet__body">
-                        {{ Widget::TyphoonLayout(['update_url' => route('device.update', ['device' => $device->id]), 'auchor'=>false, 'preference' => $preference['颱風預報'] ?? []])}}
+                        {{ Widget::TyphoonLayout(['update_url' => route('device.update', ['device' => $device->id]), 'auchor'=>false, 'preference' => $preference['typhoon'] ?? []])}}
                     </div>
                 </div>
 
@@ -61,7 +61,7 @@
                     </div>
                     <div class="kt-portlet__body">
                         <div class="kt-section kt-section--first">
-                            {{ Widget::weatherLayout(['update_url' => route('device.update', ['device' => $device->id]), 'auchor'=>false, 'preference' => $preference['一般天氣'] ?? []])}}
+                            {{ Widget::weatherLayout(['update_url' => route('device.update', ['device' => $device->id]), 'auchor'=>false, 'preference' => $preference['weather'] ?? []])}}
                         </div>
                     </div>
                 </div>

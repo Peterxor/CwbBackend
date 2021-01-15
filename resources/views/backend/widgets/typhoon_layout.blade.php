@@ -17,7 +17,7 @@
             <form class="kt-form kt-form--label-right" action="{{$update_url}}" method="post">
                 @csrf
                 <input type="hidden" name="_method" value="put"/>
-                <input type="hidden" name="key" value="颱風預報"/>
+                <input type="hidden" name="key" value="typhoon"/>
                 <div class="kt-section">
                     <div class="kt-section__content">
                         <table class="table table-bordered">

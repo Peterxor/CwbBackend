@@ -126,7 +126,7 @@ if (!function_exists('preference')) {
         /** @var HostPreference $hostPreference */
         $hostPreference = HostPreference::query()->firstOrCreate(['user_id' => $device->user_id, 'device_id' => $device->id]);
 
-        return array_merge($device->preference_json, $hostPreference->preference_json ?? []);
+        return array_merge($device->preference_json ?? [], $hostPreference->preference_json ?? []);
     }
 }
 

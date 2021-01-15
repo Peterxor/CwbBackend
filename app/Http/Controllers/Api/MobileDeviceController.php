@@ -212,19 +212,24 @@ class MobileDeviceController extends Controller
     {
         try {
             $request->validate([
-                'user_id' => 'required|numeric',
+                'anchor_id' => 'numeric',
                 'device_id' => 'required|numeric',
                 'type' => 'required|string|max:255',
-                'key' => 'required|string|max:255',
+                'screen' => 'required|string|max:255',
             ]);
-            $user_id = $request->get('user_id');
+            $user_id = $request->get('anchor_id');
             $device_id = $request->get('device_id');
-            $key = $request->get('key');
+            $key = $request->get('screen');
             $type = $request->get('type');
-            $host = HostPreference::query()->where([
-                'user_id' => $user_id,
-                'device_id' => $device_id
-            ])->first();
+            if ($user_id) {
+                $host = HostPreference::query()->where([
+                    'user_id' => $user_id,
+                    'device_id' => $device_id
+                ])->first();
+            } else {
+                $host = Device:: query()->where(['id' => $device_id])->first();
+            }
+
             // 檢查是否為 一般天氣-圖資
             if (getWeatherImage($key)) {
                 $json = $host->preference_json[$type]['images'][$key];
@@ -247,25 +252,31 @@ class MobileDeviceController extends Controller
     {
         try {
             $request->validate([
-                'user_id' => 'required|numeric',
+                'anchor_id' => 'numeric',
                 'device_id' => 'required|numeric',
                 'type' => 'required|string|max:255',
-                'key' => 'required|string|max:255',
+                'screen' => 'required|string|max:255',
                 'preference' => 'required|array',
             ]);
-            $user_id = $request->get('user_id');
+            $user_id = $request->get('anchor_id');
             $device_id = $request->get('device_id');
-            $key = $request->get('key');
+            $key = $request->get('screen');
             $type = $request->get('type');
 
             $preference = $request->get('preference');
-            $host = HostPreference::query()->where([
-                'user_id' => $user_id,
-                'device_id' => $device_id
-            ])->first();
+
+            if ($user_id) {
+                $host = HostPreference::query()->where([
+                    'user_id' => $user_id,
+                    'device_id' => $device_id
+                ])->first();
+            } else {
+                $host = Device:: query()->where(['id' => $device_id])->first();
+            }
+
             $tempPreferenceJson = $host->preference_json;
             // 檢查是否為 一般天氣-圖資
-            if (getWeatherImage($key) && $type === '一般天氣') {
+            if (getWeatherImage($key) && $type === 'weather') {
                 $tempPreferenceJson[$type]['images'][$key] = $preference;
             } else if ($this->checkKey($type, $key)) {
                 // 颱風所有圖資， 一般天氣-一般天氣預報， 一般天氣-通用設定
@@ -291,10 +302,10 @@ class MobileDeviceController extends Controller
     {
         $typhoon = ['typhoon-dynamics', 'typhoon-dynamics', 'wind-observation', 'wind-forecast', 'rainfall-observation', 'rainfall-forecast'];
         $weather = ['general', 'weather-information'];
-        if ($type === '颱風預報') {
+        if ($type === 'typhoon') {
             return in_array($key, $typhoon);
 
-        } else if ($type === '一般天氣') {
+        } else if ($type === 'weather') {
             return in_array($key, $weather);
         }
         return false;

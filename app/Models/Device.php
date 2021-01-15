@@ -52,9 +52,9 @@ class Device extends Model
         ];
         $dirName = $themeSet[$this->theme - 1] ?? 'nature_blue';
         return [
-            'main' => env('APP_URL') . '/images/theme/' . $dirName . '/bg_typhoon.jpg',
-            'left' => env('APP_URL') . '/images/theme/' . $dirName . '/left.png',
-            'right' => env('APP_URL') . '/images/theme/' . $dirName . '/right.png',
+            env('APP_URL') . '/images/theme/' . $dirName . '/bg_typhoon.jpg',
+            env('APP_URL') . '/images/theme/' . $dirName . '/left.png',
+            env('APP_URL') . '/images/theme/' . $dirName . '/right.png',
         ];
 
     }
