@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('updateDeviceTheme', ['as' => 'updateDeviceTheme', 'uses' => 'DashboardController@updateDeviceTheme']);
         Route::post('updateBoard', ['as' => 'updateBoard', 'uses' => 'DashboardController@updateBoard']);
         Route::put('{device}', ['as' => 'update', 'uses' => 'DashboardController@update']);
+        Route::get('clear', ['as' => 'clear', 'uses' => 'DashboardController@clearRedis']);
     });
     Route::resource('dashboard', 'DashboardController')->except(['show', 'edit', 'update']);
 

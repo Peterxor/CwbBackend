@@ -14,6 +14,7 @@ use App\Models\Board;
 use Exception;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\View\View;
 use App\Exceptions\PermissionException;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,7 @@ class DashboardController extends Controller
             return redirect(route('anchor.index'));
         }
 
-        $devices = Device::with(['user', 'board' => function($query) {
+        $devices = Device::with(['user', 'board' => function ($query) {
             $query->with(['media']);
         }])->get();
         $themes = getTheme(0);
@@ -225,6 +226,13 @@ class DashboardController extends Controller
      */
     public function probe(): string
     {
+        return 'ok';
+    }
+
+
+    public function clearRedis()
+    {
+        Redis::del('menus');
         return 'ok';
     }
 }
