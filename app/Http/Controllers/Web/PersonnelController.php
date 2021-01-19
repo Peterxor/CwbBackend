@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Personnel;
@@ -72,7 +73,16 @@ class PersonnelController extends Controller
             'experience' => json_encode($exps ?? [])
         ];
 
-        Personnel::create($create);
+        $personnel = Personnel::create($create);
+        $item = '新增人員[' . ($personnel->name ?? '') .']';
+        activity()
+            ->performedOn($personnel)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => $request->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('新增');
         return redirect(route('personnel.index'));
     }
 
@@ -112,6 +122,17 @@ class PersonnelController extends Controller
         ];
 
         Personnel::where('id', $id)->update($update);
+        $personnel = Personnel::find($id);
+        $item = '更新人員[' . ($personnel->name ?? '') . ']';
+        activity()
+            ->performedOn($personnel)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => $request->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('修改');
+
         return redirect(route('personnel.index'));
 
     }

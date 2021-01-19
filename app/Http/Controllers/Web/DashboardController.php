@@ -101,8 +101,19 @@ class DashboardController extends Controller
             $data[] = $temp;
         }
         $update = $json_type == 'typhoon' ? ['typhoon_json' => $data] : ['forecast_json' => $data];
+        $beforeJson = $json_type == 'typhoon' ? $device->typhoon_json : $device->forecast_json;
+        $item = '更新[' . $device->name . ']' . ($json_type == 'typhoon' ? '颱風主播圖卡' : '天氣預報排程');
 
         $device->update($update);
+        activity()
+            ->performedOn($device)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => $request->getClientIp(),
+                'item' => $item,
+                'before_json' => $beforeJson,
+            ])
+            ->log('修改');
         return redirect(route('dashboard.index'));
     }
 
@@ -117,8 +128,18 @@ class DashboardController extends Controller
         if (!hasPermission('edit_dashboard')) {
             throw new PermissionException();
         }
-
-        Device::query()->where('id', $request->get('device_id'))->update(['user_id' => $request->get('user_id')]);
+        $device = Device::query()->where('id', $request->get('device_id'))->first();
+        $device->user_id = $request->get('user_id');
+        $device->save();
+        $item = '更新[' . $device->name . ']' . '主播：' . ($device->user->name ?? '不指定');
+        activity()
+            ->performedOn($device)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => $request->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('修改');
 
         return $this->sendResponse('', 'success');
     }
@@ -134,8 +155,19 @@ class DashboardController extends Controller
         if (!hasPermission('edit_dashboard')) {
             throw new PermissionException();
         }
-        Device::query()->where('id', $request->get('device_id'))->update(['theme' => $request->get('theme')]);
-
+//        Device::query()->where('id', $request->get('device_id'))->update(['theme' => $request->get('theme')]);
+        $device = Device::query()->where('id', $request->get('device_id'))->first();
+        $device->theme = $request->get('theme');
+        $device->save();
+        $item = '更新[' . $device->name . ']' . '佈景主題：' . (getTheme($device->theme));
+        activity()
+            ->performedOn($device)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => $request->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('修改');
         return $this->sendResponse('', 'success');
     }
 
@@ -169,6 +201,16 @@ class DashboardController extends Controller
             $board->save();
             $response = $board->toArray();
             $response['media_name'] = isset($res) ? $res['new_media']->file_name . '.' . $res['new_media']->mime_type : '';
+
+            $item = '更新[' . $board->device->name . ']' . '看板';
+            activity()
+                ->performedOn($board)
+                ->causedBy(Auth::user()->id)
+                ->withProperties([
+                    'ip' => $request->getClientIp(),
+                    'item' => $item,
+                ])
+                ->log('修改');
             return $this->sendResponse($response, 'update success');
         } catch (Exception $e) {
             Log::error($e->getMessage());

@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\GeneralImages;
 use App\Models\Media;
+use App\Models\TyphoonImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -235,6 +237,51 @@ if (!function_exists('hasPermission')) {
             return false;
         }
         return Auth::user()->can($permission_name);
+    }
+}
+
+if (!function_exists('savePreferenceLog')) {
+    function savePreferenceLog ($key, $model, $itemKeys, $request, $beforeJson, $item) {
+        $elements = [];
+        $logData = TyphoonImage::query()->whereIn('name', $itemKeys)->get();
+        if (count($logData) > 0) {
+            foreach($logData as $l) {
+                $elements[] = $l->content['display_name'];
+            }
+        } else {
+            foreach ($itemKeys as $ik) {
+                switch ($ik) {
+                    case 'anchor-information':
+                        $elements[] = '主播圖卡';
+                        break;
+                    case 'colors':
+                        $elements[] = '畫筆';
+                        break;
+                    case 'images':
+                        $elements[] = '圖資';
+                        break;
+                    case 'general':
+                        $elements[] = '通用';
+                        break;
+                    case 'weather-information':
+                        $elements[] = '一般天氣預報';
+                        break;
+                    default:
+                        $elements[] = '';
+                        break;
+                }
+            }
+        }
+
+        activity()
+            ->performedOn($model)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => $request->getClientIp(),
+                'item' => $item . implode(',', $elements),
+                'before_json' => $beforeJson
+            ])
+            ->log('修改');
     }
 }
 

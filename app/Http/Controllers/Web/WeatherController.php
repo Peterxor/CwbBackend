@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\GeneralImages;
 use App\Models\GeneralImagesCategory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
@@ -101,6 +102,14 @@ class WeatherController extends Controller
                     GeneralImagesCategory::query()->updateOrCreate(['name' => $value], ['sort' => $index]);
                 }
                 GeneralImagesCategory::query()->whereNotIn('name', $data['name'])->delete();
+                $item = '編輯天氣預報圖資分類';
+                activity()
+                    ->causedBy(Auth::user()->id)
+                    ->withProperties([
+                        'ip' => $request->getClientIp(),
+                        'item' => $item,
+                    ])
+                    ->log('修改');
                 DB::commit();
             }
         } catch (Exception $e) {
@@ -153,6 +162,15 @@ class WeatherController extends Controller
 
         $weather->category_id = $request->get('category');
         $weather->save();
+        $item = '更新一般天氣預報圖資[' . ($weather->content['display_name'] ?? '') . ']';
+        activity()
+            ->performedOn($weather)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => request()->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('修改');
         return redirect(route('weather.index'));
     }
 
@@ -172,6 +190,15 @@ class WeatherController extends Controller
 
         $data->sort = (int)$data->sort - 1;
         $data->save();
+        $item = '更新一般預報圖資升序[' . ($data->content['display_name'] ?? '') . ']';
+        activity()
+            ->performedOn($data)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => request()->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('修改');
 
         return response()->json(['success' => true]);
     }
@@ -191,6 +218,15 @@ class WeatherController extends Controller
 
         $data->sort = (int)$data->sort + 1;
         $data->save();
+        $item = '更新一般預報圖資降序[' . ($data->content['display_name'] ?? '') . ']';
+        activity()
+            ->performedOn($data)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => request()->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('修改');
 
         return response()->json(['success' => true]);
     }

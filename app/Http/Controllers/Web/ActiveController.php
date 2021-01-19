@@ -31,7 +31,7 @@ class ActiveController extends Controller
      */
     public function query(): JsonResponse
     {
-        $query = Active::query();
+        $query = Active::query()->orderByDesc('created_at');
 
         $query->when(request()->get('active_type', false), function ($query) {
             $query->where('description', 'like', '%' . request()->get('active_type') . '%');
@@ -48,8 +48,8 @@ class ActiveController extends Controller
                 'id' => $item->id,
                 'date' => Carbon::parse($item->created_at)->format('Y/m/d H:i:s'),
                 'active' => $item->description,
-                'user' => $item->user->name,
-                'item' => '',
+                'user' => $item->user->name ?? '',
+                'item' => $properties['item'] ?? '',
                 'ip' => $properties['ip'] ?? '',
             ];
         })->toJson();

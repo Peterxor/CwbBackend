@@ -91,6 +91,15 @@ class UserController extends Controller
         /** @var User $user */
         if ($user = User::query()->create($input)) {
             $user->roles()->sync([$request->get('role')]);
+            $item = '新增使用者[' . ($user->name ?? '') . ']';
+            activity()
+                ->performedOn($user)
+                ->causedBy(Auth::user()->id)
+                ->withProperties([
+                    'ip' => request()->getClientIp(),
+                    'item' => $item,
+                ])
+                ->log('新增');
         }
 
         return redirect()->route('users.index');
@@ -135,6 +144,15 @@ class UserController extends Controller
 
             $user->roles()->sync([$request->get('role')]);
             $user->save();
+            $item = '更新使用者[' . ($user->name ?? '') . ']';
+            activity()
+                ->performedOn($user)
+                ->causedBy(Auth::user()->id)
+                ->withProperties([
+                    'ip' => request()->getClientIp(),
+                    'item' => $item,
+                ])
+                ->log('修改');
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
@@ -160,6 +178,15 @@ class UserController extends Controller
             return $this->sendError('無法刪除自己');
         }
         try {
+            $userName = $user->name ?? '';
+            $item = '刪除使用者[' . $userName . ']';
+            activity()
+                ->causedBy(Auth::user()->id)
+                ->withProperties([
+                    'ip' => request()->getClientIp(),
+                    'item' => $item,
+                ])
+                ->log('刪除');
             $user->delete();
         } catch (Exception $e) {
             Log::error($auth->name . '刪除' . $user->id . '失敗： ' . $e->getMessage());

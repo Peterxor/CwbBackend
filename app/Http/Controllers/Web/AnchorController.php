@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\Device;
+use App\Models\GeneralImages;
 use App\Models\HostPreference;
+use App\Models\TyphoonImage;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -89,15 +91,18 @@ class AnchorController extends Controller
             abort(403);
         }
         $key = $request->get('key');
+        $beforeJson = $hostPreference->preference_json;
+        $itemKeys = [];
         foreach ($request->get('preference', []) as $itemKey => $item){
 //            $hostPreference->preference_json[$key][$itemKey] = $item;
+            $itemKeys[] = $itemKey;
             $tempPreferenceJson = $hostPreference->preference_json;
             $tempPreferenceJson[$key][$itemKey] = $item;
             $hostPreference->preference_json = $tempPreferenceJson;
         }
-
         $hostPreference->save();
-
+        $item = '更新主播偏好[' . ($hostPreference->user->name ?? '') .']-[' . ($hostPreference->device->name ?? '') . ']:';
+        savePreferenceLog($key, $hostPreference, $itemKeys, $request, $beforeJson, $item);
         return redirect()->back();
     }
 }

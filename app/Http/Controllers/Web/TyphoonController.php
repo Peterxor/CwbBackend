@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\TyphoonImage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
@@ -67,6 +68,15 @@ class TyphoonController extends Controller
         $data1->sort = $tmp_sort;
         $data1->save();
         $data2->save();
+        $item = '更新颱風預報圖資升序[' . ($data1->content['display_name'] ?? '') . ']';
+        activity()
+            ->performedOn($data1)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => request()->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('修改');
 
         return response()->json(['success' => true]);
     }
@@ -95,6 +105,15 @@ class TyphoonController extends Controller
         $data1->sort = $tmp_sort;
         $data1->save();
         $data2->save();
+        $item = '更新颱風預報圖資降序[' . ($data1->content['display_name'] ?? '') . ']';
+        activity()
+            ->performedOn($data1)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => request()->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('修改');
 
         return response()->json(['success' => true]);
     }
@@ -218,6 +237,15 @@ class TyphoonController extends Controller
             default:
         }
         $typhoon->save();
+        $item = '更新颱風預報圖資[' . ($typhoon->content['display_name'] ?? '') . ']';
+        activity()
+            ->performedOn($typhoon)
+            ->causedBy(Auth::user()->id)
+            ->withProperties([
+                'ip' => $request->getClientIp(),
+                'item' => $item,
+            ])
+            ->log('修改');
         return redirect(route('typhoon.index'));
     }
 }

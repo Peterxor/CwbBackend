@@ -73,14 +73,17 @@ class DeviceController extends Controller
             abort(403);
         }
         $key = $request->get('key');
-
+        $beforeJson = $device->preference_json;
+        $itemKeys = [];
         foreach ($request->get('preference', []) as $itemKey => $item) {
+            $itemKeys[] = $itemKey;
             $tempPreferenceJson = $device->preference_json;
             $tempPreferenceJson[$key][$itemKey] = $item;
             $device->preference_json = $tempPreferenceJson;
         }
-
         $device->save();
+        $item = '更新裝置[' . ($device->name ?? '') . ']元件座標：';
+        savePreferenceLog($key, $device, $itemKeys, $request, $beforeJson, $item);
 
         return redirect()->back();
     }
