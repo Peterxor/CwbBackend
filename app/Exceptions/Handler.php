@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Services\WFC\Exceptions\WFCException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use App\Exceptions\PermissionException;
 
 class Handler extends ExceptionHandler
 {
@@ -51,10 +52,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof WFCException) {
+        if ($exception instanceof WFCException || $exception instanceof PermissionException) {
             //if($request->ajax())
             return response()->json(['message' => $exception->getMessage()], $exception->getCode());
         }
+
+
 
         return parent::render($request, $exception);
     }

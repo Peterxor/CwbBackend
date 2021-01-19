@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Exceptions\PermissionException;
 use App\Models\Role;
 use App\Models\User;
 use Exception;
@@ -24,6 +25,9 @@ class UserController extends Controller
      */
     public function index(): View
     {
+        if (!hasPermission('view_users')) {
+            abort(403);
+        }
         $roles = Role::all();
         return view('backend.pages.user.index', compact('roles'));
     }
@@ -62,6 +66,9 @@ class UserController extends Controller
      */
     public function create(): View
     {
+        if (!hasPermission('add_users')) {
+            abort(403);
+        }
         $roles = Role::all();
         return view('backend.pages.user.create', compact('roles'));
     }
@@ -74,6 +81,9 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        if (!hasPermission('add_users')) {
+            abort(403);
+        }
         // hash password
         $request->merge(['password' => Hash::make($request->get('password'))]);
         $input = $request->all();
@@ -94,6 +104,9 @@ class UserController extends Controller
      */
     public function edit(User $user): View
     {
+        if (!hasPermission('edit_users')) {
+            abort(403);
+        }
         $roles = Role::all();
         $userRoles = $user->getRoleNames()->toArray();
 
@@ -109,6 +122,9 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user): RedirectResponse
     {
+        if (!hasPermission('edit_users')) {
+            abort(403);
+        }
         try {
             $user->fill($request->except('role', 'permissions', 'password'));
 
@@ -131,9 +147,13 @@ class UserController extends Controller
      *
      * @param User $user
      * @return JsonResponse
+     * @throws PermissionException
      */
     public function destroy(User $user): JsonResponse
     {
+        if (!hasPermission('delete_users')) {
+            throw new PermissionException();
+        }
         /** @var User $auth */
         $auth = Auth::user();
         if ($auth->id == $user->id) {

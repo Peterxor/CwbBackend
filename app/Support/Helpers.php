@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\Device;
 use App\Models\HostPreference;
 use Symfony\Component\Finder\Finder;
+use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('getBackground')) {
     function getBackground($background)
@@ -224,6 +225,16 @@ if (!function_exists('imagesUrl')) {
             $images[] = Storage::disk('data')->url($path . '/' . $file->getBasename());
         }
         return array_reverse($images);
+    }
+}
+
+if (!function_exists('hasPermission')) {
+    function hasPermission(string $permission_name): bool
+    {
+        if (!$permission_name) {
+            return false;
+        }
+        return Auth::user()->can($permission_name);
     }
 }
 

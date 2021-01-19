@@ -18,6 +18,9 @@ class ActiveController extends Controller
      */
     public function index(): View
     {
+        if (!hasPermission('view_logs')) {
+            abort(403);
+        }
         return view("backend.pages.active.index");
     }
 

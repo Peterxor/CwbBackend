@@ -19,6 +19,9 @@ class TyphoonController extends Controller
      */
     public function index(): View
     {
+        if (!hasPermission('view_typhoon')) {
+            abort(403);
+        }
         return view("backend.pages.typhoon.index");
     }
 
@@ -104,6 +107,9 @@ class TyphoonController extends Controller
      */
     public function edit(TyphoonImage $typhoon): View
     {
+        if (!hasPermission('edit_typhoon')) {
+            abort(403);
+        }
         return view('backend.pages.typhoon.edit', ['data' => $typhoon]);
     }
 
@@ -117,6 +123,9 @@ class TyphoonController extends Controller
      */
     public function update(Request $request, TyphoonImage $typhoon): RedirectResponse
     {
+        if (!hasPermission('edit_typhoon')) {
+            abort(403);
+        }
         $data = $request->all();
 
         switch ($typhoon->name ?? '') {

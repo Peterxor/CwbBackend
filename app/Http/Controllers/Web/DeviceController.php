@@ -19,6 +19,9 @@ class DeviceController extends Controller
      */
     public function index(): View
     {
+        if (!hasPermission('view_device')) {
+            abort(403);
+        }
         return view("backend.pages.device.index");
     }
 
@@ -47,6 +50,9 @@ class DeviceController extends Controller
      */
     public function edit(Device $device): View
     {
+        if (!hasPermission('edit_device')) {
+            abort(403);
+        }
         $name = $device->name;
         $preference = $device->preference_json;
 
@@ -63,6 +69,9 @@ class DeviceController extends Controller
      */
     public function update(Request $request, Device $device): RedirectResponse
     {
+        if (!hasPermission('edit_device')) {
+            abort(403);
+        }
         $key = $request->get('key');
 
         foreach ($request->get('preference', []) as $itemKey => $item) {

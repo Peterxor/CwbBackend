@@ -21,6 +21,9 @@ class WeatherController extends Controller
      */
     public function index(): View
     {
+        if (!hasPermission('view_weather')) {
+            abort(403);
+        }
         return view("backend.pages.weather.index");
     }
 
@@ -69,6 +72,9 @@ class WeatherController extends Controller
      */
     public function edit($id): View
     {
+        if (!hasPermission('edit_weather')) {
+            abort(403);
+        }
         /** @var GeneralImages $general */
         $general = GeneralImages::with(['category'])->where('id', $id)->first();
         $categorys = GeneralImagesCategory::query()->pluck('name', 'id')->toArray();
@@ -114,6 +120,9 @@ class WeatherController extends Controller
      */
     public function update(Request $request, GeneralImages $weather)
     {
+        if (!hasPermission('edit_weather')) {
+            abort(403);
+        }
         $data = $request->all();
 
         $weather->content = ['display_name' => $data['display_name']];

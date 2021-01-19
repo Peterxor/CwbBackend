@@ -4,24 +4,33 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\Device;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\GeneralImages;
 use App\Models\Personnel;
 use App\Models\Board;
 use Exception;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use App\Exceptions\PermissionException;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     /**
      * Dashboard
      *
-     * @return View
+     * @return Application|RedirectResponse|Redirector|View
      */
-    public function index(): View
+    public function index()
     {
+        if (!Auth::user()->hasRole('Admin')) {
+            return redirect(route('anchor.index'));
+        }
+
         $devices = Device::with(['user', 'board' => function($query) {
             $query->with(['media']);
         }])->get();
@@ -40,6 +49,9 @@ class DashboardController extends Controller
      */
     public function edit(Request $request, Device $device): View
     {
+        if (!hasPermission('edit_dashboard')) {
+            abort(403);
+        }
         $pic_type = $request->pic_type ?? 'typhoon';
         $data = $pic_type === 'typhoon' ? $device->typhoon_json : $device->forecast_json;
         $images = GeneralImages::all();
@@ -57,6 +69,9 @@ class DashboardController extends Controller
      */
     public function update(Request $request, Device $device)
     {
+        if (!hasPermission('edit_dashboard')) {
+            abort(403);
+        }
         $origin_ids = $request->get('origin_img_id');
         $image_types = $request->get('image_type');
         $upload_ids = $request->get('img_id');
@@ -91,23 +106,50 @@ class DashboardController extends Controller
         return redirect(route('dashboard.index'));
     }
 
-    public function updateDeviceHost(Request $request)
+    /**
+     * 更新主播
+     * @param Request $request
+     * @return JsonResponse
+     * @throws PermissionException
+     */
+    public function updateDeviceHost(Request $request): JsonResponse
     {
+        if (!hasPermission('edit_dashboard')) {
+            throw new PermissionException();
+        }
+
         Device::query()->where('id', $request->get('device_id'))->update(['user_id' => $request->get('user_id')]);
 
         return $this->sendResponse('', 'success');
     }
 
-    public function updateDeviceTheme(Request $request)
+    /**
+     * 更新佈景主題
+     * @param Request $request
+     * @return JsonResponse
+     * @throws PermissionException
+     */
+    public function updateDeviceTheme(Request $request): JsonResponse
     {
+        if (!hasPermission('edit_dashboard')) {
+            throw new PermissionException();
+        }
         Device::query()->where('id', $request->get('device_id'))->update(['theme' => $request->get('theme')]);
 
         return $this->sendResponse('', 'success');
     }
 
-
-    public function updateBoard(Request $request)
+    /**
+     * 更新看板
+     * @param Request $request
+     * @return JsonResponse
+     * @throws PermissionException
+     */
+    public function updateBoard(Request $request): JsonResponse
     {
+        if (!hasPermission('edit_dashboard')) {
+            throw new PermissionException();
+        }
         try {
             $board = Board::where('id', $request->board_id)->first();
             $board->type = $request->edition_type === 'default' ? 1 : 2;

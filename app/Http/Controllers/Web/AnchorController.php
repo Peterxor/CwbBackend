@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class AnchorController extends Controller
 {
@@ -21,6 +22,9 @@ class AnchorController extends Controller
      */
     public function index(): View
     {
+        if (!hasPermission('view_anchor')) {
+            abort(403);
+        }
         return view("backend.pages.anchor.index");
     }
 
@@ -32,10 +36,14 @@ class AnchorController extends Controller
     public function query(): JsonResponse
     {
         $device = Device::all();
+        if (Auth::user()->hasRole('Admin')) {
+            $query = User::query()->whereHas('roles', function ($query){
+                $query->where('name', 'User');
+            });
+        } else {
+            $query = User::query()->where('email', Auth::user()->email);
+        }
 
-        $query = User::query()->whereHas('roles', function ($query){
-            $query->where('name', 'User');
-        });
 
         return DataTables::eloquent($query)->setTransformer(function ($item) use($device) {
             return [
@@ -56,6 +64,9 @@ class AnchorController extends Controller
      */
     public function edit($id, $device_id):View
     {
+        if (!hasPermission('edit_anchor')) {
+            abort(403);
+        }
         $hostPreference = HostPreference::query()->with(['user', 'device'])->firstOrCreate([
             'user_id' => $id,
             'device_id' => $device_id
@@ -74,6 +85,9 @@ class AnchorController extends Controller
      */
     public function update(Request $request, HostPreference $hostPreference): RedirectResponse
     {
+        if (!hasPermission('edit_anchor')) {
+            abort(403);
+        }
         $key = $request->get('key');
         foreach ($request->get('preference', []) as $itemKey => $item){
 //            $hostPreference->preference_json[$key][$itemKey] = $item;
