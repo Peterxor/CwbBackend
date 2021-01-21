@@ -157,7 +157,7 @@ trait InformationTraits
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
             case 'rainfall':
-                $time = Carbon::createFromFormat('Y-m-d_Hi\.\Q\Z\J\4\b', pathinfo($urls)['filename'], 'Asia/Taipei');
+                $time = Carbon::createFromFormat('Y-m-d_Hi', substr(pathinfo($urls)['filename'], 0, 15), 'Asia/Taipei');
                 return $time->format('m月d日 H:i');
             case 'numerical-forecast':
                 foreach ($urls as $url) {

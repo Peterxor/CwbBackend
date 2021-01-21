@@ -164,6 +164,8 @@ class RainfallObservation
                     continue;
                 $strArr = explode(" ", $str);
                 $area = Transformer::parseAddress($strArr[2]);
+                if(count($area) == 0)
+                    continue;
 
                 if (count($data['top']['a']) < 5) {
                     $data['top']['a'][] = [
