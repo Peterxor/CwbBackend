@@ -5,6 +5,7 @@ namespace App\Services\WFC;
 use App\Services\WFC\Exceptions\WFCException;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Finder\Finder;
 
@@ -164,8 +165,10 @@ class RainfallObservation
                     continue;
                 $strArr = explode(" ", $str);
                 $area = Transformer::parseAddress($strArr[2]);
-                if(count($area) == 0)
+                if (count($area) == 0) {
+                    Log::warning('雨量觀測[測站資料]資料解析錯誤:' . $str);
                     continue;
+                }
 
                 if (count($data['top']['a']) < 5) {
                     $data['top']['a'][] = [
