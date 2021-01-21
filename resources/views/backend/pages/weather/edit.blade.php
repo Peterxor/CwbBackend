@@ -133,13 +133,13 @@
             		        </div>
                             <div class="form-group row js-info-group js-dynamic" style="{{$type == 2 ? '' : 'display:none;'}}">
                     			<label for="example-search-input" class="col-2 col-form-label">
-                                    <span class="kt-font-danger">*</span>換圖速率 (毫秒/張)
+                                    <span class="kt-font-danger">*</span>換圖速率
                                 </label>
                     			<div class="col-7">
                                     <input class="form-control" type="text" value="{{$json['interval'] ?? 1000}}" name="interval">
                                 </div>
                                 <div class="col-3 pt-3 col-form-label">
-                                    <span>張/秒</span>
+                                    <span>張/毫秒</span>
                                 </div>
             		        </div>
                         </div>

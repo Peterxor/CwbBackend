@@ -161,7 +161,7 @@ trait InformationTraits
                 return $time->format('m月d日 H:i');
             case 'numerical-forecast':
                 foreach ($urls as $url) {
-                    $time = Carbon::createFromFormat('Ym', substr(pathinfo($url)['filename'], 15, 6), 'Asia/Taipei');
+                    $time = Carbon::createFromFormat('YmdH', '20' .substr(pathinfo($url)['filename'], 15, 8), 'Asia/Taipei');
                     if (empty($startTime))
                         $startTime = $time->format('m月d日');
                     $endTime = $time->format('m月d日');
