@@ -50,8 +50,8 @@ class WFCDataController extends Controller
                 'rainfall-forecast' => RainfallForecast::get($typhoonImages->where('name', 'rainfall-forecast')->first()->content, $preference),
             ],
             'weather' => [
-                'information' => WeatherInformation::get($device->forecast_json, $preference),
-                'weather-overview' => WeatherOverview::get($preference)
+                'slider' => WeatherInformation::get($device->forecast_json, $preference),
+                'overview' => WeatherOverview::get($preference)
             ]
         ];
 

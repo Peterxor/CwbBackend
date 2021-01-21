@@ -129,6 +129,12 @@ class RainfallObservation
             throw new WFCException('雨量觀測[' . $title . ']資料解析錯誤', 500);
 
         try {
+            $config = Transformer::addressConfig();
+        } catch (Exception $exception) {
+            throw new WFCException('雨量觀測[' . $title . ']測站設定檔解析錯誤', 500);
+        }
+
+        try {
             $data = [
                 'enable' => $setting['status'] == 1,
                 'title' => '雨量觀測',
@@ -164,7 +170,7 @@ class RainfallObservation
                 if (empty($str))
                     continue;
                 $strArr = explode(" ", $str);
-                $area = Transformer::parseAddress($strArr[2]);
+                $area = Transformer::parseAddress($config, $strArr[2]);
                 if (count($area) == 0) {
                     Log::warning('雨量觀測[測站資料]資料解析錯誤:' . $str);
                     continue;

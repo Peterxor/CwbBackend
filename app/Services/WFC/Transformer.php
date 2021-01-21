@@ -7,12 +7,11 @@ namespace App\Services\WFC;
 class Transformer
 {
     /**
-     * 解析地址
+     * 地址設定檔
      *
-     * @param string $address
      * @return array|string[]
      */
-    static function parseAddress(string $address): array
+    static function addressConfig(): array
     {
         $txt = fopen(storage_path('app/public/data/wfc_config.csv'), 'r');
 
@@ -29,7 +28,19 @@ class Transformer
             $data[trim($strArr[0])] = [trim($strArr[2]), trim($strArr[3])];
         }
 
-        return $data[$address] ?? [];
+        return $data;
+    }
+
+    /**
+     * 解析地址
+     *
+     * @param array $config
+     * @param string $address
+     * @return array|string[]
+     */
+    static function parseAddress(array $config, string $address): array
+    {
+        return $config[$address] ?? [];
     }
 
     /**
