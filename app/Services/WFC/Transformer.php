@@ -26,7 +26,7 @@ class Transformer
             if (empty($str))
                 continue;
             $strArr = explode(",", $str);
-            $data[trim($strArr[0])] = [trim($strArr[1]), trim($strArr[2])];
+            $data[trim($strArr[0])] = [trim($strArr[2]), trim($strArr[3])];
         }
 
         return $data[$address] ?? [];

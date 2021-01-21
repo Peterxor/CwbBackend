@@ -33,6 +33,8 @@ Route::get('anchor-information/{device}', 'AnchorInformationController@index');
 
 Route::get('weather-information/{device}', 'WeatherInformationController@index');
 
+Route::get('weather-overview/{device}', 'WeatherOverviewController@index');
+
 
 Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () {
     // 裝置列表
@@ -52,7 +54,7 @@ Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () 
 
     // 獲取元件座標
     Route::get('host-preference', ['as' => 'host-preference', 'uses' => 'MobileDeviceController@hostPreference']);
-    
+
     // 更新元件座標
     Route::put('update-preference', ['as' => 'update-preference', 'uses' => 'MobileDeviceController@updatePreference']);
 
