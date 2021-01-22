@@ -122,12 +122,20 @@ class RainfallForecast
             $files = iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($path))->sortByName(), false);
             $rainfallForecast = simplexml_load_file($files[count($files) - 1]->getPathname());
 
-            $data = ['alert_value' => (int)$setting['alert_value'],'location' =>  ['n' => [], 'm' => [], 's' => [], 'e' => []]];
+            $data = ['alert_value' => (int)$setting['alert_value'], 'location' => ['n' => [], 'm' => [], 's' => [], 'e' => []]];
+
+            if (isset($rainfallForecast->BulletinInformation->StartValidTime->Time) && isset($rainfallForecast->BulletinInformation->EndValidTime->Time)) {
+                $data['startTime'] = (string)$rainfallForecast->BulletinInformation->StartValidTime->Time;
+                $data['endTime'] = (string)$rainfallForecast->BulletinInformation->EndValidTime->Time;
+            } else if (isset($rainfallForecast->BulletinInformation->IssueTime->Time)) {
+                $data['time'] = (string)$rainfallForecast->BulletinInformation->IssueTime->Time;
+            }
+
             foreach ($rainfallForecast->PrecipitationInformation->AreaForecastData ?? [] as $areaForecastData) {
-                if(((string) $areaForecastData->Precipitation->attributes()['region']) == 'flat'){
-                    $data['location'][Transformer::parseRainfallFcstCity((string) $areaForecastData->attributes()['area'])][(string) $areaForecastData->attributes()['area']]['flat'] =  (string) $areaForecastData->Precipitation->Value;
+                if (((string)$areaForecastData->Precipitation->attributes()['region']) == 'flat') {
+                    $data['location'][Transformer::parseRainfallFcstCity((string)$areaForecastData->attributes()['area'])][(string)$areaForecastData->attributes()['area']]['flat'] = (string)$areaForecastData->Precipitation->Value;
                 } else {
-                    $data['location'][Transformer::parseRainfallFcstCity((string) $areaForecastData->attributes()['area'])][(string) $areaForecastData->attributes()['area']]['mountain'] =  (string) $areaForecastData->Precipitation->Value;
+                    $data['location'][Transformer::parseRainfallFcstCity((string)$areaForecastData->attributes()['area'])][(string)$areaForecastData->attributes()['area']]['mountain'] = (string)$areaForecastData->Precipitation->Value;
                 }
             }
 
