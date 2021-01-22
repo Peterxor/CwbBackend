@@ -6,7 +6,7 @@ namespace App\Services\WFC;
 
 use App\Services\WFC\Traits\InformationTraits;
 
-class WeatherInformation
+class WeatherSlider
 {
     use InformationTraits;
 

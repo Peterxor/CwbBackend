@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Web\Controller;
 use App\Models\Device;
 use App\Services\WFC\Exceptions\WFCException;
-use App\Services\WFC\WeatherInformation;
+use App\Services\WFC\WeatherSlider;
 use Illuminate\Http\JsonResponse;
 
-class WeatherInformationController extends Controller
+class WeatherSliderController extends Controller
 {
     /**
      * 一般天氣預報資料
@@ -19,6 +19,6 @@ class WeatherInformationController extends Controller
      */
     public function index(Device $device): JsonResponse
     {
-        return response()->json(WeatherInformation::get($device->forecast_json, preference($device)));
+        return response()->json(WeatherSlider::get($device->forecast_json, preference($device)));
     }
 }

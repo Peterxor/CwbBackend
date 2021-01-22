@@ -31,7 +31,7 @@ Route::get('rainfall-forecast/{device}', 'RainfallForecastController@index');
 
 Route::get('anchor-information/{device}', 'AnchorInformationController@index');
 
-Route::get('weather-information/{device}', 'WeatherInformationController@index');
+Route::get('weather-slider/{device}', 'WeatherSliderController@index');
 
 Route::get('weather-overview/{device}', 'WeatherOverviewController@index');
 
