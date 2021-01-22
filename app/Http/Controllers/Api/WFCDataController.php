@@ -86,7 +86,8 @@ class WFCDataController extends Controller
             $data['typhoon']['rainfall-observation']['rainfall']['before4nd']
         );
 
-        $imageList = array_merge_recursive($imageList, $data['weather']['information']['information'] ?? []);
+        $imageList = array_merge_recursive($imageList, $data['weather']['slider']['information'] ?? []);
+        $imageList = array_merge_recursive($imageList, $data['weather']['overview']['information'] ?? []);
 
         foreach ($imageList as $information){
             if(array_key_exists('image_l', $information)){
