@@ -287,17 +287,21 @@ class MobileDeviceController extends Controller
                     } else if ($obj['key'] === 'block') {
                         $middleKey = 'weather-information';
                     }
-                    $tempPreferenceJson[$type][$middleKey][$obj['key']]['point'] = $obj['point'];
-                    if (isset($obj['scale'])) {
-                        $tempPreferenceJson[$type][$middleKey][$obj['key']]['scale'] = $obj['scale'];
+                    if (isset($tempPreferenceJson[$type][$middleKey][$obj['key']])) {
+                        $tempPreferenceJson[$type][$middleKey][$obj['key']]['point'] = [$obj['point_x'], $obj['point_y']];
+                        if ( isset($obj['scale'])) {
+                            $tempPreferenceJson[$type][$middleKey][$obj['key']]['scale'] = $obj['scale'];
+                        }
                     }
                 }
             } else if ($type === 'typhoon') {
                 // 颱風所有圖資
                 foreach ($preference as $obj) {
-                    $tempPreferenceJson[$type][$key][$obj['key']]['point'] = $obj['point'];
-                    if(isset($obj['scale'])) {
-                        $tempPreferenceJson[$type][$key][$obj['key']]['scale'] = $obj['scale'];
+                    if (isset($tempPreferenceJson[$type][$key][$obj['key']])) {
+                        $tempPreferenceJson[$type][$key][$obj['key']]['point'] = [$obj['point_x'], $obj['point_y']];
+                        if(isset($obj['scale'])) {
+                            $tempPreferenceJson[$type][$key][$obj['key']]['scale'] = $obj['scale'];
+                        }
                     }
                 }
 
@@ -402,7 +406,8 @@ class MobileDeviceController extends Controller
             if (isset($value['scale'])) {
                 $temp['scale'] = $value['scale'];
             }
-            $temp['point'] = $value['point'];
+            $temp['point_x'] = $value['point'][0];
+            $temp['point_y'] = $value['point'][1];
             if (in_array($key, $this->toolItem)) {
                 $tool[] = $temp;
             } else {
