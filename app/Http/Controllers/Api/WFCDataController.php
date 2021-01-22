@@ -13,7 +13,7 @@ use App\Services\WFC\RainfallForecast;
 use App\Services\WFC\RainfallObservation;
 use App\Services\WFC\TyphoonDynamics;
 use App\Services\WFC\TyphoonPotential;
-use App\Services\WFC\WeatherInformation;
+use App\Services\WFC\WeatherSlider;
 use App\Services\WFC\WeatherOverview;
 use App\Services\WFC\WindForecast;
 use App\Services\WFC\WindObservation;
@@ -50,7 +50,7 @@ class WFCDataController extends Controller
                 'rainfall-forecast' => RainfallForecast::get($typhoonImages->where('name', 'rainfall-forecast')->first()->content, $preference),
             ],
             'weather' => [
-                'slider' => WeatherInformation::get($device->forecast_json, $preference),
+                'slider' => WeatherSlider::get($device->forecast_json, $preference),
                 'overview' => WeatherOverview::get($preference)
             ]
         ];
