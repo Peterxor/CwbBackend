@@ -20,6 +20,8 @@ use App\Models\HostPreference;
 
 class MobileDeviceController extends Controller
 {
+    private $toolItem = ['title', 'tool-middle', 'image-tool', 'tool-left', 'tool-right', 'image-label-left', 'image-label-right'];
+
     /**
      * 裝置列表
      * @return JsonResponse
@@ -88,7 +90,8 @@ class MobileDeviceController extends Controller
             foreach ($weather as $index => $value) {
                 $res['weather'][] = [
                     'name' => transformWeatherName($value['img_url']),
-                    'screen' => 'weather',
+                    'screen' => 'weather-slider',
+                    'key' => $value['img_name'],
                     'value' => $index,
                     'pic_url' => env('APP_URL') . $value['img_url'],
                 ];
@@ -123,7 +126,7 @@ class MobileDeviceController extends Controller
             $generalCategory = GeneralImagesCategory::query()->with('generalImage')->orderBy('sort')->get();
             $generalImages = GeneralImages::query()->orderBy('sort')->get();
             $imageIndexes = [];
-            foreach($generalImages as $index => $image) {
+            foreach ($generalImages as $index => $image) {
                 $imageIndexes[$image->name] = $index;
             }
             $res = [];
@@ -223,13 +226,20 @@ class MobileDeviceController extends Controller
             }
 
             // 檢查是否為 一般天氣-圖資
-            if (getWeatherImage($key)) {
-                $json = $host->preference_json[$type]['images'][$key];
+            $arr = [];
+            if ($type === 'weather') {
+                $json = $host->preference_json[$type]['images'];
+                $general = $host->preference_json[$type]['general'];
+                $weather_information = $host->preference_json[$type]['weather-information'];
+                $arr = array_merge($arr, $this->jsonToArray($general));
+                $arr = array_merge($arr, $this->jsonToArray($weather_information));
+                $arr = array_merge($arr, $this->jsonToArray($json, $key));
             } else {
-                // 颱風所有圖資， 一般天氣-一般天氣預報， 一般天氣-通用設定
+                // 颱風所有圖資
                 $json = $host->preference_json[$type][$key];
+                $arr = $this->jsonToArray($json);
             }
-            return response()->json($json);
+            return response()->json($arr);
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return $this->sendError('請求失敗');
@@ -268,13 +278,29 @@ class MobileDeviceController extends Controller
 
             $tempPreferenceJson = $host->preference_json;
             // 檢查是否為 一般天氣-圖資
-            if (getWeatherImage($key) && $type === 'weather') {
+            if ($type === 'weather') {
                 $tempPreferenceJson[$type]['images'][$key] = $preference;
-            } else if ($this->checkKey($type, $key)) {
-                // 颱風所有圖資， 一般天氣-一般天氣預報， 一般天氣-通用設定
-                $tempPreferenceJson[$type][$key] = $preference;
-            } else {
-                throw new Exception('type,key,參數錯誤');
+                foreach ($preference as $obj) {
+                    $middleKey = 'images';
+                    if (in_array($obj['key'], $this->toolItem)) {
+                        $middleKey = 'general';
+                    } else if ($obj['key'] === 'block') {
+                        $middleKey = 'weather-information';
+                    }
+                    $tempPreferenceJson[$type][$middleKey][$obj['key']]['point'] = $obj['point'];
+                    if (isset($obj['scale'])) {
+                        $tempPreferenceJson[$type][$middleKey][$obj['key']]['scale'] = $obj['scale'];
+                    }
+                }
+            } else if ($type === 'typhoon') {
+                // 颱風所有圖資
+                foreach ($preference as $obj) {
+                    $tempPreferenceJson[$type][$key][$obj['key']]['point'] = $obj['point'];
+                    if(isset($obj['scale'])) {
+                        $tempPreferenceJson[$type][$key][$obj['key']]['scale'] = $obj['scale'];
+                    }
+                }
+
             }
             $host->preference_json = $tempPreferenceJson;
             $host->save();
@@ -296,7 +322,6 @@ class MobileDeviceController extends Controller
         $weather = ['general', 'weather-information'];
         if ($type === 'typhoon') {
             return in_array($key, $typhoon);
-
         } else if ($type === 'weather') {
             return in_array($key, $weather);
         }
@@ -316,5 +341,77 @@ class MobileDeviceController extends Controller
         ];
         return $map[$room] ?? '';
     }
+
+    public function elementName($englishName): string
+    {
+        $map = [
+            'typhoon-ir' => '颱風IR',
+            'typhoon-mb' => '颱風MB',
+            'typhoon-vis' => '颱風VIS',
+            'title' => '標題',
+            'tool-middle' => '工具列 (中間)',
+            'taiwan-all' => '台灣 (全)',
+            'taiwan-n' => '台灣 (北)',
+            'taiwan-m' => '台灣 (中)',
+            'taiwan-s' => '台灣 (南)',
+            'taiwan-e' => '台灣 (東)',
+            'image-tool' => '圖例',
+            'tool-left' => '工具列 (左)',
+            'tool-right' => '工具列 (右)',
+            'taiwan-y' => '台灣 (宜)',
+            'taiwan-h' => '台灣 (花)',
+            'block' => '圖卡區塊',
+            'weather-information' => '一般天氣預報',
+            'general' => '通用設定',
+            'image-label-left' => '圖片列表 (左)',
+            'image-label-right' => '圖片列表 (右)',
+            'images' => '圖資',
+            'east-asia-vis' => '東亞VIS',
+            'east-asia-mb' => '東亞MB',
+            'east-asia-ir' => '東亞IR',
+            'surface-weather-map' => '地面天氣圖',
+            'global-ir' => '全球IR',
+            'ultraviolet-light' => '紫外線',
+            'radar-echo' => '雷達回波',
+            'temperature' => '溫度',
+            'rainfall' => '雨量',
+            'numerical-forecast' => '數值預報',
+            'precipitation-forecast-12h' => '定量降水預報12小時',
+            'precipitation-forecast-6h' => '定量降水預報6小時',
+            'forecast-24h' => '24H預測',
+            'weather-forecast' => '天氣預測',
+            'wave-analysis-chart' => '波浪分析圖',
+            'weather-alert' => '天氣警報',
+        ];
+        return $map[$englishName];
+    }
+
+    public function jsonToArray($json, $inputKey = null): array
+    {
+        $arr = [];
+        $tool = [];
+        $images = [];
+
+        foreach ($json as $key => $value) {
+            if ($inputKey && $key !== $inputKey) {
+                continue;
+            }
+            $temp = [];
+            $temp['name'] = $this->elementName($key) ?? '';
+            $temp['key'] = $key;
+            if (isset($value['scale'])) {
+                $temp['scale'] = $value['scale'];
+            }
+            $temp['point'] = $value['point'];
+            if (in_array($key, $this->toolItem)) {
+                $tool[] = $temp;
+            } else {
+                $images[] = $temp;
+            }
+        }
+        $arr = array_merge($images, $tool);
+        return $arr;
+    }
+
 
 }
