@@ -72,12 +72,23 @@ class MobileDeviceController extends Controller
             ];
 
             $res['anchor_list'] = $users->toArray();
+            // 颱風主播圖卡 & 天氣預報排程
             $typhoon = $device->typhoon_json;
+            $weather = $device->forecast_json;
             // 主播圖卡
             $host_pics = [];
             foreach ($typhoon as $index => $value) {
                 $host_pics[] = [
                     'name' => transformWeatherName($value['img_url']),
+                    'value' => $index,
+                    'pic_url' => env('APP_URL') . $value['img_url'],
+                ];
+            }
+
+            foreach ($weather as $index => $value) {
+                $res['weather'][] = [
+                    'name' => transformWeatherName($value['img_url']),
+                    'screen' => 'weather',
                     'value' => $index,
                     'pic_url' => env('APP_URL') . $value['img_url'],
                 ];
@@ -95,30 +106,6 @@ class MobileDeviceController extends Controller
                 'list' => $host_pics,
             ];
 
-            foreach ($generalImgs as $img) {
-
-                $tempWeather = [
-                    'name' => $img->content['display_name'],
-                    'value' => $img->name,
-                    'pic_url' => env('APP_URL') . getWeatherImage($img->name),
-                ];
-
-                if (weatherType($img->name) === 3) {
-                    $files = Storage::disk('data')->allFiles($img->content['origin']);
-                    $tempWeather['list'] = [];
-                    foreach ($files as $index => $file) {
-                        if ($index > 5) {
-                            break;
-                        }
-                        $tempWeather['list'][] = [
-                            'name' => $index + 1,
-                            'value' => $index
-                        ];
-                    }
-                }
-                $res['weather'][] = $tempWeather;
-            }
-
             return response()->json($res);
         } catch (Exception $e) {
             Log::error($e->getMessage());
@@ -134,6 +121,11 @@ class MobileDeviceController extends Controller
     {
         try {
             $generalCategory = GeneralImagesCategory::query()->with('generalImage')->orderBy('sort')->get();
+            $generalImages = GeneralImages::query()->orderBy('sort')->get();
+            $imageIndexes = [];
+            foreach($generalImages as $index => $image) {
+                $imageIndexes[$image->name] = $index;
+            }
             $res = [];
             foreach ($generalCategory as $category) {
                 $temp = [
@@ -143,7 +135,7 @@ class MobileDeviceController extends Controller
                 foreach ($category->generalImage as $img) {
                     $temp['list'][] = [
                         'name' => $img->content['display_name'],
-                        'value' => $img->name,
+                        'value' => $imageIndexes[$img->name],
                         'pic_url' => env('APP_URL') . getWeatherImage($img->name),
                     ];
                 }
