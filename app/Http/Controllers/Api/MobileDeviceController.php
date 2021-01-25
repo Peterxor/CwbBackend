@@ -138,6 +138,7 @@ class MobileDeviceController extends Controller
                 foreach ($category->generalImage as $img) {
                     $temp['list'][] = [
                         'name' => $img->content['display_name'],
+                        'screen' => $img->name,
                         'value' => $imageIndexes[$img->name],
                         'pic_url' => env('APP_URL') . getWeatherImage($img->name),
                     ];
