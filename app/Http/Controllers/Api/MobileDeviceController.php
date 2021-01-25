@@ -138,7 +138,8 @@ class MobileDeviceController extends Controller
                 foreach ($category->generalImage as $img) {
                     $temp['list'][] = [
                         'name' => $img->content['display_name'],
-                        'screen' => $img->name,
+                        'screen' => 'weather-overview',
+                        'key' => $img->name,
                         'value' => $imageIndexes[$img->name],
                         'pic_url' => env('APP_URL') . getWeatherImage($img->name),
                     ];
@@ -163,9 +164,12 @@ class MobileDeviceController extends Controller
         $screen = $request->screen ?? '';
         $sub = $request->sub ?? '';
         $behaviour = $request->behaviour ?? '';
+        $point_x = $request->point_x ?? '';
+        $point_y = $request->point_y ?? '';
+        $scale = $request->scale ?? '';
         $res['success'] = true;
         $res['data'] = $request->all();
-        broadcast(new MobileActionEvent($room, $screen, $sub, $behaviour));
+        broadcast(new MobileActionEvent($room, $screen, $sub, $behaviour, $point_x, $point_y, $scale));
         return response()->json($res);
     }
 
