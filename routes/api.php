@@ -43,8 +43,11 @@ Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () 
     // 裝置資料
     Route::get('data', ['as' => 'data', 'uses' => 'MobileDeviceController@getDeviceData']);
 
-    // 打websocket
+    // socket:切換畫面
     Route::get('action', ['as' => 'action', 'uses' => 'MobileDeviceController@action']);
+
+    // socket:調整座標
+    Route::get('set-coordinate', ['as' => 'set-coordinate', 'uses' => 'MobileDeviceController@setCoordinate']);
 
     // 天氣總覽
     Route::get('weather-detail', ['as' => 'weather-detail', 'uses' => 'MobileDeviceController@weatherDetail']);

@@ -24,7 +24,8 @@ class MobileActionEvent implements ShouldBroadcastNow
     public $point_x = null;
     public $point_y = null;
     public $scale = null;
-    public function __construct($room, $screen, $sub, $behaviour, $point_x, $point_y, $scale)
+    public $target = null;
+    public function __construct($room, $screen, $sub, $behaviour, $point_x, $point_y, $scale, $target)
     {
         //
         $this->room = $room;
@@ -34,6 +35,7 @@ class MobileActionEvent implements ShouldBroadcastNow
         $this->point_x = $point_x;
         $this->point_y = $point_y;
         $this->scale = $scale;
+        $this->target = $target;
     }
 
     /**

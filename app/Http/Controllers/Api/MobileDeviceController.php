@@ -82,6 +82,7 @@ class MobileDeviceController extends Controller
             foreach ($typhoon as $index => $value) {
                 $host_pics[] = [
                     'name' => transformWeatherName($value['img_url']),
+                    'key' => $value['img_name'],
                     'value' => $index,
                     'pic_url' => env('APP_URL') . $value['img_url'],
                 ];
@@ -164,14 +165,26 @@ class MobileDeviceController extends Controller
         $screen = $request->screen ?? '';
         $sub = $request->sub ?? '';
         $behaviour = $request->behaviour ?? '';
+        $res['success'] = true;
+        $res['data'] = $request->all();
+        broadcast(new MobileActionEvent($room, $screen, $sub, $behaviour, '', '', '', ''));
+        return response()->json($res);
+    }
+
+    public function setCoordinate(Request $request) {
+        $room = $request->room ?? '';
+        $screen = $request->screen ?? '';
+        $sub = $request->sub ?? '';
+        $target = $request->target ?? '';
         $point_x = $request->point_x ?? '';
         $point_y = $request->point_y ?? '';
         $scale = $request->scale ?? '';
         $res['success'] = true;
         $res['data'] = $request->all();
-        broadcast(new MobileActionEvent($room, $screen, $sub, $behaviour, $point_x, $point_y, $scale));
+        broadcast(new MobileActionEvent($room, $screen, $sub, '', $point_x, $point_y, $scale, $target));
         return response()->json($res);
     }
+
 
     /**
      * 更新主播
@@ -395,6 +408,12 @@ class MobileDeviceController extends Controller
         return $map[$englishName];
     }
 
+    /**
+     * 將元件座標調整為array格式
+     * @param $json
+     * @param null $inputKey
+     * @return array
+     */
     public function jsonToArray($json, $inputKey = null): array
     {
         $arr = [];
