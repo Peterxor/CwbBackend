@@ -81,19 +81,20 @@ class MobileDeviceController extends Controller
             $host_pics = [];
             foreach ($typhoon as $index => $value) {
                 $host_pics[] = [
+                    'mode' => $value['type'],
                     'name' => transformWeatherName($value['img_url']),
-                    'key' => $value['img_name'],
-                    'value' => $index,
+                    'screen' => $value['img_name'],
+                    'sub' => 'anchor_slider',
                     'pic_url' => env('APP_URL') . $value['img_url'],
                 ];
             }
 
             foreach ($weather as $index => $value) {
                 $res['weather'][] = [
+                    'mode' => $value['type'],
                     'name' => transformWeatherName($value['img_url']),
-                    'screen' => 'weather-slider',
-                    'key' => $value['img_name'],
-                    'value' => $index,
+                    'screen' => $value['img_name'],
+                    'sub' => 'weather_slider',
                     'pic_url' => env('APP_URL') . $value['img_url'],
                 ];
             }
@@ -101,12 +102,11 @@ class MobileDeviceController extends Controller
             foreach ($typhoonImgs as $img) {
                 $res['typhoon'][] = [
                     'name' => $img->content['display_name'],
-                    'value' => $img->name,
+                    'screen' => $img->name,
                 ];
             }
             $res['typhoon'][] = [
                 'name' => '主播圖卡',
-                'value' => 'anchor_slide',
                 'list' => $host_pics,
             ];
 
@@ -138,10 +138,10 @@ class MobileDeviceController extends Controller
                 ];
                 foreach ($category->generalImage as $img) {
                     $temp['list'][] = [
+                        'mode' => 'origin',
                         'name' => $img->content['display_name'],
-                        'screen' => 'weather-overview',
-                        'key' => $img->name,
-                        'value' => $imageIndexes[$img->name],
+                        'screen' => $img->name,
+                        'sub' => 'weather_overview',
                         'pic_url' => env('APP_URL') . getWeatherImage($img->name),
                     ];
                 }
@@ -297,28 +297,27 @@ class MobileDeviceController extends Controller
             $tempPreferenceJson = $host->preference_json;
             // 檢查是否為 一般天氣-圖資
             if ($type === 'weather') {
-                $tempPreferenceJson[$type]['images'][$key] = $preference;
                 foreach ($preference as $obj) {
                     $middleKey = 'images';
-                    if (in_array($obj['key'], $this->toolItem)) {
+                    if (in_array($obj['target'], $this->toolItem)) {
                         $middleKey = 'general';
-                    } else if ($obj['key'] === 'block') {
+                    } else if ($obj['target'] === 'block') {
                         $middleKey = 'weather-information';
                     }
-                    if (isset($tempPreferenceJson[$type][$middleKey][$obj['key']])) {
-                        $tempPreferenceJson[$type][$middleKey][$obj['key']]['point'] = [$obj['point_x'], $obj['point_y']];
+                    if (isset($tempPreferenceJson[$type][$middleKey][$obj['target']])) {
+                        $tempPreferenceJson[$type][$middleKey][$obj['target']]['point'] = [$obj['point_x'], $obj['point_y']];
                         if ( isset($obj['scale'])) {
-                            $tempPreferenceJson[$type][$middleKey][$obj['key']]['scale'] = $obj['scale'];
+                            $tempPreferenceJson[$type][$middleKey][$obj['target']]['scale'] = $obj['scale'];
                         }
                     }
                 }
             } else if ($type === 'typhoon') {
                 // 颱風所有圖資
                 foreach ($preference as $obj) {
-                    if (isset($tempPreferenceJson[$type][$key][$obj['key']])) {
-                        $tempPreferenceJson[$type][$key][$obj['key']]['point'] = [$obj['point_x'], $obj['point_y']];
+                    if (isset($tempPreferenceJson[$type][$key][$obj['target']])) {
+                        $tempPreferenceJson[$type][$key][$obj['target']]['point'] = [$obj['point_x'], $obj['point_y']];
                         if(isset($obj['scale'])) {
-                            $tempPreferenceJson[$type][$key][$obj['key']]['scale'] = $obj['scale'];
+                            $tempPreferenceJson[$type][$key][$obj['target']]['scale'] = $obj['scale'];
                         }
                     }
                 }
@@ -426,7 +425,7 @@ class MobileDeviceController extends Controller
             }
             $temp = [];
             $temp['name'] = $this->elementName($key) ?? '';
-            $temp['key'] = $key;
+            $temp['target'] = $key;
             if (isset($value['scale'])) {
                 $temp['scale'] = $value['scale'];
             }
