@@ -32,7 +32,8 @@ class GeneralImages extends Model
         1 => 'single',
         2 => 'gif',
         3 => 'list',
-        4 => 'abreast'
+        4 => 'abreast',
+        5 => 'upload'
     ];
 
     public function category(): BelongsTo

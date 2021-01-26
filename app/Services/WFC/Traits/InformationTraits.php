@@ -27,8 +27,9 @@ trait InformationTraits
             $generalImage = $generalImages->where('name', $settingImage['img_name'] ?? '')->first();
             try {
                 $type = weatherType($settingImage['img_name']);
-                $imagePreference = $preference['weather']['images'][$settingImage['img_name']];
+                $imagePreference = $preference['weather']['images'][$settingImage['img_name']] ?? [];
                 $information = [
+                    'key' => $generalImage->name ?? $settingImage['img_name'],
                     'mode' => GeneralImages::$mode[$type],
                     'scale' => $imagePreference['scale'] ?? 100,
                     'point_x' => $imagePreference['point_x'] ?? 0,
