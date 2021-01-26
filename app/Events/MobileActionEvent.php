@@ -55,6 +55,7 @@ class MobileActionEvent implements ShouldBroadcastNow
             'screen' => $this->screen,
             'sub' => $this->sub,
             'behaviour' => $this->behaviour,
+            'target' => $this->target,
             'point_x' => $this->point_x,
             'point_y' => $this->point_y,
             'scale' => $this->scale,
