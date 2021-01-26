@@ -32,7 +32,8 @@
                                                 @if($children['type'] == 1)
                                                     縮放
                                                     <label><input class="form-control" type="text"
-                                                                  value="{{$preference[$item['name']][$children['name']]['scale'] ?? '100'}}"
+                                                                  data-default="{{$default[$item['name']][$children['name']]['scale'][0] ?? '100'}}"
+                                                                  value="{{$preference[$item['name']][$children['name']]['scale'] ?? ($default[$item['name']][$children['name']]['scale'][0] ?? '100')}}"
                                                                   name="preference[{{$item['name']}}][{{$children['name']}}][scale]"></label>
                                                     %
                                                 @endif
@@ -41,18 +42,20 @@
                                         <td>
                                             左右位置
                                             <label><input class="form-control" type="text"
-                                                          value="{{$preference[$item['name']][$children['name']]['point'][0] ?? '0'}}"
+                                                          data-default="{{$default[$item['name']][$children['name']]['point'][0] ?? '0'}}"
+                                                          value="{{$preference[$item['name']][$children['name']]['point'][0] ?? ($default[$item['name']][$children['name']]['point'][0] ?? '0')}}"
                                                           name="preference[{{$item['name']}}][{{$children['name']}}][point][0]"
                                                           placeholder="x"></label>%
                                             上下位置
                                             <label><input class="form-control" type="text"
-                                                          value="{{$preference[$item['name']][$children['name']]['point'][1] ?? '0'}}"
+                                                          data-default="{{$default[$item['name']][$children['name']]['point'][1] ?? '0'}}"
+                                                          value="{{$preference[$item['name']][$children['name']]['point'][1] ?? ($default[$item['name']][$children['name']]['point'][1] ?? '0')}}"
                                                           name="preference[{{$item['name']}}][{{$children['name']}}][point][1]"
                                                           placeholder="y"></label>%
                                         </td>
                                         @if($auchor)
                                             <td>
-                                                <button type="submit" class="btn btn-secondary reset-default">重回預設值</button>
+                                                <button type="button" class="btn btn-secondary reset-default">重回預設值</button>
                                             </td>
                                         @endif
                                     </tr>

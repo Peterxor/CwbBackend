@@ -34,7 +34,7 @@
                                                     縮放
                                                     <label><input class="form-control" type="text"
                                                                   data-default="{{$default[$item['name']][$children['name']]['scale'][0] ?? '100'}}"
-                                                                  value="{{$preference[$item['name']][$children['name']]['scale'] ?? '100'}}"
+                                                                  value="{{$preference[$item['name']][$children['name']]['scale'] ?? ($default[$item['name']][$children['name']]['scale'][0] ?? '100')}}"
                                                                   name="preference[{{$item['name']}}][{{$children['name']}}][scale]"></label>
                                                     %
                                                 @endif
@@ -44,13 +44,13 @@
                                             左右位置
                                             <label><input class="form-control" type="text"
                                                           data-default="{{$default[$item['name']][$children['name']]['point'][0] ?? '0'}}"
-                                                          value="{{$preference[$item['name']][$children['name']]['point'][0] ?? '0'}}"
+                                                          value="{{$preference[$item['name']][$children['name']]['point'][0] ?? ($default[$item['name']][$children['name']]['point'][0] ?? '0')}}"
                                                           name="preference[{{$item['name']}}][{{$children['name']}}][point][0]"
                                                           placeholder="x"></label>%
                                             上下位置
                                             <label><input class="form-control" type="text"
                                                           data-default="{{$default[$item['name']][$children['name']]['point'][1] ?? '0'}}"
-                                                          value="{{$preference[$item['name']][$children['name']]['point'][1] ?? '0'}}"
+                                                          value="{{$preference[$item['name']][$children['name']]['point'][1] ?? ($default[$item['name']][$children['name']]['point'][1] ?? '0')}}"
                                                           name="preference[{{$item['name']}}][{{$children['name']}}][point][1]"
                                                           placeholder="y"></label>%
                                         </td>
