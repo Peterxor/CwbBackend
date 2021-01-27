@@ -72,8 +72,11 @@ class MobileDeviceController extends Controller
                 'weather' => [],
                 'anchor_list' => [],
             ];
-
             $res['anchor_list'] = $users->toArray();
+            $res['anchor_list'][] = [
+                'id' => 0,
+                'name' => '不指定主播'
+            ];
             // 颱風主播圖卡 & 天氣預報排程
             $typhoon = $device->typhoon_json;
             $weather = $device->forecast_json;
@@ -101,6 +104,7 @@ class MobileDeviceController extends Controller
 
             foreach ($typhoonImgs as $img) {
                 $res['typhoon'][] = [
+                    'mode' => 'origin',
                     'name' => $img->content['display_name'],
                     'screen' => $img->name,
                 ];
@@ -196,7 +200,7 @@ class MobileDeviceController extends Controller
         try {
             $request->validate([
                 'device_id' => 'required|numeric',
-                'anchor_id' => 'required|numeric',
+                'anchor_id' => 'numeric',
             ]);
             $device_id = $request->get('device_id');
             $user_id = $request->get('anchor_id');
@@ -204,11 +208,11 @@ class MobileDeviceController extends Controller
             $user = User::query()->where(function ($query) {
                 $query->role(2);
             })->where('id', $user_id)->first();
-            if ($device && $user) {
+            if (($user || $user_id == 0 ) && $device)  {
                 $device->user_id = $user_id;
                 $device->save();
             } else {
-                throw new Exception('device_id or anchor_id wrong');
+                throw new Exception('device_id or user_id 錯誤');
             }
             return $this->sendResponse('', '成功更新');
         } catch (Exception $e) {
