@@ -171,7 +171,7 @@ class RainfallObservation
                     continue;
                 $strArr = explode(" ", $str);
                 $area = Transformer::parseAddress($config, $strArr[2]);
-                if (count($area) == 0) {
+                if (count($area) == 0 || empty(Transformer::parseRainfallObsCity($area[0]))) {
                     Log::warning('雨量觀測[測站資料]資料解析錯誤:' . $str);
                     continue;
                 }
