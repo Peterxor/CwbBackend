@@ -201,7 +201,7 @@ class MobileDeviceController extends Controller
             $user = User::query()->where(function ($query) {
                 $query->role(2);
             })->where('id', $user_id)->first();
-            if (($user || $user_id == 0 ) && $device)  {
+            if (($user || $user_id == 0) && $device) {
                 $device->user_id = $user_id;
                 $device->save();
             } else {
@@ -220,6 +220,7 @@ class MobileDeviceController extends Controller
      */
     public function hostPreference(Request $request): JsonResponse
     {
+        //todo anchor_id 作廢
         try {
             $request->validate([
                 'anchor_id' => 'numeric',
@@ -302,20 +303,14 @@ class MobileDeviceController extends Controller
                         $middleKey = 'weather-information';
                     }
                     if (isset($tempPreferenceJson[$type][$middleKey][$obj['target']])) {
-                        $tempPreferenceJson[$type][$middleKey][$obj['target']]['point'] = [$obj['point_x'], $obj['point_y']];
-                        if ( isset($obj['scale'])) {
-                            $tempPreferenceJson[$type][$middleKey][$obj['target']]['scale'] = $obj['scale'];
-                        }
+                        $tempPreferenceJson = $this->changeXyAndScale($tempPreferenceJson, $type, $middleKey, $obj);
                     }
                 }
             } else if ($type === 'typhoon') {
                 // 颱風所有圖資
                 foreach ($preference as $obj) {
                     if (isset($tempPreferenceJson[$type][$key][$obj['target']])) {
-                        $tempPreferenceJson[$type][$key][$obj['target']]['point'] = [$obj['point_x'], $obj['point_y']];
-                        if(isset($obj['scale'])) {
-                            $tempPreferenceJson[$type][$key][$obj['target']]['scale'] = $obj['scale'];
-                        }
+                        $tempPreferenceJson = $this->changeXyAndScale($tempPreferenceJson, $type, $key, $obj);
                     }
                 }
 
@@ -329,21 +324,21 @@ class MobileDeviceController extends Controller
         }
     }
 
-    /** 檢查type,key對應是否正確
+    /**
+     * 更新元件x, y, scale座標與縮放
+     * @param $tempPreferenceJson
      * @param $type
      * @param $key
-     * @return bool
+     * @param $obj
+     * @return mixed
      */
-    public function checkKey($type, $key): bool
+    public function changeXyAndScale($tempPreferenceJson, $type, $key, $obj)
     {
-        $typhoon = ['typhoon-dynamics', 'typhoon-dynamics', 'wind-observation', 'wind-forecast', 'rainfall-observation', 'rainfall-forecast'];
-        $weather = ['general', 'weather-information'];
-        if ($type === 'typhoon') {
-            return in_array($key, $typhoon);
-        } else if ($type === 'weather') {
-            return in_array($key, $weather);
+        $tempPreferenceJson[$type][$key][$obj['target']]['point'] = [$obj['point_x'], $obj['point_y']];
+        if (isset($obj['scale'])) {
+            $tempPreferenceJson[$type][$key][$obj['target']]['scale'] = $obj['scale'];
         }
-        return false;
+        return $tempPreferenceJson;
     }
 
 
