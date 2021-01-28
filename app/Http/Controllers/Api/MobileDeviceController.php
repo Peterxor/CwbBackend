@@ -8,14 +8,10 @@ use Illuminate\Http\JsonResponse;
 use App\Models\Device;
 use Illuminate\Http\Request;
 use App\Models\TyphoonImage;
-use App\Models\GeneralImages;
 use App\Events\MobileActionEvent;
 use Exception;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use App\Models\GeneralImagesCategory;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Finder\Finder;
 use App\Models\HostPreference;
 
 class MobileDeviceController extends Controller
@@ -29,13 +25,12 @@ class MobileDeviceController extends Controller
     public function deviceList(): JsonResponse
     {
         try {
-            $devices = Device::get();
-            $devices = $devices->toArray();
+            $devices = Device::all();
             $data = [];
             foreach ($devices as $device) {
                 $data[] = [
-                    'device_id' => $device['id'],
-                    'device_name' => $device['name']
+                    'device_id' => $device->id,
+                    'device_name' => $device->name
                 ];
             }
             return response()->json($data);
@@ -56,12 +51,12 @@ class MobileDeviceController extends Controller
         try {
             $request->validate(['id' => 'required|numeric|digits_between:1,10']);
             $id = $request->id;
-            $typhoonImgs = TyphoonImage::get();
-            $generalImgs = GeneralImages::get();
+            $typhoonImgs = TyphoonImage::all();
             $users = User::query()->where(function ($query) {
                 $query->role(2);
             })->get(['id', 'name']);
 
+            /** @var Device $device */
             $device = Device::with(['user'])->where('id', $id)->first();
             $res = [
                 'room' => $device->name,
@@ -129,11 +124,7 @@ class MobileDeviceController extends Controller
     {
         try {
             $generalCategory = GeneralImagesCategory::query()->with('generalImage')->orderBy('sort')->get();
-            $generalImages = GeneralImages::query()->orderBy('sort')->get();
-            $imageIndexes = [];
-            foreach ($generalImages as $index => $image) {
-                $imageIndexes[$image->name] = $index;
-            }
+
             $res = [];
             foreach ($generalCategory as $category) {
                 $temp = [
@@ -175,7 +166,8 @@ class MobileDeviceController extends Controller
         return response()->json($res);
     }
 
-    public function setCoordinate(Request $request) {
+    public function setCoordinate(Request $request): JsonResponse
+    {
         $room = $request->room ?? '';
         $screen = $request->screen ?? '';
         $sub = $request->sub ?? '';
@@ -204,7 +196,8 @@ class MobileDeviceController extends Controller
             ]);
             $device_id = $request->get('device_id');
             $user_id = $request->get('anchor_id');
-            $device = Device::find($device_id);
+            /** @var Device $device */
+            $device = Device::query()->find($device_id);
             $user = User::query()->where(function ($query) {
                 $query->role(2);
             })->where('id', $user_id)->first();
@@ -419,7 +412,6 @@ class MobileDeviceController extends Controller
      */
     public function jsonToArray($json, $inputKey = null): array
     {
-        $arr = [];
         $tool = [];
         $images = [];
 
@@ -441,8 +433,7 @@ class MobileDeviceController extends Controller
                 $images[] = $temp;
             }
         }
-        $arr = array_merge($images, $tool);
-        return $arr;
+        return array_merge($images, $tool);
     }
 
 
