@@ -4,9 +4,9 @@
     <div class="kt-subheader  kt-grid__item" id="kt_subheader">
         <div class="kt-container  kt-container--fluid ">
             <div class="kt-subheader__main">
-                <h3 class="kt-subheader__title">天氣預報排程</h3>
+                <h3 class="kt-subheader__title">{{$pic_type === 'typhoon' ? '颱風主播圖卡' : '天氣預報排程'}}</h3>
                 <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-                <a href="{{route('dashboard.index', [])}}">Dashboard </a><span> / 天氣預報排程</span>
+                <a href="{{route('dashboard.index', [])}}">Dashboard </a><span> / {{$pic_type === 'typhoon' ? '颱風主播圖卡' : '天氣預報排程'}}</span>
             </div>
         </div>
     </div>
