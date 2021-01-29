@@ -1,7 +1,4 @@
-FROM larvata/laravel-elite-image:3.1.1
-
-#   Nginx 設定
-COPY cwb.conf /etc/nginx/nginx.conf
+FROM larvata/laravel-elite-image:3.1.4
 
 # Composer install
 COPY composer.* /tmp/
