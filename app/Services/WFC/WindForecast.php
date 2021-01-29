@@ -42,16 +42,16 @@ class WindForecast
                 }
             }
 
-            $titlePreference = $preference['typhoon']['wind-forecast']['title'];
-            $taiwanAllPreference = $preference['typhoon']['wind-forecast']['taiwan-all'];
-            $taiwanEPreference = $preference['typhoon']['wind-forecast']['taiwan-e'];
-            $taiwanMPreference = $preference['typhoon']['wind-forecast']['taiwan-m'];
-            $taiwanNPreference = $preference['typhoon']['wind-forecast']['taiwan-n'];
-            $taiwanSPreference = $preference['typhoon']['wind-forecast']['taiwan-s'];
-            $toolLeftPreference = $preference['typhoon']['wind-forecast']['tool-left'];
-            $toolRightPreference = $preference['typhoon']['wind-forecast']['tool-right'];
-            $toolMiddlePreference = $preference['typhoon']['wind-forecast']['tool-middle'];
-            $imageToolPreference = $preference['typhoon']['wind-forecast']['image-tool'];
+            $titlePreference = $preference['typhoon']['wind_forecast']['title'];
+            $taiwanAllPreference = $preference['typhoon']['wind_forecast']['taiwan_all'];
+            $taiwanEPreference = $preference['typhoon']['wind_forecast']['taiwan_e'];
+            $taiwanMPreference = $preference['typhoon']['wind_forecast']['taiwan_m'];
+            $taiwanNPreference = $preference['typhoon']['wind_forecast']['taiwan_n'];
+            $taiwanSPreference = $preference['typhoon']['wind_forecast']['taiwan_s'];
+            $toolLeftPreference = $preference['typhoon']['wind_forecast']['tool_left'];
+            $toolRightPreference = $preference['typhoon']['wind_forecast']['tool_right'];
+            $toolMiddlePreference = $preference['typhoon']['wind_forecast']['tool_middle'];
+            $imageToolPreference = $preference['typhoon']['wind_forecast']['image_tool'];
 
             return [
                 'meta' => [

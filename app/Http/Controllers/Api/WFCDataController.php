@@ -42,12 +42,12 @@ class WFCDataController extends Controller
             'dashboard' => Dashboard::get($board, $preference),
             'typhoon' => [
                 'information' => AnchorInformation::get($device->typhoon_json, $preference),
-                'typhoon-dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon-dynamics')->first()->content, $preference),
-                'typhoon-potential' => TyphoonPotential::get($typhoonImages->where('name', 'typhoon-potential')->first()->content, $preference),
-                'wind-observation' => WindObservation::get($typhoonImages->where('name', 'wind-observation')->first()->content, $preference),
-                'wind-forecast' => WindForecast::get($typhoonImages->where('name', 'wind-forecast')->first()->content, $preference),
-                'rainfall-observation' => RainfallObservation::get($typhoonImages->where('name', 'rainfall-observation')->first()->content, $preference),
-                'rainfall-forecast' => RainfallForecast::get($typhoonImages->where('name', 'rainfall-forecast')->first()->content, $preference),
+                'typhoon_dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon_dynamics')->first()->content, $preference),
+                'typhoon_potential' => TyphoonPotential::get($typhoonImages->where('name', 'typhoon_potential')->first()->content, $preference),
+                'wind_observation' => WindObservation::get($typhoonImages->where('name', 'wind_observation')->first()->content, $preference),
+                'wind_forecast' => WindForecast::get($typhoonImages->where('name', 'wind_forecast')->first()->content, $preference),
+                'rainfall_observation' => RainfallObservation::get($typhoonImages->where('name', 'rainfall_observation')->first()->content, $preference),
+                'rainfall_forecast' => RainfallForecast::get($typhoonImages->where('name', 'rainfall_forecast')->first()->content, $preference),
             ],
             'weather' => [
                 'slider' => WeatherSlider::get($device->forecast_json, $preference),
@@ -76,14 +76,14 @@ class WFCDataController extends Controller
         $imageList = $data['typhoon']['information']['information'] ?? [];
 
         array_push($imageList,
-            $data['typhoon']['typhoon-dynamics']['ir'],
-            $data['typhoon']['typhoon-dynamics']['mb'],
-            $data['typhoon']['typhoon-dynamics']['vis'],
-            $data['typhoon']['rainfall-observation']['rainfall']['today'],
-            $data['typhoon']['rainfall-observation']['rainfall']['before1nd'],
-            $data['typhoon']['rainfall-observation']['rainfall']['before2nd'],
-            $data['typhoon']['rainfall-observation']['rainfall']['before3nd'],
-            $data['typhoon']['rainfall-observation']['rainfall']['before4nd']
+            $data['typhoon']['typhoon_dynamics']['ir'],
+            $data['typhoon']['typhoon_dynamics']['mb'],
+            $data['typhoon']['typhoon_dynamics']['vis'],
+            $data['typhoon']['rainfall_observation']['rainfall']['today'],
+            $data['typhoon']['rainfall_observation']['rainfall']['before1nd'],
+            $data['typhoon']['rainfall_observation']['rainfall']['before2nd'],
+            $data['typhoon']['rainfall_observation']['rainfall']['before3nd'],
+            $data['typhoon']['rainfall_observation']['rainfall']['before4nd']
         );
 
         $imageList = array_merge_recursive($imageList, $data['weather']['slider']['information'] ?? []);

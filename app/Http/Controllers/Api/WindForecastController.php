@@ -21,7 +21,7 @@ class WindForecastController extends Controller
     public function index(Device $device): JsonResponse
     {
         /** @var TyphoonImage $typhoonImage */
-        $typhoonImage = TyphoonImage::query()->where('name', 'wind-forecast')->first(['content']);
+        $typhoonImage = TyphoonImage::query()->where('name', 'wind_forecast')->first(['content']);
 
         return response()->json(WindForecast::get($typhoonImage->content, preference($device)));
     }

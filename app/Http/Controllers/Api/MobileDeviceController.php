@@ -16,7 +16,7 @@ use App\Models\HostPreference;
 
 class MobileDeviceController extends Controller
 {
-    private $toolItem = ['title', 'tool-middle', 'image-tool', 'tool-left', 'tool-right', 'image-label-left', 'image-label-right'];
+    private $toolItem = ['title', 'tool_middle', 'image_tool', 'tool_left', 'tool_right', 'image_label_left', 'image_label_right'];
 
     /**
      * 裝置列表
@@ -246,7 +246,7 @@ class MobileDeviceController extends Controller
             if ($type === 'weather') {
                 $json = $host->preference_json[$type]['images'];
                 $general = $host->preference_json[$type]['general'];
-                $weather_information = $host->preference_json[$type]['weather-information'];
+                $weather_information = $host->preference_json[$type]['weather_information'];
                 $arr = array_merge($arr, $this->jsonToArray($general));
                 $arr = array_merge($arr, $this->jsonToArray($weather_information));
                 $arr = array_merge($arr, $this->jsonToArray($json, $key));
@@ -358,43 +358,43 @@ class MobileDeviceController extends Controller
     public function elementName($englishName): string
     {
         $map = [
-            'typhoon-ir' => '颱風IR',
-            'typhoon-mb' => '颱風MB',
-            'typhoon-vis' => '颱風VIS',
+            'typhoon_ir' => '颱風IR',
+            'typhoon_mb' => '颱風MB',
+            'typhoon_vis' => '颱風VIS',
             'title' => '標題',
-            'tool-middle' => '工具列 (中間)',
-            'taiwan-all' => '台灣 (全)',
-            'taiwan-n' => '台灣 (北)',
-            'taiwan-m' => '台灣 (中)',
-            'taiwan-s' => '台灣 (南)',
-            'taiwan-e' => '台灣 (東)',
-            'image-tool' => '圖例',
-            'tool-left' => '工具列 (左)',
-            'tool-right' => '工具列 (右)',
-            'taiwan-y' => '台灣 (宜)',
-            'taiwan-h' => '台灣 (花)',
+            'tool_middle' => '工具列 (中間)',
+            'taiwan_all' => '台灣 (全)',
+            'taiwan_n' => '台灣 (北)',
+            'taiwan_m' => '台灣 (中)',
+            'taiwan_s' => '台灣 (南)',
+            'taiwan_e' => '台灣 (東)',
+            'image_tool' => '圖例',
+            'tool_left' => '工具列 (左)',
+            'tool_right' => '工具列 (右)',
+            'taiwan_y' => '台灣 (宜)',
+            'taiwan_h' => '台灣 (花)',
             'block' => '圖卡區塊',
-            'weather-information' => '一般天氣預報',
+            'weather_information' => '一般天氣預報',
             'general' => '通用設定',
-            'image-label-left' => '圖片列表 (左)',
-            'image-label-right' => '圖片列表 (右)',
+            'image_label_left' => '圖片列表 (左)',
+            'image_label_right' => '圖片列表 (右)',
             'images' => '圖資',
-            'east-asia-vis' => '東亞VIS',
-            'east-asia-mb' => '東亞MB',
-            'east-asia-ir' => '東亞IR',
-            'surface-weather-map' => '地面天氣圖',
-            'global-ir' => '全球IR',
-            'ultraviolet-light' => '紫外線',
-            'radar-echo' => '雷達回波',
+            'east_asia_vis' => '東亞VIS',
+            'east_asia_mb' => '東亞MB',
+            'east_asia_ir' => '東亞IR',
+            'surface_weather_map' => '地面天氣圖',
+            'global_ir' => '全球IR',
+            'ultraviolet_light' => '紫外線',
+            'radar_echo' => '雷達回波',
             'temperature' => '溫度',
             'rainfall' => '雨量',
-            'numerical-forecast' => '數值預報',
-            'precipitation-forecast-12h' => '定量降水預報12小時',
-            'precipitation-forecast-6h' => '定量降水預報6小時',
-            'forecast-24h' => '24H預測',
-            'weather-forecast' => '天氣預測',
-            'wave-analysis-chart' => '波浪分析圖',
-            'weather-alert' => '天氣警報',
+            'numerical_forecast' => '數值預報',
+            'precipitation_forecast_12h' => '定量降水預報12小時',
+            'precipitation_forecast_6h' => '定量降水預報6小時',
+            'forecast_24h' => '24H預測',
+            'weather_forecast' => '天氣預測',
+            'wave_analysis_chart' => '波浪分析圖',
+            'weather_alert' => '天氣警報',
         ];
         return $map[$englishName];
     }

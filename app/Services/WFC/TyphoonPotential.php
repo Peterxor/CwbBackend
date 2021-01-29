@@ -21,7 +21,7 @@ class TyphoonPotential
     static public function get(array $setting, array $preference): array
     {
         try {
-            $typhoonPotential = simplexml_load_file(Storage::disk('data')->path($setting['typhoon-potential']['origin']));
+            $typhoonPotential = simplexml_load_file(Storage::disk('data')->path($setting['typhoon_potential']['origin']));
 
             $typhoon['current']['center']['point']['lat'] = (float)$typhoonPotential->TY_TRACK_POINT->center->point->lat;
             $typhoon['current']['center']['point']['lon'] = (float)$typhoonPotential->TY_TRACK_POINT->center->point->lon;
@@ -64,8 +64,8 @@ class TyphoonPotential
                 ];
             }
 
-            $titlePreference = $preference['typhoon']['typhoon-potential']['title'];
-            $toolMiddlePreference = $preference['typhoon']['typhoon-potential']['tool-middle'];
+            $titlePreference = $preference['typhoon']['typhoon_potential']['title'];
+            $toolMiddlePreference = $preference['typhoon']['typhoon_potential']['tool_middle'];
 
             return [
                 'meta' => [
@@ -96,9 +96,9 @@ class TyphoonPotential
     static public function currentTime()
     {
         /** @var TyphoonImage $typhoonImage */
-        $typhoonImage = TyphoonImage::query()->where('name', 'typhoon-dynamics')->first();
+        $typhoonImage = TyphoonImage::query()->where('name', 'typhoon_dynamics')->first();
         $setting = $typhoonImage->content;
-        $path = Storage::disk('data')->path($setting['typhoon-dynamics']['origin'] ?? '');
+        $path = Storage::disk('data')->path($setting['typhoon_dynamics']['origin'] ?? '');
 
         try {
             $typhoonDynamics = simplexml_load_file($path);

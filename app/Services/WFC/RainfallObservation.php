@@ -27,18 +27,18 @@ class RainfallObservation
         if (!isset($setting['interval']))
             throw new WFCException('雨量觀測[換圖速率]資料解析錯誤', 500);
 
-        $titlePreference = $preference['typhoon']['rainfall-observation']['title'];
-        $taiwanAllPreference = $preference['typhoon']['rainfall-observation']['taiwan-all'];
-        $taiwanEPreference = $preference['typhoon']['rainfall-observation']['taiwan-e'];
-        $taiwanMPreference = $preference['typhoon']['rainfall-observation']['taiwan-m'];
-        $taiwanNPreference = $preference['typhoon']['rainfall-observation']['taiwan-n'];
-        $taiwanYPreference = $preference['typhoon']['rainfall-observation']['taiwan-y'];
-        $taiwanHPreference = $preference['typhoon']['rainfall-observation']['taiwan-h'];
-        $taiwanSPreference = $preference['typhoon']['rainfall-observation']['taiwan-s'];
-        $toolLeftPreference = $preference['typhoon']['rainfall-observation']['tool-left'];
-        $toolRightPreference = $preference['typhoon']['rainfall-observation']['tool-right'];
-        $toolMiddlePreference = $preference['typhoon']['rainfall-observation']['tool-middle'];
-        $imageToolPreference = $preference['typhoon']['rainfall-observation']['image-tool'];
+        $titlePreference = $preference['typhoon']['rainfall_observation']['title'];
+        $taiwanAllPreference = $preference['typhoon']['rainfall_observation']['taiwan_all'];
+        $taiwanEPreference = $preference['typhoon']['rainfall_observation']['taiwan_e'];
+        $taiwanMPreference = $preference['typhoon']['rainfall_observation']['taiwan_m'];
+        $taiwanNPreference = $preference['typhoon']['rainfall_observation']['taiwan_n'];
+        $taiwanYPreference = $preference['typhoon']['rainfall_observation']['taiwan_y'];
+        $taiwanHPreference = $preference['typhoon']['rainfall_observation']['taiwan_h'];
+        $taiwanSPreference = $preference['typhoon']['rainfall_observation']['taiwan_s'];
+        $toolLeftPreference = $preference['typhoon']['rainfall_observation']['tool_left'];
+        $toolRightPreference = $preference['typhoon']['rainfall_observation']['tool_right'];
+        $toolMiddlePreference = $preference['typhoon']['rainfall_observation']['tool_middle'];
+        $imageToolPreference = $preference['typhoon']['rainfall_observation']['image_tool'];
 
         return [
             'meta' => [

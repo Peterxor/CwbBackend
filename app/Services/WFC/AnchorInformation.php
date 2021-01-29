@@ -18,7 +18,7 @@ class AnchorInformation
      */
     static public function get(array $setting, array $preference): array
     {
-        $blockPreference = $preference['typhoon']['anchor-information']['block'];
+        $blockPreference = $preference['typhoon']['anchor_information']['block'];
 
         return [
             'meta' => [

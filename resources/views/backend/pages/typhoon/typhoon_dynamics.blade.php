@@ -46,8 +46,8 @@
                                         <span class="kt-font-danger">*</span>颱風座標資料來源 (檔案)
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control" type="text" value="{{$data->content['typhoon-dynamics']['origin'] ?? ''}}"
-                                               name="typhoon-dynamics[origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['typhoon_dynamics']['origin'] ?? ''}}"
+                                               name="typhoon_dynamics[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -78,7 +78,7 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['typhoon-ir']['origin'] ?? ''}}" name="typhoon-ir[origin]" required>
+                                               value="{{$data->content['typhoon_ir']['origin'] ?? ''}}" name="typhoon_ir[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -89,7 +89,7 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['typhoon-ir']['amount'] ?? 1}}" name="typhoon-ir[amount]"
+                                               value="{{$data->content['typhoon_ir']['amount'] ?? 1}}" name="typhoon_ir[amount]"
                                                required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
@@ -102,8 +102,8 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['typhoon-ir']['interval'] ?? 1000}}"
-                                               name="typhoon-ir[interval]" required>
+                                               value="{{$data->content['typhoon_ir']['interval'] ?? 1000}}"
+                                               name="typhoon_ir[interval]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                         <label>張/毫秒</label>
@@ -121,7 +121,7 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['typhoon-mb']['origin'] ?? ''}}" name="typhoon-mb[origin]" required>
+                                               value="{{$data->content['typhoon_mb']['origin'] ?? ''}}" name="typhoon_mb[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -132,7 +132,7 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['typhoon-mb']['amount'] ?? 1}}" name="typhoon-mb[amount]"
+                                               value="{{$data->content['typhoon_mb']['amount'] ?? 1}}" name="typhoon_mb[amount]"
                                                required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
@@ -145,8 +145,8 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['typhoon-mb']['interval'] ?? 1000}}"
-                                               name="typhoon-mb[interval]" required>
+                                               value="{{$data->content['typhoon_mb']['interval'] ?? 1000}}"
+                                               name="typhoon_mb[interval]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                         <label>張/毫秒</label>
@@ -164,7 +164,7 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['typhoon-vis']['origin'] ?? ''}}" name="typhoon-vis[origin]"
+                                               value="{{$data->content['typhoon_vis']['origin'] ?? ''}}" name="typhoon_vis[origin]"
                                                required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
@@ -176,7 +176,7 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['typhoon-vis']['amount'] ?? 1}}" name="typhoon-vis[amount]"
+                                               value="{{$data->content['typhoon_vis']['amount'] ?? 1}}" name="typhoon_vis[amount]"
                                                required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
@@ -189,8 +189,8 @@
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['typhoon-vis']['interval'] ?? 1000}}"
-                                               name="typhoon-vis[interval]" required>
+                                               value="{{$data->content['typhoon_vis']['interval'] ?? 1000}}"
+                                               name="typhoon_vis[interval]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                         <label>張/毫秒</label>

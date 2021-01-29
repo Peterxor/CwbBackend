@@ -20,8 +20,8 @@ class TyphoonDynamics
      */
     static public function get(array $setting, array $preference): array
     {
-        $titlePreference = $preference['typhoon']['typhoon-dynamics']['title'];
-        $toolMiddlePreference = $preference['typhoon']['typhoon-dynamics']['tool-middle'];
+        $titlePreference = $preference['typhoon']['typhoon_dynamics']['title'];
+        $toolMiddlePreference = $preference['typhoon']['typhoon_dynamics']['tool_middle'];
 
         return [
             'meta' => [
@@ -36,10 +36,10 @@ class TyphoonDynamics
                     'point_y' => $toolMiddlePreference['point_y'] ?? 0,
                 ]
             ],
-            'typhoon' => self::typhoonFormat(Storage::disk('data')->path($setting['typhoon-dynamics']['origin'] ?? '')),
-            'ir' => self::imageFormat('颱風IR', $setting['typhoon-ir'] ?? [], $preference['typhoon']['typhoon-dynamics']['typhoon-ir'] ?? []),
-            'mb' => self::imageFormat('颱風MB', $setting['typhoon-mb'] ?? [], $preference['typhoon']['typhoon-dynamics']['typhoon-mr'] ?? []),
-            'vis' => self::imageFormat('颱風VIS', $setting['typhoon-vis'] ?? [], $preference['typhoon']['typhoon-dynamics']['typhoon-vis'] ?? [])
+            'typhoon' => self::typhoonFormat(Storage::disk('data')->path($setting['typhoon_dynamics']['origin'] ?? '')),
+            'ir' => self::imageFormat('颱風IR', $setting['typhoon_ir'] ?? [], $preference['typhoon']['typhoon_dynamics']['typhoon_ir'] ?? []),
+            'mb' => self::imageFormat('颱風MB', $setting['typhoon_mb'] ?? [], $preference['typhoon']['typhoon_dynamics']['typhoon_mr'] ?? []),
+            'vis' => self::imageFormat('颱風VIS', $setting['typhoon_vis'] ?? [], $preference['typhoon']['typhoon_dynamics']['typhoon_vis'] ?? [])
         ];
     }
 

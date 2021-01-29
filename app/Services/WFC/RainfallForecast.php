@@ -19,18 +19,18 @@ class RainfallForecast
      */
     static public function get(array $setting, array $preference): array
     {
-        $titlePreference = $preference['typhoon']['rainfall-forecast']['title'];
-        $taiwanAllPreference = $preference['typhoon']['rainfall-forecast']['taiwan-all'];
-        $taiwanEPreference = $preference['typhoon']['rainfall-forecast']['taiwan-e'];
-        $taiwanMPreference = $preference['typhoon']['rainfall-forecast']['taiwan-m'];
-        $taiwanNPreference = $preference['typhoon']['rainfall-forecast']['taiwan-n'];
-        $taiwanYPreference = $preference['typhoon']['rainfall-forecast']['taiwan-y'];
-        $taiwanHPreference = $preference['typhoon']['rainfall-forecast']['taiwan-h'];
-        $taiwanSPreference = $preference['typhoon']['rainfall-forecast']['taiwan-s'];
-        $toolLeftPreference = $preference['typhoon']['rainfall-forecast']['tool-left'];
-        $toolRightPreference = $preference['typhoon']['rainfall-forecast']['tool-right'];
-        $toolMiddlePreference = $preference['typhoon']['rainfall-forecast']['tool-middle'];
-        $imageToolPreference = $preference['typhoon']['rainfall-forecast']['image-tool'];
+        $titlePreference = $preference['typhoon']['rainfall_forecast']['title'];
+        $taiwanAllPreference = $preference['typhoon']['rainfall_forecast']['taiwan_all'];
+        $taiwanEPreference = $preference['typhoon']['rainfall_forecast']['taiwan_e'];
+        $taiwanMPreference = $preference['typhoon']['rainfall_forecast']['taiwan_m'];
+        $taiwanNPreference = $preference['typhoon']['rainfall_forecast']['taiwan_n'];
+        $taiwanYPreference = $preference['typhoon']['rainfall_forecast']['taiwan_y'];
+        $taiwanHPreference = $preference['typhoon']['rainfall_forecast']['taiwan_h'];
+        $taiwanSPreference = $preference['typhoon']['rainfall_forecast']['taiwan_s'];
+        $toolLeftPreference = $preference['typhoon']['rainfall_forecast']['tool_left'];
+        $toolRightPreference = $preference['typhoon']['rainfall_forecast']['tool_right'];
+        $toolMiddlePreference = $preference['typhoon']['rainfall_forecast']['tool_middle'];
+        $imageToolPreference = $preference['typhoon']['rainfall_forecast']['image_tool'];
 
         return [
             'meta' => [

@@ -148,89 +148,89 @@ class TyphoonController extends Controller
         $data = $request->all();
 
         switch ($typhoon->name ?? '') {
-            case('typhoon-dynamics'):
+            case('typhoon_dynamics'):
                 $typhoon->content = array_merge($typhoon->content, [
-                    'typhoon-dynamics' => [
-                        'origin' => $data['typhoon-dynamics']['origin']
+                    'typhoon_dynamics' => [
+                        'origin' => $data['typhoon_dynamics']['origin']
                     ],
-                    'typhoon-ir' => [
-                        'origin' => $data['typhoon-ir']['origin'],
-                        'amount' => $data['typhoon-ir']['amount'],
-                        'interval' => $data['typhoon-ir']['interval']
+                    'typhoon_ir' => [
+                        'origin' => $data['typhoon_ir']['origin'],
+                        'amount' => $data['typhoon_ir']['amount'],
+                        'interval' => $data['typhoon_ir']['interval']
                     ],
-                    'typhoon-mb' => [
-                        'origin' => $data['typhoon-mb']['origin'],
-                        'amount' => $data['typhoon-mb']['amount'],
-                        'interval' => $data['typhoon-mb']['interval']
+                    'typhoon_mb' => [
+                        'origin' => $data['typhoon_mb']['origin'],
+                        'amount' => $data['typhoon_mb']['amount'],
+                        'interval' => $data['typhoon_mb']['interval']
                     ],
-                    'typhoon-vis' => [
-                        'origin' => $data['typhoon-vis']['origin'],
-                        'amount' => $data['typhoon-vis']['amount'],
-                        'interval' => $data['typhoon-vis']['interval']
+                    'typhoon_vis' => [
+                        'origin' => $data['typhoon_vis']['origin'],
+                        'amount' => $data['typhoon_vis']['amount'],
+                        'interval' => $data['typhoon_vis']['interval']
                     ]
                 ]);
                 break;
-            case('typhoon-potential'):
+            case('typhoon_potential'):
                 $typhoon->content = array_merge($typhoon->content, [
-                    'typhoon-potential' => [
-                        'origin' => $data['typhoon-potential']['origin']
+                    'typhoon_potential' => [
+                        'origin' => $data['typhoon_potential']['origin']
                     ],
                 ]);
                 break;
-            case('wind-observation'):
+            case('wind_observation'):
                 $typhoon->content = array_merge($typhoon->content, [
-                    'wind-observation' => [
-                        'origin' => $data['wind-observation']['origin']
+                    'wind_observation' => [
+                        'origin' => $data['wind_observation']['origin']
                     ],
                 ]);
                 break;
-            case('wind-forecast'):
+            case('wind_forecast'):
                 $typhoon->content = array_merge($typhoon->content, [
-                    'wind-forecast' => [
-                        'origin' => $data['wind-forecast']['origin']
+                    'wind_forecast' => [
+                        'origin' => $data['wind_forecast']['origin']
                     ],
                 ]);
                 break;
-            case('rainfall-observation'):
+            case('rainfall_observation'):
                 $typhoon->content = array_merge($typhoon->content, [
                     'amount' => $data['amount'],
                     'interval' => $data['interval'],
                     'today' => [
                         'status' => 1,
-                        'data-origin' => $data['today']['data-origin'],
-                        'image-origin' => $data['today']['image-origin']
+                        'data_origin' => $data['today']['data_origin'],
+                        'image_origin' => $data['today']['image_origin']
                     ],
                     'before1nd' => [
                         'status' => $data['before1nd']['status'],
-                        'data-origin' => $data['before1nd']['data-origin'],
-                        'image-origin' => $data['before1nd']['image-origin']
+                        'data_origin' => $data['before1nd']['data_origin'],
+                        'image_origin' => $data['before1nd']['image_origin']
                     ],
                     'before2nd' => [
                         'status' => $data['before2nd']['status'],
-                        'data-origin' => $data['before2nd']['data-origin'],
-                        'image-origin' => $data['before2nd']['image-origin']
+                        'data_origin' => $data['before2nd']['data_origin'],
+                        'image_origin' => $data['before2nd']['image_origin']
                     ],
                     'before3nd' => [
                         'status' => $data['before3nd']['status'],
-                        'data-origin' => $data['before3nd']['data-origin'],
-                        'image-origin' => $data['before3nd']['image-origin']
+                        'data_origin' => $data['before3nd']['data_origin'],
+                        'image_origin' => $data['before3nd']['image_origin']
                     ],
                     'before4nd' => [
                         'status' => $data['before4nd']['status'],
-                        'data-origin' => $data['before4nd']['data-origin'],
-                        'image-origin' => $data['before4nd']['image-origin']
+                        'data_origin' => $data['before4nd']['data_origin'],
+                        'image_origin' => $data['before4nd']['image_origin']
                     ]
                 ]);
                 break;
-            case('rainfall-forecast'):
+            case('rainfall_forecast'):
                 $typhoon->content = array_merge($typhoon->content, [
-                    'all-rainfall' => [
-                        'origin' => $data['all-rainfall']['origin'],
-                        'alert_value' => $data['all-rainfall']['alert_value'],
+                    'all_rainfall' => [
+                        'origin' => $data['all_rainfall']['origin'],
+                        'alert_value' => $data['all_rainfall']['alert_value'],
                     ],
                     '24h-rainfall' => [
-                        'origin' => $data['24h-rainfall']['origin'],
-                        'alert_value' => $data['24h-rainfall']['alert_value'],
+                        'origin' => $data['24h_rainfall']['origin'],
+                        'alert_value' => $data['24h_rainfall']['alert_value'],
                     ],
                 ]);
                 break;

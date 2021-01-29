@@ -1,22 +1,22 @@
 @extends('backend.layouts.app')
 @section('content')
     @switch($data->name ?? '')
-        @case('typhoon-dynamics')
+        @case('typhoon_dynamics')
         @include('backend.pages.typhoon.typhoon_dynamics')
         @break
-        @case('typhoon-potential')
+        @case('typhoon_potential')
         @include('backend.pages.typhoon.typhoon_potential')
         @break
-        @case('wind-observation')
+        @case('wind_observation')
         @include('backend.pages.typhoon.wind_observation')
         @break
-        @case('wind-forecast')
+        @case('wind_forecast')
         @include('backend.pages.typhoon.wind_forecast')
         @break
-        @case('rainfall-observation')
+        @case('rainfall_observation')
         @include('backend.pages.typhoon.rainfall_observation')
         @break
-        @case('rainfall-forecast')
+        @case('rainfall_forecast')
         @include('backend.pages.typhoon.rainfall_forecast')
         @break
         @default

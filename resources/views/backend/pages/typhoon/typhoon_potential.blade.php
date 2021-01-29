@@ -46,7 +46,7 @@
                                         <span class="kt-font-danger">*</span>資料來源 (檔案)
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control" type="text" value="{{$data->content['typhoon-potential']['origin'] ?? ''}}" name="typhoon-potential[origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['typhoon_potential']['origin'] ?? ''}}" name="typhoon_potential[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>

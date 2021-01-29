@@ -46,7 +46,7 @@
                                         <span class="kt-font-danger">*</span>風力觀測資料來源 (資料夾)
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$data->content['wind-observation']['origin'] ?? ''}}" name="wind-observation[origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['wind_observation']['origin'] ?? ''}}" name="wind_observation[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>

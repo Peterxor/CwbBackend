@@ -56,7 +56,7 @@ trait InformationTraits
                             ]);
                             break;
                         case 3:
-                            if ($settingImage['img_name'] == 'weather-forecast') {
+                            if ($settingImage['img_name'] == 'weather_forecast') {
                                 $images = array_slice(imagesUrl($generalImage->content['origin'], 8), 0, 6);
                             } else {
                                 $images = imagesUrl($generalImage->content['origin'], 6);
@@ -106,7 +106,7 @@ trait InformationTraits
         $startTime = '';
         $endTime = '';
         switch ($imageName) {
-            case 'east-asia-vis':
+            case 'east_asia_vis':
                 foreach ($urls as $url) {
                     $time = Carbon::createFromFormat('Y-m-d_Hi\.\V\I\S', pathinfo($url)['filename'], 'Asia/Taipei');
                     if (empty($startTime))
@@ -114,7 +114,7 @@ trait InformationTraits
                     $endTime = $time->format('m月d日 H:i');
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
-            case 'east-asia-mb':
+            case 'east_asia_mb':
                 foreach ($urls as $url) {
                     $time = Carbon::createFromFormat('Y-m-d_Hi\.\I\R\1\_\M\B', pathinfo($url)['filename'], 'Asia/Taipei');
                     if (empty($startTime))
@@ -122,7 +122,7 @@ trait InformationTraits
                     $endTime = $time->format('m月d日 H:i');
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
-            case 'east-asia-ir':
+            case 'east_asia_ir':
                 foreach ($urls as $url) {
                     $time = Carbon::createFromFormat('Y-m-d_Hi\.\I\R\1\_\C\R', pathinfo($url)['filename'], 'Asia/Taipei');
                     if (empty($startTime))
@@ -130,10 +130,10 @@ trait InformationTraits
                     $endTime = $time->format('m月d日 H:i');
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
-            case 'surface-weather-map':
+            case 'surface_weather_map':
                 $time = Carbon::createFromFormat('Y-md-Hi\_\S\F\C\c\o\m\b\o\H\D', pathinfo($urls)['filename'], 'Asia/Taipei');
                 return $time->format('m月d日 H:i');
-            case 'global-ir':
+            case 'global_ir':
                 foreach ($urls as $url) {
                     $time = Carbon::createFromFormat('Y-m-d_Hi\.\I\R\1\_\F\D\K\.\M\B', pathinfo($url)['filename'], 'Asia/Taipei');
                     if (empty($startTime))
@@ -141,7 +141,7 @@ trait InformationTraits
                     $endTime = $time->format('m月d日 H:i');
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
-            case 'radar-echo':
+            case 'radar_echo':
                 foreach ($urls as $url) {
                     $time = Carbon::createFromFormat('\C\V\1\_\4\K\_\3\8\4\0\_YmdHi', pathinfo($url)['filename'], 'Asia/Taipei');
                     if (empty($startTime))
@@ -160,7 +160,7 @@ trait InformationTraits
             case 'rainfall':
                 $time = Carbon::createFromFormat('Y-m-d_Hi', substr(pathinfo($urls)['filename'], 0, 15), 'Asia/Taipei');
                 return $time->format('m月d日 H:i');
-            case 'numerical-forecast':
+            case 'numerical_forecast':
                 foreach ($urls as $url) {
                     $time = Carbon::createFromFormat('YmdH', '20' .substr(pathinfo($url)['filename'], 15, 8), 'Asia/Taipei');
                     if (empty($startTime))
@@ -168,7 +168,7 @@ trait InformationTraits
                     $endTime = $time->format('m月d日');
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
-            case 'forecast-24h':
+            case 'forecast_24h':
                 foreach ($urls as $url) {
                     $time = Carbon::createFromFormat('Y-md-hi\_\A\0\1\2\H\D', pathinfo($url)['filename'], 'Asia/Taipei');
                     if (empty($startTime))
@@ -176,13 +176,13 @@ trait InformationTraits
                     $endTime = $time->format('m月d日 H:i');
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
-            case 'weather-forecast':
+            case 'weather_forecast':
                 foreach ($urls as $url) {
                     $time = Carbon::createFromFormat('Y-md', substr(pathinfo($url)['filename'], 0, 9), 'Asia/Taipei');
                     return $time->format('m月d日');
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
-            case 'wave-analysis-chart':
+            case 'wave_analysis_chart':
                 $time = Carbon::createFromFormat('\F\I\1\2\P\OYmd\-\0\0', pathinfo($urls)['filename'], 'Asia/Taipei');
                 return $time->format('m月d日 H:i');
             default:

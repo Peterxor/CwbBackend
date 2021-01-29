@@ -21,7 +21,7 @@ class TyphoonPotentialController extends Controller
     public function index(Device $device): JsonResponse
     {
         /** @var TyphoonImage $typhoonImage */
-        $typhoonImage = TyphoonImage::query()->where('name', 'typhoon-potential')->first(['content']);
+        $typhoonImage = TyphoonImage::query()->where('name', 'typhoon_potential')->first(['content']);
 
         return response()->json(TyphoonPotential::get($typhoonImage->content, preference($device)));
     }

@@ -21,7 +21,7 @@ class RainfallObservationController extends Controller
     public function index(Device $device): JsonResponse
     {
         /** @var TyphoonImage $typhoonImage */
-        $typhoonImage = TyphoonImage::query()->where('name', 'rainfall-observation')->first(['content']);
+        $typhoonImage = TyphoonImage::query()->where('name', 'rainfall_observation')->first(['content']);
 
         return response()->json(RainfallObservation::get($typhoonImage->content, preference($device)));
     }

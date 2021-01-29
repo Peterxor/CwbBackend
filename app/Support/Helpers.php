@@ -137,22 +137,22 @@ if (!function_exists('getWeatherImage')) {
     function getWeatherImage($name): string
     {
         $map = [
-            'east-asia-vis' => '/images/weather/東亞VIS.jpg',
-            'east-asia-mb' => '/images/weather/東亞MB.jpg',
-            'east-asia-ir' => '/images/weather/東亞IR.jpg',
-            'surface-weather-map' => '/images/weather/地面天氣圖.jpg',
-            'global-ir' => '/images/weather/全球IR.jpg',
-            'ultraviolet-light' => '/images/weather/紫外線.png',
-            'radar-echo' => '/images/weather/雷達回波圖.png',
+            'east_asia_vis' => '/images/weather/東亞VIS.jpg',
+            'east_asia_mb' => '/images/weather/東亞MB.jpg',
+            'east_asia_ir' => '/images/weather/東亞IR.jpg',
+            'surface_weather_map' => '/images/weather/地面天氣圖.jpg',
+            'global_ir' => '/images/weather/全球IR.jpg',
+            'ultraviolet_light' => '/images/weather/紫外線.png',
+            'radar_echo' => '/images/weather/雷達回波圖.png',
             'temperature' => '/images/weather/溫度.jpg',
             'rainfall' => '/images/weather/雨量.jpg',
-            'numerical-forecast' => '/images/weather/數值預報.png',
-            'precipitation-forecast-12h' => '/images/weather/定量降水預報12小時.png',
-            'precipitation-forecast-6h' => '/images/weather/定量降水預報6小時.png',
-            'forecast-24h' => '/images/weather/24H預測.png',
-            'weather-forecast' => '/images/weather/天氣預測.png',
-            'wave-analysis-chart' => '/images/weather/波浪分析圖.jpg',
-            'weather-alert' => '/images/weather/天氣警報.png'
+            'numerical_forecast' => '/images/weather/數值預報.png',
+            'precipitation_forecast_12h' => '/images/weather/定量降水預報12小時.png',
+            'precipitation_forecast_6h' => '/images/weather/定量降水預報6小時.png',
+            'forecast_24h' => '/images/weather/24H預測.png',
+            'weather_forecast' => '/images/weather/天氣預測.png',
+            'wave_analysis_chart' => '/images/weather/波浪分析圖.jpg',
+            'weather_alert' => '/images/weather/天氣警報.png'
         ];
         return $map[$name] ?? '';
     }
@@ -180,25 +180,25 @@ if (!function_exists('weatherType')) {
         // 3:圖片列表
         // 4:雙圖並列
         switch ($weatherName) {
-            case 'surface-weather-map':
-            case 'ultraviolet-light':
+            case 'surface_weather_map':
+            case 'ultraviolet_light':
             case 'rainfall':
-            case 'wave-analysis-chart':
-            case 'weather-alert':
+            case 'wave_analysis_chart':
+            case 'weather_alert':
                 return 1;
-            case 'east-asia-vis':
-            case 'east-asia-mb':
-            case 'east-asia-ir':
-            case 'global-ir':
-            case 'radar-echo':
+            case 'east_asia_vis':
+            case 'east_asia_mb':
+            case 'east_asia_ir':
+            case 'global_ir':
+            case 'radar_echo':
                 return 2;
             case 'temperature':
-            case 'numerical-forecast':
-            case 'forecast-24h':
-            case 'weather-forecast':
+            case 'numerical_forecast':
+            case 'forecast_24h':
+            case 'weather_forecast':
                 return 3;
-            case 'precipitation-forecast-12h':
-            case 'precipitation-forecast-6h':
+            case 'precipitation_forecast_12h':
+            case 'precipitation_forecast_6h':
                 return 4;
             default:
                 return 5;
@@ -251,7 +251,7 @@ if (!function_exists('savePreferenceLog')) {
         } else {
             foreach ($itemKeys as $ik) {
                 switch ($ik) {
-                    case 'anchor-information':
+                    case 'anchor_information':
                         $elements[] = '主播圖卡';
                         break;
                     case 'colors':

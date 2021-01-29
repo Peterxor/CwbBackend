@@ -20,7 +20,7 @@ class WindObservation
     static public function get(array $setting, array $preference): array
     {
         try {
-            $path = Storage::disk('data')->path($setting['wind-observation']['origin']);
+            $path = Storage::disk('data')->path($setting['wind_observation']['origin']);
 
             // 以名稱排序(A-Z)取最後一個
             $files = iterator_to_array(Finder::create()->files()->in($path)->sortByName(), false);
@@ -44,16 +44,16 @@ class WindObservation
 
             $wind['location'] = $location;
 
-            $titlePreference = $preference['typhoon']['wind-observation']['title'];
-            $taiwanAllPreference = $preference['typhoon']['wind-observation']['taiwan-all'];
-            $taiwanEPreference = $preference['typhoon']['wind-observation']['taiwan-e'];
-            $taiwanMPreference = $preference['typhoon']['wind-observation']['taiwan-m'];
-            $taiwanNPreference = $preference['typhoon']['wind-observation']['taiwan-n'];
-            $taiwanSPreference = $preference['typhoon']['wind-observation']['taiwan-s'];
-            $toolLeftPreference = $preference['typhoon']['wind-observation']['tool-left'];
-            $toolRightPreference = $preference['typhoon']['wind-observation']['tool-right'];
-            $toolMiddlePreference = $preference['typhoon']['wind-observation']['tool-middle'];
-            $imageToolPreference = $preference['typhoon']['wind-observation']['image-tool'];
+            $titlePreference = $preference['typhoon']['wind_observation']['title'];
+            $taiwanAllPreference = $preference['typhoon']['wind_observation']['taiwan_all'];
+            $taiwanEPreference = $preference['typhoon']['wind_observation']['taiwan_e'];
+            $taiwanMPreference = $preference['typhoon']['wind_observation']['taiwan_m'];
+            $taiwanNPreference = $preference['typhoon']['wind_observation']['taiwan_n'];
+            $taiwanSPreference = $preference['typhoon']['wind_observation']['taiwan_s'];
+            $toolLeftPreference = $preference['typhoon']['wind_observation']['tool_left'];
+            $toolRightPreference = $preference['typhoon']['wind_observation']['tool_right'];
+            $toolMiddlePreference = $preference['typhoon']['wind_observation']['tool_middle'];
+            $imageToolPreference = $preference['typhoon']['wind_observation']['image_tool'];
 
             return [
                 'meta' => [
