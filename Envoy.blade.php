@@ -8,7 +8,6 @@ php artisan route:cache
 php artisan view:cache
 {{--啟動設定--}}
 supervisorctl start laravel-php-fpm:*
-supervisorctl start laravel-worker:*
 supervisorctl start laravel-nginx:*
 
 tail -f /dev/null
@@ -18,7 +17,6 @@ tail -f /dev/null
 supervisord -c /etc/supervisord.conf
 {{--啟動設定--}}
 supervisorctl start laravel-php-fpm:*
-supervisorctl start laravel-worker:*
 supervisorctl start laravel-nginx:*
 
 tail -f /dev/null
