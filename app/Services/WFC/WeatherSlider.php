@@ -20,7 +20,7 @@ class WeatherSlider
      */
     static public function get(array $setting, array $preference): array
     {
-        $blockPreference = $preference['weather']['weather-information']['block'];
+        $blockPreference = $preference['weather']['weather_information']['block'];
         return [
             'meta' => [
                 'block' => [

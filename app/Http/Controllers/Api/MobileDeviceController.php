@@ -300,7 +300,7 @@ class MobileDeviceController extends Controller
                     if (in_array($obj['target'], $this->toolItem)) {
                         $middleKey = 'general';
                     } else if ($obj['target'] === 'block') {
-                        $middleKey = 'weather-information';
+                        $middleKey = 'weather_information';
                     }
                     if (isset($tempPreferenceJson[$type][$middleKey][$obj['target']])) {
                         $tempPreferenceJson = $this->changeXyAndScale($tempPreferenceJson, $type, $middleKey, $obj);

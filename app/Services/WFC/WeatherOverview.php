@@ -30,7 +30,7 @@ class WeatherOverview
             ];
         }
 
-        $blockPreference = $preference['weather']['weather-information']['block'];
+        $blockPreference = $preference['weather']['weather_information']['block'];
         return [
             'meta' => [
                 'block' => [

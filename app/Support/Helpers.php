@@ -263,7 +263,7 @@ if (!function_exists('savePreferenceLog')) {
                     case 'general':
                         $elements[] = '通用';
                         break;
-                    case 'weather-information':
+                    case 'weather_information':
                         $elements[] = '一般天氣預報';
                         break;
                     default:
