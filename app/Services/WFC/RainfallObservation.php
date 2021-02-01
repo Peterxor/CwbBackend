@@ -142,11 +142,11 @@ class RainfallObservation
                 'endTime' => '',
                 'mode' => 'gif',
                 'interval' => $interval,
-                'images' => imagesUrl($setting['image-origin'], $amount),
+                'images' => imagesUrl($setting['image_origin'], $amount),
                 'top' => ['c' => [], 'a' => [], 'n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []],
                 'location' => ['n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []]];
 
-            $dataOrigin = rtrim($setting['data-origin'], '/');
+            $dataOrigin = rtrim($setting['image_origin'], '/');
 
             // 以名稱排序(A-Z)取最後一個
             $files = iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($dataOrigin))->sortByName(), false);
