@@ -142,11 +142,11 @@ class RainfallObservation
                 'endTime' => '',
                 'mode' => 'gif',
                 'interval' => $interval,
-                'images' => imagesUrl($setting['image-origin'], $amount),
+                'images' => imagesUrl($setting['image_origin'], $amount),
                 'top' => ['c' => [], 'a' => [], 'n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []],
                 'location' => ['n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []]];
 
-            $dataOrigin = rtrim($setting['data-origin'], '/');
+            $dataOrigin = rtrim($setting['data_origin'], '/');
 
             // 以名稱排序(A-Z)取最後一個
             $files = iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($dataOrigin))->sortByName(), false);
@@ -158,8 +158,8 @@ class RainfallObservation
 
             if (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
-                if (!empty($str)) {
-                    $strArr = explode(" ", $str);
+                $strArr = explode(" ", $str);
+                if (count($strArr) >= 5) {
                     $data['startTime'] = Carbon::create($strArr[0] . ' ' . $strArr[1])->toDateTimeLocalString() . '+08:00';
                     $data['endTime'] = Carbon::create($strArr[3] . ' ' . $strArr[4])->toDateTimeLocalString() . '+08:00';
                 }
@@ -167,9 +167,9 @@ class RainfallObservation
 
             while (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
-                if (empty($str))
-                    continue;
                 $strArr = explode(" ", $str);
+                if(count($strArr) < 3)
+                    continue;
                 $area = Transformer::parseAddress($config, $strArr[2]);
                 if (count($area) == 0 || empty(Transformer::parseRainfallObsCity($area[0]))) {
                     Log::warning('雨量觀測[測站資料]資料解析錯誤:' . $str);

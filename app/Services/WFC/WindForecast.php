@@ -20,7 +20,7 @@ class WindForecast
     static public function get(array $setting, array $preference): array
     {
         try {
-            $path = Storage::disk('data')->path($setting['wind-forecast']['origin']);
+            $path = Storage::disk('data')->path($setting['wind_forecast']['origin']);
 
             // 以名稱排序(A-Z)取最後一個
             $files = iterator_to_array(Finder::create()->files()->in($path)->sortByName(), false);

@@ -46,7 +46,7 @@
                                         <span class="kt-font-danger">*</span>今日雨量資料來源 (文字)
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$data->content['today']['data-origin'] ?? ''}}" name="today[data-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['today']['image_origin'] ?? ''}}" name="today[image_origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -56,7 +56,7 @@
                                         <span class="kt-font-danger">*</span>今日雨量資料來源 (圖片)
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$data->content['today']['image-origin'] ?? ''}}" name="today[image-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['today']['image_origin'] ?? ''}}" name="today[image_origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -115,7 +115,7 @@
                                         文字
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$data->content['before1nd']['data-origin'] ?? ''}}" name="before1nd[data-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before1nd']['image_origin'] ?? ''}}" name="before1nd[image_origin]" required>
                                     </div>
                                 </div>
 
@@ -126,7 +126,7 @@
                                         圖片
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$data->content['before1nd']['image-origin'] ?? ''}}" name="before1nd[image-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before1nd']['image_origin'] ?? ''}}" name="before1nd[image_origin]" required>
                                     </div>
                                 </div>
 
@@ -149,7 +149,7 @@
                                         文字
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$data->content['before2nd']['data-origin'] ?? ''}}" name="before2nd[data-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before2nd']['image_origin'] ?? ''}}" name="before2nd[image_origin]" required>
                                     </div>
                                 </div>
 
@@ -160,7 +160,7 @@
                                         圖片
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$data->content['before2nd']['image-origin'] ?? ''}}" name="before2nd[image-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before2nd']['image_origin'] ?? ''}}" name="before2nd[image_origin]" required>
                                     </div>
                                 </div>
 
@@ -183,7 +183,7 @@
                                         文字
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$data->content['before3nd']['data-origin'] ?? ''}}" name="before3nd[data-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before3nd']['image_origin'] ?? ''}}" name="before3nd[image_origin]" required>
                                     </div>
                                 </div>
 
@@ -194,7 +194,7 @@
                                         圖片
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$data->content['before3nd']['image-origin'] ?? ''}}" name="before3nd[image-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before3nd']['image_origin'] ?? ''}}" name="before3nd[image_origin]" required>
                                     </div>
                                 </div>
 
@@ -217,7 +217,7 @@
                                         文字
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$data->content['before4nd']['data-origin'] ?? ''}}" name="before4nd[data-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before4nd']['image_origin'] ?? ''}}" name="before4nd[image_origin]" required>
                                     </div>
                                 </div>
 
@@ -228,7 +228,7 @@
                                         圖片
                                     </label>
                                     <div class="col-5">
-                                        <input class="form-control" type="text" value="{{$data->content['before4nd']['image-origin'] ?? ''}}" name="before4nd[image-origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['before4nd']['image_origin'] ?? ''}}" name="before4nd[image_origin]" required>
                                     </div>
                                 </div>
 

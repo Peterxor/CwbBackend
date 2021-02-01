@@ -96,8 +96,8 @@ class RainfallForecast
                 ]
             ],
             'rainfall' => [
-                'all' => self::format($setting['all-rainfall'] ?? [], '總雨量預測'),
-                '24h' => self::format($setting['24h-rainfall'] ?? [], '24h雨量預測'),
+                'all' => self::format($setting['all_rainfall'] ?? [], '總雨量預測'),
+                '24h' => self::format($setting['24h_rainfall'] ?? [], '24h雨量預測'),
             ]
         ];
     }
