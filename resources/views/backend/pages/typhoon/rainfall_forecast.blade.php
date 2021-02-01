@@ -46,7 +46,7 @@
                                         <span class="kt-font-danger">*</span>總雨量預測資料來源 (資料夾)
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$data->content['all-rainfall']['origin'] ?? ''}}" name="all-rainfall[origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['all_rainfall']['origin'] ?? ''}}" name="all_rainfall[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -56,7 +56,7 @@
                                         <span class="kt-font-danger">*</span>總雨量預測警戒值
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$data->content['all-rainfall']['alert_value'] ?? 0}}" name="all-rainfall[alert_value]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['all_rainfall']['alert_value'] ?? 0}}" name="all_rainfall[alert_value]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -66,7 +66,7 @@
                                         <span class="kt-font-danger">*</span>24h雨量預測資料來源 (資料夾)
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$data->content['24h-rainfall']['origin'] ?? ''}}" name="24h-rainfall[origin]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['24h_rainfall']['origin'] ?? ''}}" name="24h_rainfall[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
@@ -76,7 +76,7 @@
                                         <span class="kt-font-danger">*</span>24h雨量預測警戒值
                                     </label>
                                     <div class="col-6">
-                                        <input class="form-control" type="text" value="{{$data->content['24h-rainfall']['alert_value'] ?? 0}}" name="24h-rainfall[alert_value]" required>
+                                        <input class="form-control" type="text" value="{{$data->content['24h_rainfall']['alert_value'] ?? 0}}" name="24h_rainfall[alert_value]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>

@@ -159,7 +159,7 @@ class RainfallObservation
             if (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
                 $strArr = explode(" ", $str);
-                if (count($strArr) > 5) {
+                if (count($strArr) >= 5) {
                     $data['startTime'] = Carbon::create($strArr[0] . ' ' . $strArr[1])->toDateTimeLocalString() . '+08:00';
                     $data['endTime'] = Carbon::create($strArr[3] . ' ' . $strArr[4])->toDateTimeLocalString() . '+08:00';
                 }
@@ -167,9 +167,9 @@ class RainfallObservation
 
             while (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
-                if (empty($str))
-                    continue;
                 $strArr = explode(" ", $str);
+                if(count($strArr) < 3)
+                    continue;
                 $area = Transformer::parseAddress($config, $strArr[2]);
                 if (count($area) == 0 || empty(Transformer::parseRainfallObsCity($area[0]))) {
                     Log::warning('雨量觀測[測站資料]資料解析錯誤:' . $str);
