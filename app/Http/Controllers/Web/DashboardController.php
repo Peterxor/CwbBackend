@@ -88,6 +88,9 @@ class DashboardController extends Controller
         $data = [];
 
         foreach ($image_types as $index => $type) {
+            if ($type === 'choose_not') {
+                continue;
+            }
             $temp = $type == 'origin' ? [
                 'type' => $type,
                 'img_id' => $origin_ids[$index],

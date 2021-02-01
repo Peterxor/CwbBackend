@@ -71,19 +71,23 @@
                                         <td>
                                             <select class="form-control js-change-btn">
                                                 <option value="weather"
-                                                        {{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'selected' : '') : 'selected'}}>
+                                                        {{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'selected' : '') : ''}}>
                                                     圖資來源
                                                 </option>
                                                 <option
-                                                    value="upload" {{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? '' : 'selected') : ''}}>
+                                                    value="upload" {{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'upload' ? 'selected' : '') : ''}}>
                                                     圖片上傳
+                                                </option>
+                                                <option
+                                                    value="choose_not" {{($data[$i]['type'] ?? null) ? '' : 'selected'}}>
+                                                    不指定
                                                 </option>
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="origin_img_id[]" class="form-control js-ref js-weather" style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'display:block;' : 'display:none;') : 'display:block;'}}">
+                                            <select name="origin_img_id[]" class="form-control js-ref js-weather" style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'display:block;' : 'display:none;') : 'display:none;'}}">
                                                 @foreach($images as $image)
-                                                    <option value="{{$image->id}}" {{$data[$i] ? ($data[$i]['type'] == 'origin' ? ($image->id == $data[$i]['img_id'] ? 'selected' : '') : '') : ''}}>{{$image->content['display_name']}}</option>
+                                                    <option value="{{$image->id}}" {{($data[$i] ?? null) ? ($data[$i]['type'] == 'origin' ? ($image->id == $data[$i]['img_id'] ? 'selected' : '') : '') : ''}}>{{$image->content['display_name']}}</option>
                                                 @endforeach
                                             </select>
                                             <div class="imgHolder" style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'display:none;' : 'display:block;') : 'display:none;'}}">
@@ -97,12 +101,12 @@
                                                                accept="image/gif, image/jpeg, image/png" style="display:none;"/>
                                                     </div>
                                                     <div class="col-3">
-                                                        <span class="image_name">{{$data[$i]['type'] == 'upload' ? ($data[$i]['img_name'] ?? '') : ''}}</span>
+                                                        <span class="image_name">{{($data[$i]['type'] ?? null) == 'upload' ? ($data[$i]['img_name'] ?? '') : ''}}</span>
                                                     </div>
                                                 </div>
-                                                <input class="image_type" type="hidden" name="image_type[]" value="{{$data[$i]['type'] ?? 'origin'}}">
+                                                <input class="image_type" type="hidden" name="image_type[]" value="{{$data[$i]['type'] ?? 'choose_not'}}">
                                                 <input class="image_id" type="hidden" name="img_id[]" value="{{$data[$i]['img_id'] ?? ''}}">
-                                                <input class="hidden_name" type="hidden" name="img_name[]" value="{{$data[$i]['type'] == 'upload' ? ($data[$i]['img_name'] ?? '') : ''}}">
+                                                <input class="hidden_name" type="hidden" name="img_name[]" value="{{($data[$i]['type'] ?? null) == 'upload' ? ($data[$i]['img_name'] ?? '') : ''}}">
                                                 <input class="image_url" type="hidden" name="img_url[]" value="{{$data[$i]['img_url'] ?? ''}}">
                                             </div>
                                         </td>

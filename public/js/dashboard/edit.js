@@ -8,11 +8,19 @@ $(document).ready(function() {
         var data_type = type_name == 'select' ? 'origin' : 'upload';
 
         // $('.js-ref').hide();
-        console.log($(this).parent().parent().find('input').eq(1).val())
-        $(this).parent().parent().find('input').eq(1).val(data_type)
-        $(this).parent().parent().find('td').eq(2).find(type_name).show();
-        $(this).parent().parent().find('td').eq(2).find(hide_name).hide();
-        // $(this).parent().parent().find('td').eq(2).find(type_name).show();
+        // console.log($(this).parent().parent().find('input').eq(1).val())
+        if (type === 'weather' || type === 'upload') {
+            $(this).parent().parent().find('input').eq(1).val(data_type)
+            $(this).parent().parent().find('td').eq(2).find(type_name).show();
+            $(this).parent().parent().find('td').eq(2).find(hide_name).hide();
+            // $(this).parent().parent().find('td').eq(2).find(type_name).show();
+        } else if (type === 'choose_not') {
+            data_type = 'choose_not';
+            $(this).parent().parent().find('input').eq(1).val(data_type);
+            $(this).parent().parent().find('td').eq(2).find(type_name).hide();
+            $(this).parent().parent().find('td').eq(2).find(hide_name).hide();
+        }
+
     });
 
     $('.upload-image').on('change', function(e) {
