@@ -48,8 +48,8 @@
                                     </label>
                                     <div class="col-6">
                                         <input class="form-control" type="text"
-                                               value="{{$data->content['wind-forecast']['origin'] ?? ''}}"
-                                               name="wind-forecast[origin]" required>
+                                               value="{{$data->content['wind_forecast']['origin'] ?? ''}}"
+                                               name="wind_forecast[origin]" required>
                                     </div>
                                     <div class="col-3 pt-3 col-form-label">
                                     </div>
