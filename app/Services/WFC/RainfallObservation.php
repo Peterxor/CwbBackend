@@ -146,7 +146,7 @@ class RainfallObservation
                 'top' => ['c' => [], 'a' => [], 'n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []],
                 'location' => ['n' => [], 'm' => [], 's' => [], 'y' => [], 'h' => [], 'e' => []]];
 
-            $dataOrigin = rtrim($setting['image_origin'], '/');
+            $dataOrigin = rtrim($setting['data_origin'], '/');
 
             // 以名稱排序(A-Z)取最後一個
             $files = iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($dataOrigin))->sortByName(), false);
@@ -158,6 +158,7 @@ class RainfallObservation
 
             if (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
+                echo $str;
                 $strArr = explode(" ", $str);
                 if (count($strArr) >= 5) {
                     $data['startTime'] = Carbon::create($strArr[0] . ' ' . $strArr[1])->toDateTimeLocalString() . '+08:00';
@@ -167,6 +168,7 @@ class RainfallObservation
 
             while (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
+                echo $str;
                 $strArr = explode(" ", $str);
                 if(count($strArr) < 3)
                     continue;
