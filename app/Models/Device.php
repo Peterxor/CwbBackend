@@ -46,7 +46,13 @@ class Device extends Model
         return $this->hasOne(Board::class, 'device_id', 'id');
     }
 
-    public function getThemeUrlAttribute () {
+    public function hostPreference()
+    {
+        return $this->hasMany(HostPreference::class, 'device_id', 'id');
+    }
+
+    public function getThemeUrlAttribute()
+    {
         $themeSet = [
             'nature_blue', 'tech_blue', 'industry_orange', 'modern_red'
         ];

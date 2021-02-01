@@ -186,8 +186,22 @@
                         </div>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-6 row">
-                                    @if(isset($device->typhoon_json))
+                                <div class="col-6 row device-typhoon-json-{{$device->id}}">
+                                    @if(isset($device->hostPreference->where('user_id', $device->user_id)->first()->typhoon_json))
+                                        @foreach($device->hostPreference->where('user_id', $device->user_id)->first()->typhoon_json as $index => $typhoon)
+                                            @if(!($index%3))
+                                                <div class="col-empty"></div>
+                                            @endif
+                                            <div class="col-4 layout-container"
+                                                 style="background-image:url({{$typhoon['img_url'] ?? '/images/login/logo.png'}});">
+
+                                                <div class="row layout-text">
+                                                    <label>{{$index + 1 }}
+                                                        . {{$typhoon['type'] === 'origin' ? transformWeatherName($typhoon['img_url']) : $typhoon['img_name']}}</label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @elseif(isset($device->typhoon_json))
                                         @foreach($device->typhoon_json as $index => $typhoon)
                                             @if(!($index%3))
                                                 <div class="col-empty"></div>
@@ -203,8 +217,22 @@
                                         @endforeach
                                     @endif
                                 </div>
-                                <div class="col-6 row">
-                                    @if(isset($device->forecast_json))
+                                <div class="col-6 row device-forecast-json-{{$device->id}}">
+                                    @if(isset($device->hostPreference->where('user_id', $device->user_id)->first()->forecast_json))
+                                        @foreach($device->hostPreference->where('user_id', $device->user_id)->first()->forecast_json as $index => $forecast)
+                                            @if(!($index%3))
+                                                <div class="col-empty"></div>
+                                            @endif
+                                            <div class="col-4 layout-container"
+                                                 style="background-image:url({{$forecast['img_url'] ?? '/images/login/logo.png'}});">
+
+                                                <div class="row layout-text">
+                                                    <label>{{$index + 1 }}
+                                                        . {{$forecast['type'] === 'origin' ? transformWeatherName($forecast['img_url']) : $forecast['img_name']}}</label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @elseif(isset($device->forecast_json))
                                         @foreach($device->forecast_json as $index => $forecast)
                                             @if(!($index%3))
                                                 <div class="col-empty"></div>

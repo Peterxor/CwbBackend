@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\Device;
+use App\Models\HostPreference;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -31,7 +32,6 @@ class DashboardController extends Controller
         if (!Auth::user()->hasRole('Admin')) {
             return redirect(route('anchor.index'));
         }
-
         $devices = Device::with(['user', 'board' => function ($query) {
             $query->with(['media']);
         }])->get();
@@ -54,7 +54,20 @@ class DashboardController extends Controller
             abort(403);
         }
         $pic_type = $request->pic_type ?? 'typhoon';
-        $data = $pic_type === 'typhoon' ? $device->typhoon_json : $device->forecast_json;
+        // 檢查device是否有預設主播， 若有吃host_preference的json
+        if ($device->user_id !== 0) {
+            $host_preference = HostPreference::query()->firstOrCreate([
+                'user_id' => $device->user_id,
+                'device_id' => $device->id
+            ]);
+            $typhoon_json = $host_preference->typhoon_json;
+            $forecast_json = $host_preference->forecast_json;
+        } else {
+            $typhoon_json = $device->typhoon_json;
+            $forecast_json = $device->forecast_json;
+        }
+
+        $data = $pic_type === 'typhoon' ? $typhoon_json : $forecast_json;
         $images = GeneralImages::all();
         $loop_times = 9;
 
@@ -107,8 +120,13 @@ class DashboardController extends Controller
         $update = $json_type == 'typhoon' ? ['typhoon_json' => $data] : ['forecast_json' => $data];
         $beforeJson = $json_type == 'typhoon' ? $device->typhoon_json : $device->forecast_json;
         $item = '更新[' . $device->name . ']' . ($json_type == 'typhoon' ? '颱風主播圖卡' : '天氣預報排程');
-
-        $device->update($update);
+        // 檢查device是否有預設主播， 若有更新host_preference的json
+        if ($device->user_id) {
+            $hostPreference = $device->hostPreference()->where('user_id', $device->user_id)->first();
+            $hostPreference->update($update);
+        } else {
+            $device->update($update);
+        }
         activity()
             ->performedOn($device)
             ->causedBy(Auth::user()->id)
@@ -135,6 +153,18 @@ class DashboardController extends Controller
         $device = Device::query()->where('id', $request->get('device_id'))->first();
         $device->user_id = $request->get('user_id');
         $device->save();
+        // 檢查device是否有預設主播， 若有撈出host_preference的json
+        if ($device->user_id) {
+            $typhoon_json = $device->hostPreference()->where('user_id', $device->user_id)->first()->typhoon_json ?? [];
+            $forecast_json = $device->hostPreference()->where('user_id', $device->user_id)->first()->forecast_json ?? [];
+        } else {
+            $typhoon_json = $device->typhoon_json;
+            $forecast_json = $device->forecast_json;
+        }
+        $res = [];
+        $res['device_id'] = $device->id;
+        $res['typhoon_json'] = $typhoon_json;
+        $res['forecast_json'] = $forecast_json;
         $item = '更新[' . $device->name . ']' . '主播：' . ($device->user->name ?? '不指定');
         activity()
             ->performedOn($device)
@@ -145,7 +175,7 @@ class DashboardController extends Controller
             ])
             ->log('修改');
 
-        return $this->sendResponse('', 'success');
+        return $this->sendResponse($res, 'success');
     }
 
     /**

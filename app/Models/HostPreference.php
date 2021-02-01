@@ -16,11 +16,13 @@ class HostPreference extends Model
     //
     protected $table = 'host_preference';
     protected $fillable = [
-        'user_id', 'device_id', 'preference_json', 'created_at', 'updated_at'
+        'user_id', 'device_id', 'preference_json', 'forecast_json', 'typhoon_json', 'created_at', 'updated_at'
     ];
 
     protected $casts = [
-        'preference_json' => 'array'
+        'preference_json' => 'array',
+        'forecast_json' => 'array',
+        'typhoon_json' => 'array',
     ];
 
     public function user()

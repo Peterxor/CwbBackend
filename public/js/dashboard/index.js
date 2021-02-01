@@ -202,6 +202,15 @@ $(document).ready(function() {
                     _this.parent().parent().find('button[name=change_user_btn]').show();
                     _this.hide();
 
+                    var device_typhoon = $('.device-typhoon-json-' + data.data.device_id);
+                    var device_forecast = $('.device-forecast-json-' + data.data.device_id);
+                    device_typhoon.empty();
+                    device_forecast.empty();
+                    var typhoon_json = data.data.typhoon_json;
+                    var forecast_json = data.data.forecast_json;
+
+                    jsonToHtml(device_typhoon, typhoon_json);
+                    jsonToHtml(device_forecast, forecast_json);
                 } else {
                     toastr.error('error: ' + data.message);
                 }
@@ -211,4 +220,22 @@ $(document).ready(function() {
             }
         });
     })
+
+    function jsonToHtml (device_html, json) {
+        for (var index in json) {
+            var html = '';
+            if (index % 3 === 0) {
+                html += '<div class="col-empty"></div>'
+            }
+            var img_url = json[index].img_url ? json[index].img_url : '';
+            var img_name = (img_url.split('/')[img_url.split('/').length - 1]).split('.')[0]
+            html +=
+                '<div class="col-4 layout-container" style="background-image:url(' + img_url +');">\n' +
+                '<div class="row layout-text">\n' +
+                '<label>' + (index + 1) + '. ' + img_name + '</label>\n' +
+                '</div>\n' +
+                '</div>'
+            device_html.append(html);
+        }
+    }
 });
