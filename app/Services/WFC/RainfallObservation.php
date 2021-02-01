@@ -158,7 +158,6 @@ class RainfallObservation
 
             if (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
-                echo $str;
                 $strArr = explode(" ", $str);
                 if (count($strArr) >= 5) {
                     $data['startTime'] = Carbon::create($strArr[0] . ' ' . $strArr[1])->toDateTimeLocalString() . '+08:00';
@@ -168,7 +167,6 @@ class RainfallObservation
 
             while (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
-                echo $str;
                 $strArr = explode(" ", $str);
                 if(count($strArr) < 3)
                     continue;
