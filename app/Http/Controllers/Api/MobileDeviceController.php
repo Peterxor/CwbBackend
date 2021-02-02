@@ -254,11 +254,11 @@ class MobileDeviceController extends Controller
             if ($type === 'weather') {
                 // 一般天氣-圖資
                 $config = collect(config('weatherlayout'))->keyBy('name');
-                return response()->json($this->weatherFormat($config, $preference[$type], $screen, !empty($device->user)));
+                return response()->json($this->weatherFormat($config, $preference[$type], $screen, empty($device->user)));
             } else {
                 // 颱風所有圖資
                 $config = collect(config('typhoonlayout'))->keyBy('name');
-                return response()->json($this->typhoonFormat($config[$screen], $preference[$type][$screen], !empty($device->user)));
+                return response()->json($this->typhoonFormat($config[$screen], $preference[$type][$screen], empty($device->user)));
             }
         } catch (Exception $e) {
             Log::error($e->getMessage());
@@ -274,29 +274,21 @@ class MobileDeviceController extends Controller
     {
         try {
             $request->validate([
-                'anchor_id' => 'numeric',
                 'device_id' => 'required|numeric',
                 'type' => 'required|string|max:255',
                 'screen' => 'required|string|max:255',
                 'preference' => 'required|array',
             ]);
-            $user_id = $request->get('anchor_id');
             $device_id = $request->get('device_id');
-            $key = $request->get('screen');
+            $screen = $request->get('screen');
             $type = $request->get('type');
-
             $preference = $request->get('preference');
-
-            if ($user_id) {
-                $host = HostPreference::query()->where([
-                    'user_id' => $user_id,
-                    'device_id' => $device_id
-                ])->first();
-            } else {
-                $host = Device:: query()->where(['id' => $device_id])->first();
+            $device = Device::query()->find($device_id);
+            if (!empty($device->user_id)) {
+                $hostPreference = HostPreference::query()->firstOrCreate(['device_id' => $device->id, 'user_id' => $device->user_id]);
             }
-
-            $tempPreferenceJson = $host->preference_json;
+            $host = $hostPreference ?? $device;
+            $tempPreferenceJson = $host->preference_json ?? $device->preference_json;
             // 檢查是否為 一般天氣-圖資
             if ($type === 'weather') {
                 foreach ($preference as $obj) {
@@ -313,8 +305,8 @@ class MobileDeviceController extends Controller
             } else if ($type === 'typhoon') {
                 // 颱風所有圖資
                 foreach ($preference as $obj) {
-                    if (isset($tempPreferenceJson[$type][$key][$obj['target']])) {
-                        $tempPreferenceJson = $this->changeXyAndScale($tempPreferenceJson, $type, $key, $obj);
+                    if (isset($tempPreferenceJson[$type][$screen][$obj['target']])) {
+                        $tempPreferenceJson = $this->changeXyAndScale($tempPreferenceJson, $type, $screen, $obj);
                     }
                 }
 
@@ -332,62 +324,18 @@ class MobileDeviceController extends Controller
      * 更新元件x, y, scale座標與縮放
      * @param $tempPreferenceJson
      * @param $type
-     * @param $key
+     * @param $screen
      * @param $obj
      * @return mixed
      */
-    public function changeXyAndScale($tempPreferenceJson, $type, $key, $obj)
+    public function changeXyAndScale($tempPreferenceJson, $type, $screen, $obj)
     {
-        $tempPreferenceJson[$type][$key][$obj['target']]['point_x'] = $obj['point_x'];
-        $tempPreferenceJson[$type][$key][$obj['target']]['point_y'] = $obj['point_y'];
+        $tempPreferenceJson[$type][$screen][$obj['target']]['point_x'] = $obj['point_x'];
+        $tempPreferenceJson[$type][$screen][$obj['target']]['point_y'] = $obj['point_y'];
         if (isset($obj['scale'])) {
-            $tempPreferenceJson[$type][$key][$obj['target']]['scale'] = $obj['scale'];
+            $tempPreferenceJson[$type][$screen][$obj['target']]['scale'] = $obj['scale'];
         }
         return $tempPreferenceJson;
-    }
-
-    public function elementName($englishName): string
-    {
-        $map = [
-            'typhoon_ir' => '颱風IR',
-            'typhoon_mb' => '颱風MB',
-            'typhoon_vis' => '颱風VIS',
-            'title' => '標題',
-            'tool_middle' => '工具列 (中間)',
-            'taiwan_all' => '台灣 (全)',
-            'taiwan_n' => '台灣 (北)',
-            'taiwan_m' => '台灣 (中)',
-            'taiwan_s' => '台灣 (南)',
-            'taiwan_e' => '台灣 (東)',
-            'image_tool' => '圖例',
-            'tool_left' => '工具列 (左)',
-            'tool_right' => '工具列 (右)',
-            'taiwan_y' => '台灣 (宜)',
-            'taiwan_h' => '台灣 (花)',
-            'block' => '圖卡區塊',
-            'weather_information' => '一般天氣預報',
-            'general' => '通用設定',
-            'image_label_left' => '圖片列表 (左)',
-            'image_label_right' => '圖片列表 (右)',
-            'images' => '圖資',
-            'east_asia_vis' => '東亞VIS',
-            'east_asia_mb' => '東亞MB',
-            'east_asia_ir' => '東亞IR',
-            'surface_weather_map' => '地面天氣圖',
-            'global_ir' => '全球IR',
-            'ultraviolet_light' => '紫外線',
-            'radar_echo' => '雷達回波',
-            'temperature' => '溫度',
-            'rainfall' => '雨量',
-            'numerical_forecast' => '數值預報',
-            'precipitation_forecast_12h' => '定量降水預報12小時',
-            'precipitation_forecast_6h' => '定量降水預報6小時',
-            'forecast_24h' => '24H預測',
-            'weather_forecast' => '天氣預測',
-            'wave_analysis_chart' => '波浪分析圖',
-            'weather_alert' => '天氣警報',
-        ];
-        return $map[$englishName];
     }
 
     /**
@@ -403,14 +351,14 @@ class MobileDeviceController extends Controller
     {
         $data = [];
         foreach ($configs['weather_information']['children'] as $config) {
-            $data[] = $this->format($config, $items['weather_information'][$config->name] ?? [], $showScale);
+            $data[] = $this->format($config, $items['weather_information'][$config['name']] ?? [], $showScale);
         }
         foreach ($configs['general']['children'] as $config) {
-            $data[] = $this->format($config, $items['general'][$config->name] ?? [], $showScale);
+            $data[] = $this->format($config, $items['general'][$config['name']] ?? [], $showScale);
         }
 
         $config = collect($configs['images']['children'])->keyBy('name')[$screen];
-        $data[] = $this->format($config, $items['images'][$config->name] ?? [], $showScale);
+        $data[] = $this->format($config, $items['images'][$config['name']] ?? [], $showScale);
         return $data;
     }
 
@@ -427,7 +375,7 @@ class MobileDeviceController extends Controller
     {
         $data = [];
         foreach ($configs['children'] as $config) {
-            $data[] = $this->format($config, $items[$config->name], $showScale);
+            $data[] = $this->format($config, $items[$config['name']], $showScale);
         }
 
         return $data;
