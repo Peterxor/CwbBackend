@@ -124,6 +124,12 @@ if (!function_exists('uploadMedia')) {
 }
 
 if (!function_exists('preference')) {
+    /**
+     * 取得個人裝置設定檔
+     *
+     * @param Device $device
+     * @return array
+     */
     function preference(Device $device): array
     {
         /** @var HostPreference $hostPreference */
@@ -132,6 +138,24 @@ if (!function_exists('preference')) {
         return array_merge($device->preference_json ?? [], $hostPreference->preference_json ?? []);
     }
 }
+
+if (!function_exists('preference')) {
+    /**
+     * 取得個人裝置設定檔
+     *
+     * @param array $arr1
+     * @param array $arr2
+     * @return array
+     */
+    function depthArrayMerge(array $arr1, array $arr2): array
+    {
+        foreach ($arr2 as $key => $value) {
+            $arr1[$key] = (array_key_exists($key, $arr1) && is_array($value)) ? depthArrayMerge($arr1[$key], $value) : $value;
+        }
+        return $arr1;
+    }
+}
+
 
 if (!function_exists('getWeatherImage')) {
     function getWeatherImage($name): string
@@ -241,11 +265,12 @@ if (!function_exists('hasPermission')) {
 }
 
 if (!function_exists('savePreferenceLog')) {
-    function savePreferenceLog ($key, $model, $itemKeys, $request, $beforeJson, $item) {
+    function savePreferenceLog($key, $model, $itemKeys, $request, $beforeJson, $item)
+    {
         $elements = [];
         $logData = TyphoonImage::query()->whereIn('name', $itemKeys)->get();
         if (count($logData) > 0) {
-            foreach($logData as $l) {
+            foreach ($logData as $l) {
                 $elements[] = $l->content['display_name'];
             }
         } else {

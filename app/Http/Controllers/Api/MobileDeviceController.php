@@ -20,6 +20,7 @@ class MobileDeviceController extends Controller
 
     /**
      * 裝置列表
+     *
      * @return JsonResponse
      */
     public function deviceList(): JsonResponse
@@ -38,11 +39,11 @@ class MobileDeviceController extends Controller
             Log::error($e->getMessage());
             return $this->sendError('請求失敗');
         }
-
     }
 
     /**
      * 獲取裝置訊息
+     *
      * @param Request $request
      * @return JsonResponse
      */
@@ -118,6 +119,7 @@ class MobileDeviceController extends Controller
 
     /**
      * 一般天氣總覽圖
+     *
      * @return JsonResponse
      */
     public function weatherDetail(): JsonResponse
@@ -334,7 +336,8 @@ class MobileDeviceController extends Controller
      */
     public function changeXyAndScale($tempPreferenceJson, $type, $key, $obj)
     {
-        $tempPreferenceJson[$type][$key][$obj['target']]['point'] = [$obj['point_x'], $obj['point_y']];
+        $tempPreferenceJson[$type][$key][$obj['target']]['point_x'] = $obj['point_x'];
+        $tempPreferenceJson[$type][$key][$obj['target']]['point_y'] = $obj['point_y'];
         if (isset($obj['scale'])) {
             $tempPreferenceJson[$type][$key][$obj['target']]['scale'] = $obj['scale'];
         }
@@ -420,8 +423,8 @@ class MobileDeviceController extends Controller
             if (isset($value['scale'])) {
                 $temp['scale'] = $value['scale'];
             }
-            $temp['point_x'] = $value['point'][0];
-            $temp['point_y'] = $value['point'][1];
+            $temp['point_x'] = $value['point_x'];
+            $temp['point_y'] = $value['point_y'];
             if (in_array($key, $this->toolItem)) {
                 $tool[] = $temp;
             } else {

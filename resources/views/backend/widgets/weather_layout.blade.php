@@ -42,15 +42,15 @@
                                         <td>
                                             左右位置
                                             <label><input class="form-control" type="text"
-                                                          data-default="{{$default[$item['name']][$children['name']]['point'][0] ?? '0'}}"
-                                                          value="{{$preference[$item['name']][$children['name']]['point'][0] ?? ($default[$item['name']][$children['name']]['point'][0] ?? '0')}}"
-                                                          name="preference[{{$item['name']}}][{{$children['name']}}][point][0]"
+                                                          data-default="{{$default[$item['name']][$children['name']]['point_x'] ?? '0'}}"
+                                                          value="{{$preference[$item['name']][$children['name']]['point_x'] ?? ($default[$item['name']][$children['name']]['point_x'] ?? '0')}}"
+                                                          name="preference[{{$item['name']}}][{{$children['name']}}][point_x]"
                                                           placeholder="x"></label>%
                                             上下位置
                                             <label><input class="form-control" type="text"
-                                                          data-default="{{$default[$item['name']][$children['name']]['point'][1] ?? '0'}}"
-                                                          value="{{$preference[$item['name']][$children['name']]['point'][1] ?? ($default[$item['name']][$children['name']]['point'][1] ?? '0')}}"
-                                                          name="preference[{{$item['name']}}][{{$children['name']}}][point][1]"
+                                                          data-default="{{$default[$item['name']][$children['name']]['point_y'] ?? '0'}}"
+                                                          value="{{$preference[$item['name']][$children['name']]['point_y'] ?? ($default[$item['name']][$children['name']]['point_y'] ?? '0')}}"
+                                                          name="preference[{{$item['name']}}][{{$children['name']}}][point_y]"
                                                           placeholder="y"></label>%
                                         </td>
                                         @if($auchor)
