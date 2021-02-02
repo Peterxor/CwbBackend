@@ -150,7 +150,7 @@ class MobileDeviceController extends Controller
     }
 
     /**
-     * 行動請求
+     * 平板對網頁的行動請求
      * @param Request $request
      * @return JsonResponse
      */
