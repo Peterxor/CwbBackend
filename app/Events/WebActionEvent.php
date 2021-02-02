@@ -38,7 +38,7 @@ class WebActionEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel('mobile_event');
+        return new Channel('web_event');
     }
 
     public function broadcastWith()
