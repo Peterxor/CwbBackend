@@ -35,6 +35,8 @@ Route::get('weather-slider/{device}', 'WeatherSliderController@index');
 
 Route::get('weather-overview/{device}', 'WeatherOverviewController@index');
 
+Route::get('web-to-mobile/send-pad', 'WebToMobileController@sendPad');
+
 
 Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () {
     // 裝置列表
