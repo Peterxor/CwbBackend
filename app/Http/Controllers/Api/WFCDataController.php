@@ -30,6 +30,10 @@ class WFCDataController extends Controller
     {
         $preference = preference($device);
 
+        $hostPreference = $device->hostPreference()->where('user_id', $device->user_id)->first();
+        $typhoon_json = $hostPreference->typhoon_json ?? $device->typhoon_json;
+        $forecast_json = $hostPreference->forecast_json ?? $device->forecast_json;
+
         $typhoonImages = TyphoonImage::all(['name', 'content']);
 
         $board = Board::query()->with(['media', 'personnel_a', 'personnel_b'])->where('device_id', $device->id)->first()->toArray();
@@ -41,7 +45,7 @@ class WFCDataController extends Controller
             ],
             'dashboard' => Dashboard::get($board, $preference),
             'typhoon' => [
-                'information' => AnchorInformation::get($device->typhoon_json, $preference),
+                'information' => AnchorInformation::get($typhoon_json, $preference),
                 'typhoon_dynamics' => TyphoonDynamics::get($typhoonImages->where('name', 'typhoon_dynamics')->first()->content, $preference),
                 'typhoon_potential' => TyphoonPotential::get($typhoonImages->where('name', 'typhoon_potential')->first()->content, $preference),
                 'wind_observation' => WindObservation::get($typhoonImages->where('name', 'wind_observation')->first()->content, $preference),
@@ -50,7 +54,7 @@ class WFCDataController extends Controller
                 'rainfall_forecast' => RainfallForecast::get($typhoonImages->where('name', 'rainfall_forecast')->first()->content, $preference),
             ],
             'weather' => [
-                'slider' => WeatherSlider::get($device->forecast_json, $preference),
+                'slider' => WeatherSlider::get($forecast_json, $preference),
                 'overview' => WeatherOverview::get($preference)
             ]
         ];

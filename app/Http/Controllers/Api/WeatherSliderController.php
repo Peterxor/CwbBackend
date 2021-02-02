@@ -19,6 +19,8 @@ class WeatherSliderController extends Controller
      */
     public function index(Device $device): JsonResponse
     {
-        return response()->json(WeatherSlider::get($device->forecast_json, preference($device)));
+        $hostPreference = $device->hostPreference()->where('user_id', $device->user_id)->first();
+        $forecast_json = $hostPreference->forecast_json ?? $device->forecast_json;
+        return response()->json(WeatherSlider::get($forecast_json, preference($device)));
     }
 }
