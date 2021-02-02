@@ -232,7 +232,7 @@ $(document).ready(function() {
             html +=
                 '<div class="col-4 layout-container" style="background-image:url(' + img_url +');">\n' +
                 '<div class="row layout-text">\n' +
-                '<label>' + (index + 1) + '. ' + img_name + '</label>\n' +
+                '<label>' + (index * 1 + 1) + ' . ' + img_name + '</label>\n' +
                 '</div>\n' +
                 '</div>'
             device_html.append(html);
