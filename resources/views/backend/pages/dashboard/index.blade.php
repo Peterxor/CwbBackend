@@ -201,7 +201,7 @@
                                                 </div>
                                             </div>
                                         @endforeach
-                                    @elseif(isset($device->typhoon_json))
+                                    @elseif(!$device->user_id && isset($device->typhoon_json))
                                         @foreach($device->typhoon_json as $index => $typhoon)
                                             @if(!($index%3))
                                                 <div class="col-empty"></div>
@@ -232,7 +232,7 @@
                                                 </div>
                                             </div>
                                         @endforeach
-                                    @elseif(isset($device->forecast_json))
+                                    @elseif(!$device->user_id && isset($device->forecast_json))
                                         @foreach($device->forecast_json as $index => $forecast)
                                             @if(!($index%3))
                                                 <div class="col-empty"></div>
