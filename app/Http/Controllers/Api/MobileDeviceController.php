@@ -19,6 +19,11 @@ class MobileDeviceController extends Controller
 {
     private $toolItem = ['title', 'tool_middle', 'image_tool', 'tool_left', 'tool_right', 'image_label_left', 'image_label_right'];
 
+    private $deviceMap = [
+        '防災視訊室' => 'protect_disaster',
+        '公關室' => 'pr'
+    ];
+
     /**
      * 裝置列表
      *
@@ -27,7 +32,7 @@ class MobileDeviceController extends Controller
     public function deviceList(): JsonResponse
     {
         try {
-            $devices = Device::all();
+            $devices = Device::all(['id', 'name']);
             $data = [];
             foreach ($devices as $device) {
                 $data[] = [
@@ -48,12 +53,12 @@ class MobileDeviceController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function getDeviceData(Request $request): JsonResponse
+    public function deviceData(Request $request): JsonResponse
     {
         try {
             $request->validate(['id' => 'required|numeric|digits_between:1,10']);
-            $id = $request->id;
-            $typhoonImgs = TyphoonImage::all();
+            $id = $request->get('id');
+            $typhoonImages = TyphoonImage::all();
             $users = User::query()->where(function ($query) {
                 $query->role(2);
             })->get(['id', 'name']);
@@ -62,7 +67,7 @@ class MobileDeviceController extends Controller
             $device = Device::with(['user'])->where('id', $id)->first();
             $res = [
                 'room' => $device->name,
-                'room_value' => $this->roomValue($device->name),
+                'room_value' => $this->deviceMap[$device->name] ?? '',
                 'anchor_id' => $device->user->id ?? 0,
                 'anchor' => $device->user->name ?? '',
                 'typhoon' => [],
@@ -74,11 +79,21 @@ class MobileDeviceController extends Controller
                 'id' => 0,
                 'name' => '不指定主播'
             ];
-            // 颱風主播圖卡 & 天氣預報排程
-            $typhoon = $device->typhoon_json;
-            $weather = $device->forecast_json;
+
+            /** @var HostPreference $hostPreference */
+            $hostPreference = $device->hostPreference()->where('user_id', $device->user_id)->first();
+
             // 主播圖卡
+            foreach ($typhoonImages as $img) {
+                $res['typhoon'][] = [
+                    'mode' => 'origin',
+                    'name' => $img->content['display_name'],
+                    'screen' => $img->name,
+                ];
+            }
+
             $host_pics = [];
+            $typhoon = $hostPreference->typhoon_json ?? $device->typhoon_json;
             foreach ($typhoon as $index => $value) {
                 $host_pics[] = [
                     'mode' => $value['type'],
@@ -89,6 +104,13 @@ class MobileDeviceController extends Controller
                 ];
             }
 
+            $res['typhoon'][] = [
+                'name' => '主播圖卡',
+                'list' => $host_pics,
+            ];
+
+            // 天氣預報排程
+            $weather = $hostPreference->forecast_json ?? $device->forecast_json;
             foreach ($weather as $index => $value) {
                 $res['weather'][] = [
                     'mode' => $value['type'],
@@ -98,18 +120,6 @@ class MobileDeviceController extends Controller
                     'pic_url' => env('APP_URL') . $value['img_url'],
                 ];
             }
-
-            foreach ($typhoonImgs as $img) {
-                $res['typhoon'][] = [
-                    'mode' => 'origin',
-                    'name' => $img->content['display_name'],
-                    'screen' => $img->name,
-                ];
-            }
-            $res['typhoon'][] = [
-                'name' => '主播圖卡',
-                'list' => $host_pics,
-            ];
 
             return response()->json($res);
         } catch (Exception $e) {
@@ -334,20 +344,6 @@ class MobileDeviceController extends Controller
             $tempPreferenceJson[$type][$key][$obj['target']]['scale'] = $obj['scale'];
         }
         return $tempPreferenceJson;
-    }
-
-
-    /** 獲取辦公室的value
-     * @param $room
-     * @return string
-     */
-    public function roomValue($room): string
-    {
-        $map = [
-            '防災視訊室' => 'protect_disaster',
-            '公關室' => 'pr'
-        ];
-        return $map[$room] ?? '';
     }
 
     public function elementName($englishName): string

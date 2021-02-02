@@ -43,7 +43,7 @@ Route::group(['prefix' => 'mobileDevice', 'as' => 'mobileDevice.'], function () 
     Route::get('device-list', ['as' => 'device-list', 'uses' => 'MobileDeviceController@deviceList']);
 
     // 裝置資料
-    Route::get('data', ['as' => 'data', 'uses' => 'MobileDeviceController@getDeviceData']);
+    Route::get('data', ['as' => 'data', 'uses' => 'MobileDeviceController@deviceData']);
 
     // socket:切換畫面
     Route::get('action', ['as' => 'action', 'uses' => 'MobileDeviceController@action']);
