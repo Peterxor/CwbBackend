@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\TyphoonImage;
 use App\Events\MobileActionEvent;
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use App\Models\GeneralImagesCategory;
 use App\Models\HostPreference;
@@ -216,48 +217,39 @@ class MobileDeviceController extends Controller
         }
     }
 
-    /** 獲取主播的元件座標
+    /**
+     * 獲取主播的元件座標
+     *
      * @param Request $request
      * @return JsonResponse
      */
     public function hostPreference(Request $request): JsonResponse
     {
-        //todo anchor_id 作廢
         try {
             $request->validate([
-                'anchor_id' => 'numeric',
                 'device_id' => 'required|numeric',
                 'type' => 'required|string|max:255',
                 'screen' => 'required|string|max:255',
             ]);
-            $user_id = $request->get('anchor_id');
-            $device_id = $request->get('device_id');
-            $key = $request->get('screen');
-            $type = $request->get('type');
-            if ($user_id) {
-                $host = HostPreference::query()->where([
-                    'user_id' => $user_id,
-                    'device_id' => $device_id
-                ])->first();
-            } else {
-                $host = Device:: query()->where(['id' => $device_id])->first();
-            }
 
-            // 檢查是否為 一般天氣-圖資
-            $arr = [];
+            $device_id = $request->get('device_id');
+            $screen = $request->get('screen');
+            $type = $request->get('type');
+
+            /** @var Device $device */
+            $device = Device::query()->find($device_id);
+
+            $preference = preference($device);
+
             if ($type === 'weather') {
-                $json = $host->preference_json[$type]['images'];
-                $general = $host->preference_json[$type]['general'];
-                $weather_information = $host->preference_json[$type]['weather_information'];
-                $arr = array_merge($arr, $this->jsonToArray($general));
-                $arr = array_merge($arr, $this->jsonToArray($weather_information));
-                $arr = array_merge($arr, $this->jsonToArray($json, $key));
+                // 一般天氣-圖資
+                $config = collect(config('weatherlayout'))->keyBy('name');
+                return response()->json($this->weatherFormat($config, $preference[$type], $screen, !empty($device->user)));
             } else {
                 // 颱風所有圖資
-                $json = $host->preference_json[$type][$key];
-                $arr = $this->jsonToArray($json);
+                $config = collect(config('typhoonlayout'))->keyBy('name');
+                return response()->json($this->typhoonFormat($config[$screen], $preference[$type][$screen], !empty($device->user)));
             }
-            return response()->json($arr);
         } catch (Exception $e) {
             Log::error($e->getMessage());
             return $this->sendError('請求失敗');
@@ -403,36 +395,66 @@ class MobileDeviceController extends Controller
     }
 
     /**
-     * 將元件座標調整為array格式
-     * @param $json
-     * @param null $inputKey
+     * 天氣格式整理
+     *
+     * @param Collection $configs
+     * @param array $items
+     * @param string $screen
+     * @param bool $showScale
      * @return array
      */
-    public function jsonToArray($json, $inputKey = null): array
+    private function weatherFormat(Collection $configs, array $items, string $screen, bool $showScale = false): array
     {
-        $tool = [];
-        $images = [];
-
-        foreach ($json as $key => $value) {
-            if ($inputKey && $key !== $inputKey) {
-                continue;
-            }
-            $temp = [];
-            $temp['name'] = $this->elementName($key) ?? '';
-            $temp['target'] = $key;
-            if (isset($value['scale'])) {
-                $temp['scale'] = $value['scale'];
-            }
-            $temp['point_x'] = $value['point_x'];
-            $temp['point_y'] = $value['point_y'];
-            if (in_array($key, $this->toolItem)) {
-                $tool[] = $temp;
-            } else {
-                $images[] = $temp;
-            }
+        $data = [];
+        foreach ($configs['weather_information']['children'] as $config) {
+            $data[] = $this->format($config, $items['weather_information'][$config->name] ?? [], $showScale);
         }
-        return array_merge($images, $tool);
+        foreach ($configs['general']['children'] as $config) {
+            $data[] = $this->format($config, $items['general'][$config->name] ?? [], $showScale);
+        }
+
+        $config = collect($configs['images']['children'])->keyBy('name')[$screen];
+        $data[] = $this->format($config, $items['images'][$config->name] ?? [], $showScale);
+        return $data;
     }
 
 
+    /**
+     * 颱風格式整理
+     *
+     * @param array $configs
+     * @param array $items
+     * @param bool $showScale
+     * @return array
+     */
+    private function typhoonFormat(array $configs, array $items, bool $showScale = false): array
+    {
+        $data = [];
+        foreach ($configs['children'] as $config) {
+            $data[] = $this->format($config, $items[$config->name], $showScale);
+        }
+
+        return $data;
+    }
+
+
+    /**
+     * 將元件座標調整為array格式
+     *
+     * @param array $config 設定檔
+     * @param array $item 圖資項目
+     * @param bool $showScale 是否顯示 Scale
+     * @return array
+     */
+    private function format(array $config, array $item, bool $showScale = false): array
+    {
+        $data['name'] = $config['display_name'];
+        $data['target'] = $config['name'];
+        if ($showScale && isset($item['scale'])) {
+            $data['scale'] = $item['scale'];
+        }
+        $data['point_x'] = $item['point_x'];
+        $data['point_y'] = $item['point_y'];
+        return $data;
+    }
 }

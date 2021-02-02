@@ -133,15 +133,15 @@ if (!function_exists('preference')) {
     function preference(Device $device): array
     {
         /** @var HostPreference $hostPreference */
-        $hostPreference = HostPreference::query()->firstOrCreate(['user_id' => $device->user_id, 'device_id' => $device->id]);
+        $hostPreference = HostPreference::query()->firstOrNew(['user_id' => $device->user_id, 'device_id' => $device->id]);
 
-        return array_merge($device->preference_json ?? [], $hostPreference->preference_json ?? []);
+        return depthArrayMerge($device->preference_json ?? [], $hostPreference->preference_json ?? []);
     }
 }
 
-if (!function_exists('preference')) {
+if (!function_exists('depthArrayMerge')) {
     /**
-     * 取得個人裝置設定檔
+     * 深度合併Array
      *
      * @param array $arr1
      * @param array $arr2
