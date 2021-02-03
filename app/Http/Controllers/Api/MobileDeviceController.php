@@ -14,6 +14,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use App\Models\GeneralImagesCategory;
 use App\Models\HostPreference;
+use App\Exceptions\MobileException;
 
 class MobileDeviceController extends Controller
 {
@@ -26,8 +27,8 @@ class MobileDeviceController extends Controller
 
     /**
      * 裝置列表
-     *
      * @return JsonResponse
+     * @throws MobileException
      */
     public function deviceList(): JsonResponse
     {
@@ -42,8 +43,7 @@ class MobileDeviceController extends Controller
             }
             return response()->json($data);
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->sendError('請求失敗');
+            throw new MobileException('取得裝置列表錯誤', 400, $e);
         }
     }
 
@@ -52,6 +52,7 @@ class MobileDeviceController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws MobileException
      */
     public function deviceData(Request $request): JsonResponse
     {
@@ -123,8 +124,7 @@ class MobileDeviceController extends Controller
 
             return response()->json($res);
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->sendError('請求失敗');
+            throw new MobileException('獲取裝置訊息錯誤', 400, $e);
         }
     }
 
@@ -132,6 +132,7 @@ class MobileDeviceController extends Controller
      * 一般天氣總覽圖
      *
      * @return JsonResponse
+     * @throws MobileException
      */
     public function weatherDetail(): JsonResponse
     {
@@ -157,8 +158,7 @@ class MobileDeviceController extends Controller
             }
             return response()->json($res);
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->sendError('請求失敗');
+            throw new MobileException('獲取天氣綜覽錯誤', 400, $e);
         }
     }
 
@@ -199,6 +199,7 @@ class MobileDeviceController extends Controller
      * 更新主播
      * @param Request $request
      * @return JsonResponse
+     * @throws MobileException
      */
     public function updateAnchor(Request $request): JsonResponse
     {
@@ -222,8 +223,7 @@ class MobileDeviceController extends Controller
             }
             return $this->sendResponse('', '成功更新');
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->sendError('請求失敗');
+            throw new MobileException('更新主播錯誤', 400, $e);
         }
     }
 
@@ -232,6 +232,7 @@ class MobileDeviceController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws MobileException
      */
     public function hostPreference(Request $request): JsonResponse
     {
@@ -261,14 +262,14 @@ class MobileDeviceController extends Controller
                 return response()->json($this->typhoonFormat($config[$screen], $preference[$type][$screen], empty($device->user)));
             }
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->sendError('請求失敗');
+            throw new MobileException('獲取主播元件座標錯誤', 400, $e);
         }
     }
 
     /** 更新主播的元件座標
      * @param Request $request
      * @return JsonResponse
+     * @throws MobileException
      */
     public function updatePreference(Request $request): JsonResponse
     {
@@ -315,8 +316,7 @@ class MobileDeviceController extends Controller
             $host->save();
             return $this->sendResponse('', '成功更新');
         } catch (Exception $e) {
-            Log::error($e->getMessage());
-            return $this->sendError('請求失敗');
+            throw new MobileException('更新主播元件座標錯誤', 400, $e);
         }
     }
 

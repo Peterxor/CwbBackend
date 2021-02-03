@@ -6,6 +6,7 @@ use App\Services\WFC\Exceptions\WFCException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use App\Exceptions\PermissionException;
+use App\Exceptions\MobileException;
 
 class Handler extends ExceptionHandler
 {
@@ -55,6 +56,10 @@ class Handler extends ExceptionHandler
         if ($exception instanceof WFCException || $exception instanceof PermissionException) {
             //if($request->ajax())
             return response()->json(['message' => $exception->getMessage()], $exception->getCode());
+        }
+
+        if ($exception instanceof MobileException) {
+            return response()->json(['success' => false, 'message' => $exception->getMessage()], $exception->getCode());
         }
 
 
