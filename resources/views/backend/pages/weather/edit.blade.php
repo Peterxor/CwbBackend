@@ -161,5 +161,5 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/weather/edit.js') !!}
+    {!! Html::script('js/weather/edit.js') !!}
 @endsection

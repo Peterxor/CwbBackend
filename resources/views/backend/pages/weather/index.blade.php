@@ -29,7 +29,7 @@
     <div class="row">
         <div class="kt-portlet">
             <div class="kt-portlet__body">
-                <table id="weather-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ env('URL_PREFIX','').route('weather.edit', ['_id'],false) }}">
+                <table id="weather-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ route('weather.edit', ['_id'],false) }}">
                     <thead>
                         <tr>
                             <th>排序</th>
@@ -51,6 +51,6 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/vendor/jquery-ui.js') !!}
-    {!! Html::script(env('URL_PREFIX','').'js/weather/index.js') !!}
+    {!! Html::script('js/vendor/jquery-ui.js') !!}
+    {!! Html::script('js/weather/index.js') !!}
 @endsection

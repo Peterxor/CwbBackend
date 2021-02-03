@@ -77,5 +77,5 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/user/edit.js') !!}
+    {!! Html::script('js/user/edit.js') !!}
 @endsection

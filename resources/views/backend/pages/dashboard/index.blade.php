@@ -284,5 +284,5 @@
 
 @section('pages_scripts')
     {!! Html::script('vendor/audit/bootstrap-timepicker.min.js') !!}
-    {!! Html::script(env('URL_PREFIX','').'js/dashboard/index.js') !!}
+    {!! Html::script('js/dashboard/index.js') !!}
 @endsection

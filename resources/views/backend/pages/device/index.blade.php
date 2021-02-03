@@ -19,7 +19,7 @@
     <div class="row">
         <div class="kt-portlet">
             <div class="kt-portlet__body">
-                <table id="device-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ env('URL_PREFIX','').route('device.edit', ['device' => '_id'],false) }}">
+                <table id="device-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-edit-url="{{ route('device.edit', ['device' => '_id'],false) }}">
                     <thead>
                         <tr>
                             <th>管理</th>
@@ -36,5 +36,5 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/device/index.js') !!}
+    {!! Html::script('js/device/index.js') !!}
 @endsection

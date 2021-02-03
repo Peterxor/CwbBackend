@@ -14,7 +14,7 @@
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="row">
         <div class="kt-portlet">
-        <form class="kt-form kt-form--label-right" id="search-form" action="{{env('URL_PREFIX','').route('personnel.query',[],false)}}">
+        <form class="kt-form kt-form--label-right" id="search-form" action="{{route('personnel.query',[],false)}}">
             <input type="hidden" name="role">
             <div class="kt-portlet__body">
                 <div class="form-group row">
@@ -60,5 +60,5 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/personnel/index.js') !!}
+    {!! Html::script('js/personnel/index.js') !!}
 @endsection

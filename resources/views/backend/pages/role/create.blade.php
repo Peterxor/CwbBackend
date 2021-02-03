@@ -79,5 +79,5 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/course/create.js') !!}
+    {!! Html::script('js/course/create.js') !!}
 @endsection

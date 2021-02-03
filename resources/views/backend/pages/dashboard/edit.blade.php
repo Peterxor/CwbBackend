@@ -127,6 +127,6 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/vendor/jquery-ui.js') !!}
-    {!! Html::script(env('URL_PREFIX','').'js/dashboard/edit.js') !!}
+    {!! Html::script('js/vendor/jquery-ui.js') !!}
+    {!! Html::script('js/dashboard/edit.js') !!}
 @endsection

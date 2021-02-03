@@ -101,7 +101,7 @@ class MobileDeviceController extends Controller
                     'name' => transformWeatherName($value['img_url']),
                     'screen' => $value['img_name'],
                     'sub' => 'anchor_slider',
-                    'pic_url' => env('APP_URL') . $value['img_url'],
+                    'pic_url' => $value['img_url'],
                 ];
             }
 
@@ -118,7 +118,7 @@ class MobileDeviceController extends Controller
                     'name' => transformWeatherName($value['img_url']),
                     'screen' => $value['img_name'],
                     'sub' => 'weather_slider',
-                    'pic_url' => env('APP_URL') . $value['img_url'],
+                    'pic_url' => $value['img_url'],
                 ];
             }
 
@@ -151,7 +151,7 @@ class MobileDeviceController extends Controller
                         'name' => $img->content['display_name'],
                         'screen' => $img->name,
                         'sub' => 'weather_overview',
-                        'pic_url' => env('APP_URL') . getWeatherImage($img->name),
+                        'pic_url' => getWeatherImage($img->name),
                     ];
                 }
                 $res[] = $temp;

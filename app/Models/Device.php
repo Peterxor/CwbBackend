@@ -58,9 +58,9 @@ class Device extends Model
         ];
         $dirName = $themeSet[$this->theme - 1] ?? 'nature_blue';
         return [
-            env('APP_URL') . '/images/theme/' . $dirName . '/bg_typhoon.jpg',
-            env('APP_URL') . '/images/theme/' . $dirName . '/left.png',
-            env('APP_URL') . '/images/theme/' . $dirName . '/right.png',
+            url("/images/theme/$dirName/bg_typhoon.jpg"),
+            url("/images/theme/$dirName/left.png"),
+            url("/images/theme/$dirName/right.png"),
         ];
 
     }

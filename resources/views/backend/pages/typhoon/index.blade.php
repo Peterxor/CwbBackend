@@ -16,7 +16,7 @@
     <div class="row">
         <div class="kt-portlet">
             <div class="kt-portlet__body">
-                <table id="typhoon-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-query-url="{{route('typhoon.query')}}" data-edit-url="{{ env('URL_PREFIX','').route('typhoon.edit', ['_id'],false) }}">
+                <table id="typhoon-table" class="table table-striped- table-bordered table-hover table-checkable dataTable no-footer dtr-inline" data-query-url="{{route('typhoon.query')}}" data-edit-url="{{ route('typhoon.edit', ['_id'],false) }}">
                     <thead>
                         <tr>
                             <th>排序</th>
@@ -34,5 +34,5 @@
 @endsection
 
 @section('pages_scripts')
-    {!! Html::script(env('URL_PREFIX','').'js/typhoon/index.js') !!}
+    {!! Html::script('js/typhoon/index.js') !!}
 @endsection

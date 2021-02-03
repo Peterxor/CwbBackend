@@ -96,6 +96,6 @@
 @endsection
 @section('pages_scripts')
     <link href="/css/colpick.css" rel="stylesheet" type="text/css">
-    {!! Html::script(env('URL_PREFIX','').'js/vendor/colpick.js') !!}
-    {!! Html::script(env('URL_PREFIX','').'js/device/edit.js') !!}
+    {!! Html::script('js/vendor/colpick.js') !!}
+    {!! Html::script('js/device/edit.js') !!}
 @endsection

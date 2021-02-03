@@ -16,7 +16,7 @@
 
     <div class="row">
         <div class="kt-portlet">
-        <form class="kt-form kt-form--label-right" id="search-form" action="{{env('URL_PREFIX','').route('active.query',[],false)}}">
+        <form class="kt-form kt-form--label-right" id="search-form" action="{{route('active.query',[],false)}}">
             <div class="kt-portlet__body">
                 <div class="form-group row">
                     <div class="col-lg-4">
@@ -79,5 +79,5 @@
 
 @section('pages_scripts')
     {!! Html::script('vendor/audit/bootstrap-timepicker.min.js') !!}
-    {!! Html::script(env('URL_PREFIX','').'js/active/index.js') !!}
+    {!! Html::script('js/active/index.js') !!}
 @endsection

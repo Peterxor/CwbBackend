@@ -45,7 +45,7 @@ class Board extends Model
             'cloud.png', 'sunny.png', 'info.png', 'typhoon_eye.png'
         ];
         $backgroundFile = $backgroundSet[$this->background - 1] ?? 'cloud.png';
-        return env('APP_URL') . '/images/board_background/' . $backgroundFile;
+        return url("/images/board_background/$backgroundFile");
     }
 
 }
