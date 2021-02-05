@@ -23,15 +23,15 @@ class TyphoonPotential
         try {
             $typhoonPotential = simplexml_load_file(Storage::disk('data')->path($setting['typhoon_potential']['origin']));
 
+            $currentTime = self::currentTime();
+            $typhoon['time'] = $currentTime->toDateTimeLocalString() . '+08:00';
+
+            $typhoon['current']['time'] =  $currentTime->toDateTimeLocalString() . '+08:00';
             $typhoon['current']['center']['point']['lat'] = (float)$typhoonPotential->TY_TRACK_POINT->center->point->lat;
             $typhoon['current']['center']['point']['lon'] = (float)$typhoonPotential->TY_TRACK_POINT->center->point->lon;
             $typhoon['current']['track']['points'] = [];
 
-            $currentTime = self::currentTime();
-            $typhoon['time'] = $currentTime->toDateTimeLocalString() . '+08:00';
-
             foreach ($typhoonPotential->TY_TRACK_POINT->track->point as $point) {
-                $typhoon['current']['time'] =  $currentTime->toDateTimeLocalString() . '+08:00';
                 $typhoon['current']['label'] =  $currentTime->format('m月d日 H:i');
                 $typhoon['current']['track']['points'][] = [
                     'lat' => (float)$point->lat,
