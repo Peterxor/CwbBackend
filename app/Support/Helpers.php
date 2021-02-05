@@ -310,3 +310,55 @@ if (!function_exists('savePreferenceLog')) {
     }
 }
 
+if (!function_exists('dashboardJsonUrl')) {
+    function dashboardJsonUrl($jsonObj): string
+    {
+        switch ($jsonObj['type']) {
+            case 'origin':
+            case 'upload':
+                return $jsonObj['img_url'];
+            case 'youtube':
+            case 'website':
+                return $jsonObj['url'];
+            default:
+                return '';
+        }
+    }
+}
+
+if (!function_exists('dashboardJsonName')) {
+    function dashboardJsonName($jsonObj): string
+    {
+        switch ($jsonObj['type']) {
+            case 'origin':
+            case 'upload':
+                return transformWeatherName($jsonObj['img_url']);
+//            case 'upload':
+//                return $jsonObj['img_name'];
+            case 'youtube':
+            case 'website':
+                return $jsonObj['name'];
+            default:
+                return '';
+        }
+    }
+}
+
+if (!function_exists('jsonScreen')) {
+    function jsonScreen($jsonObj): string
+    {
+        switch ($jsonObj['type']) {
+            case 'origin':
+            case 'upload':
+                return $jsonObj['img_name'];
+//            case 'upload':
+//                return $jsonObj['img_name'];
+            case 'youtube':
+            case 'website':
+                return $jsonObj['name'];
+            default:
+                return '';
+        }
+    }
+}
+

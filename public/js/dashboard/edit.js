@@ -1,26 +1,30 @@
 $(document).ready(function() {
     $('#sort-table').sortable();
+    // type對應到的element
+    const typeElementMap = {
+        origin: 'select',
+        upload: '.imgHolder',
+        youtube: '.url_input',
+        website: '.url_input',
+    }
 
     $('.js-change-btn').on('change', function() {
         var type = $(this).val();
-        var type_name = type == 'weather' ? 'select' : '.imgHolder';
-        var hide_name = type_name == 'select' ? '.imgHolder' : 'select';
-        var data_type = type_name == 'select' ? 'origin' : 'upload';
-
-        // $('.js-ref').hide();
-        // console.log($(this).parent().parent().find('input').eq(1).val())
-        if (type === 'weather' || type === 'upload') {
-            $(this).parent().parent().find('input').eq(1).val(data_type)
-            $(this).parent().parent().find('td').eq(2).find(type_name).show();
-            $(this).parent().parent().find('td').eq(2).find(hide_name).hide();
-            // $(this).parent().parent().find('td').eq(2).find(type_name).show();
-        } else if (type === 'choose_not') {
-            data_type = 'choose_not';
-            $(this).parent().parent().find('input').eq(1).val(data_type);
-            $(this).parent().parent().find('td').eq(2).find(type_name).hide();
-            $(this).parent().parent().find('td').eq(2).find(hide_name).hide();
+        var chooseElement = typeElementMap[type];
+        $(this).parent().parent().find('input').eq(1).val(type);
+        $(this).parent().parent().find('td').eq(3).hide();
+        for (var property in typeElementMap) {
+            if (typeElementMap.hasOwnProperty(property)) {
+                if (chooseElement === typeElementMap[property]) {
+                    $(this).parent().parent().find('td').eq(2).find(chooseElement).show();
+                    if (chooseElement === '.url_input') {
+                        $(this).parent().parent().find('td').eq(3).show();
+                    }
+                } else {
+                    $(this).parent().parent().find('td').eq(2).find(typeElementMap[property]).hide();
+                }
+            }
         }
-
     });
 
     $('.upload-image').on('change', function(e) {

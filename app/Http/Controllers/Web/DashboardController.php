@@ -83,6 +83,7 @@ class DashboardController extends Controller
      */
     public function update(Request $request, Device $device)
     {
+//        dd($request->all());
         if (!hasPermission('edit_dashboard')) {
             abort(403);
         }
@@ -92,6 +93,8 @@ class DashboardController extends Controller
         $upload_name = $request->get('img_name');
         $upload_url = $request->get('img_url');
         $json_type = $request->get('pic_type');
+        $input_url = $request->get('input_url');
+        $input_name = $request->get('input_name');
         $db_origin_img = [];
         $generals = GeneralImages::all();
         foreach ($generals as $g) {
@@ -104,17 +107,46 @@ class DashboardController extends Controller
             if ($type === 'choose_not') {
                 continue;
             }
-            $temp = $type == 'origin' ? [
-                'type' => $type,
-                'img_id' => $origin_ids[$index],
-                'img_name' => $db_origin_img[$origin_ids[$index]],
-                'img_url' => getWeatherImage($db_origin_img[$origin_ids[$index]])
-            ] : [
-                'type' => $type,
-                'img_id' => $upload_ids[$index],
-                'img_name' => $upload_name[$index],
-                'img_url' => $upload_url[$index]
-            ];
+
+
+            switch ($type) {
+                case 'origin':
+                    $temp = [
+                        'type' => $type,
+                        'img_id' => $origin_ids[$index],
+                        'img_name' => $db_origin_img[$origin_ids[$index]],
+                        'img_url' => getWeatherImage($db_origin_img[$origin_ids[$index]])
+                    ];
+                    break;
+                case 'upload':
+                    $temp = [
+                        'type' => $type,
+                        'img_id' => $upload_ids[$index],
+                        'img_name' => $upload_name[$index],
+                        'img_url' => $upload_url[$index]
+                    ];
+                    break;
+                case 'youtube':
+                case 'website':
+                    $temp = [
+                        'type' => $type,
+                        'name' => $input_name[$index],
+                        'url' => $input_url[$index]
+                    ];
+                    break;
+            }
+
+//            $temp = $type == 'origin' ? [
+//                'type' => $type,
+//                'img_id' => $origin_ids[$index],
+//                'img_name' => $db_origin_img[$origin_ids[$index]],
+//                'img_url' => getWeatherImage($db_origin_img[$origin_ids[$index]])
+//            ] : [
+//                'type' => $type,
+//                'img_id' => $upload_ids[$index],
+//                'img_name' => $upload_name[$index],
+//                'img_url' => $upload_url[$index]
+//            ];
             $data[] = $temp;
         }
         $update = $json_type == 'typhoon' ? ['typhoon_json' => $data] : ['forecast_json' => $data];

@@ -52,7 +52,7 @@ class UserController extends Controller
                 'id' => $item->id,
                 'email' => $item->email,
                 'name' => $item->name,
-                'role_name' => $item->getRoleNames(),
+                'role_name' => $item->roles->pluck('chinese_name'),
                 'created_at' => $item->created_at ? Carbon::parse($item->created_at)->format('Y/m/d H:i:s') : '',
                 'updated_at' => $item->updated_at ? Carbon::parse($item->updated_at)->format('Y/m/d H:i:s') : ''
             ];

@@ -59,7 +59,7 @@
                                 <tr>
                                     <th style="width:50px;">排序</th>
                                     <th style="width:150px;">類別</th>
-                                    <th>名稱</th>
+                                    <th>內容</th>
                                 </tr>
                                 </thead>
                                 <tbody id="sort-table">
@@ -70,13 +70,21 @@
                                         </td>
                                         <td>
                                             <select class="form-control js-change-btn">
-                                                <option value="weather"
-                                                        {{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'selected' : '') : ''}}>
+                                                <option value="origin"
+                                                    {{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'selected' : '') : ''}}>
                                                     圖資來源
                                                 </option>
                                                 <option
                                                     value="upload" {{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'upload' ? 'selected' : '') : ''}}>
                                                     圖片上傳
+                                                </option>
+                                                <option
+                                                    value="youtube" {{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'youtube' ? 'selected' : '') : ''}}>
+                                                    youtube網址
+                                                </option>
+                                                <option
+                                                    value="website" {{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'website' ? 'selected' : '') : ''}}>
+                                                    web網址
                                                 </option>
                                                 <option
                                                     value="choose_not" {{($data[$i]['type'] ?? null) ? '' : 'selected'}}>
@@ -85,32 +93,48 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <select name="origin_img_id[]" class="form-control js-ref js-weather" style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'display:block;' : 'display:none;') : 'display:none;'}}">
+                                            <select name="origin_img_id[]" class="form-control js-ref js-weather"
+                                                    style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'display:block;' : 'display:none;') : 'display:none;'}}">
                                                 @foreach($images as $image)
-                                                    <option value="{{$image->id}}" {{($data[$i] ?? null) ? ($data[$i]['type'] == 'origin' ? ($image->id == $data[$i]['img_id'] ? 'selected' : '') : '') : ''}}>{{$image->content['display_name']}}</option>
+                                                    <option
+                                                        value="{{$image->id}}" {{($data[$i] ?? null) ? ($data[$i]['type'] == 'origin' ? ($image->id == $data[$i]['img_id'] ? 'selected' : '') : '') : ''}}>{{$image->content['display_name']}}</option>
                                                 @endforeach
                                             </select>
-                                            <div class="imgHolder" style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'origin' ? 'display:none;' : 'display:block;') : 'display:none;'}}">
+                                            <div class="imgHolder"
+                                                 style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'upload' ? 'display:block;' : 'display:none;') : 'display:none;'}}">
                                                 <div class="row">
                                                     <div class="col-1">
-                                                        <label for="file-upload-avatar-{{$i}}" class="custom-file-upload">
+                                                        <label for="file-upload-avatar-{{$i}}"
+                                                               class="custom-file-upload">
                                                             <i class="la la-cloud-upload" style="font-size:24px"></i>
                                                         </label>
-                                                        <input type="file"  class="upload-image"
+                                                        <input type="file" class="upload-image"
                                                                id="file-upload-avatar-{{$i}}"
-                                                               accept="image/gif, image/jpeg, image/png" style="display:none;"/>
+                                                               accept="image/gif, image/jpeg, image/png"
+                                                               style="display:none;"/>
                                                     </div>
                                                     <div class="col-3">
-                                                        <span class="image_name">{{($data[$i]['type'] ?? null) == 'upload' ? ($data[$i]['img_name'] ?? '') : ''}}</span>
+                                                        <span
+                                                            class="image_name">{{($data[$i]['type'] ?? null) == 'upload' ? ($data[$i]['img_name'] ?? '') : ''}}</span>
                                                     </div>
                                                 </div>
-                                                <input class="image_type" type="hidden" name="image_type[]" value="{{$data[$i]['type'] ?? 'choose_not'}}">
-                                                <input class="image_id" type="hidden" name="img_id[]" value="{{$data[$i]['img_id'] ?? ''}}">
-                                                <input class="hidden_name" type="hidden" name="img_name[]" value="{{($data[$i]['type'] ?? null) == 'upload' ? ($data[$i]['img_name'] ?? '') : ''}}">
-                                                <input class="image_url" type="hidden" name="img_url[]" value="{{$data[$i]['img_url'] ?? ''}}">
+                                                <input class="image_type" type="hidden" name="image_type[]"
+                                                       value="{{$data[$i]['type'] ?? 'choose_not'}}">
+                                                <input class="image_id" type="hidden" name="img_id[]"
+                                                       value="{{$data[$i]['img_id'] ?? ''}}">
+                                                <input class="hidden_name" type="hidden" name="img_name[]"
+                                                       value="{{($data[$i]['type'] ?? null) == 'upload' ? ($data[$i]['img_name'] ?? '') : ''}}">
+                                                <input class="image_url" type="hidden" name="img_url[]"
+                                                       value="{{$data[$i]['img_url'] ?? ''}}">
+                                            </div>
+                                            <div class="url_input"
+                                                 style="{{($data[$i]['type'] ?? null) ? ($data[$i]['type'] == 'youtube' || $data[$i]['type'] == 'website' ? 'display:block;' : 'display:none;') : 'display:none;'}}">
+                                                <label>名稱: </label>
+                                                <input type="text" name="input_name[]" value="{{$data[$i]['name'] ?? ''}}">
+                                                <label>url: </label>
+                                                <input type="text" name="input_url[]" value="{{$data[$i]['url'] ?? ''}}">
                                             </div>
                                         </td>
-
                                     </tr>
                                 @endfor
                                 </tbody>

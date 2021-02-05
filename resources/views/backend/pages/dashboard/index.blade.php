@@ -193,11 +193,11 @@
                                                 <div class="col-empty"></div>
                                             @endif
                                             <div class="col-4 layout-container"
-                                                 style="background-image:url({{$typhoon['img_url'] ?? '/images/login/logo.png'}});">
+                                                 style="background-image:url({{dashboardJsonUrl($typhoon) ?? '/images/login/logo.png'}});">
 
                                                 <div class="row layout-text">
                                                     <label>{{$index + 1 }}
-                                                        . {{$typhoon['type'] === 'origin' ? transformWeatherName($typhoon['img_url']) : $typhoon['img_name']}}</label>
+                                                        . {{dashboardJsonName($typhoon)}}</label>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -207,11 +207,11 @@
                                                 <div class="col-empty"></div>
                                             @endif
                                             <div class="col-4 layout-container"
-                                                 style="background-image:url({{$typhoon['img_url'] ?? '/images/login/logo.png'}});">
+                                                 style="background-image:url({{dashboardJsonUrl($typhoon) ?? '/images/login/logo.png'}});">
 
                                                 <div class="row layout-text">
                                                     <label>{{$index + 1 }}
-                                                        . {{$typhoon['type'] === 'origin' ? transformWeatherName($typhoon['img_url']) : $typhoon['img_name']}}</label>
+                                                        . {{dashboardJsonName($typhoon)}}</label>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -224,11 +224,11 @@
                                                 <div class="col-empty"></div>
                                             @endif
                                             <div class="col-4 layout-container"
-                                                 style="background-image:url({{$forecast['img_url'] ?? '/images/login/logo.png'}});">
+                                                 style="background-image:url({{dashboardJsonUrl($forecast) ?? '/images/login/logo.png'}});">
 
                                                 <div class="row layout-text">
                                                     <label>{{$index + 1 }}
-                                                        . {{$forecast['type'] === 'origin' ? transformWeatherName($forecast['img_url']) : $forecast['img_name']}}</label>
+                                                        . {{dashboardJsonName($forecast)}}</label>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -238,11 +238,11 @@
                                                 <div class="col-empty"></div>
                                             @endif
                                             <div class="col-4 layout-container"
-                                                 style="background-image:url({{$forecast['img_url'] ?? '/images/login/logo.png'}});">
+                                                 style="background-image:url({{dashboardJsonUrl($forecast) ?? '/images/login/logo.png'}});">
 
                                                 <div class="row layout-text">
                                                     <label>{{$index + 1 }}
-                                                        . {{$forecast['type'] === 'origin' ? transformWeatherName($forecast['img_url']) : $forecast['img_name']}}</label>
+                                                        . {{dashboardJsonName($forecast)}}</label>
                                                 </div>
                                             </div>
                                         @endforeach

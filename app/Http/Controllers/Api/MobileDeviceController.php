@@ -98,10 +98,10 @@ class MobileDeviceController extends Controller
             foreach ($typhoon as $index => $value) {
                 $host_pics[] = [
                     'mode' => $value['type'],
-                    'name' => transformWeatherName($value['img_url']),
-                    'screen' => $value['img_name'],
+                    'name' => dashboardJsonName($value),
+                    'screen' => jsonScreen($value) . '_' . $index,
                     'sub' => 'anchor_slider',
-                    'pic_url' => $value['img_url'],
+                    'pic_url' => dashboardJsonUrl($value),
                 ];
             }
 
@@ -115,10 +115,10 @@ class MobileDeviceController extends Controller
             foreach ($weather as $index => $value) {
                 $res['weather'][] = [
                     'mode' => $value['type'],
-                    'name' => transformWeatherName($value['img_url']),
-                    'screen' => $value['img_name'],
+                    'name' => dashboardJsonName($value),
+                    'screen' => jsonScreen($value) . '_' . $index,
                     'sub' => 'weather_slider',
-                    'pic_url' => $value['img_url'],
+                    'pic_url' => dashboardJsonUrl($value),
                 ];
             }
 
