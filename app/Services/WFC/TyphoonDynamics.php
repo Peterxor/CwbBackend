@@ -56,7 +56,7 @@ class TyphoonDynamics
             $typhoonDynamics = simplexml_load_file($path);
 
             $data = [
-                'time' => (string)$typhoonDynamics->Information->IssueTime,
+                'time' => Carbon::create((string)$typhoonDynamics->current->Point->Time)->toDateTimeLocalString() . '+08:00',
                 'past' => [
                     'time' => (string)$typhoonDynamics->past->Point->Time,
                     'lat' => (float)$typhoonDynamics->past->Point->Lat,
@@ -121,8 +121,8 @@ class TyphoonDynamics
      */
     static private function imageFormat(string $title, array $setting, array $preference): array
     {
-        if(!isset($setting['origin']))
-            throw new WFCException('颱風動態['.$title.']資料解析錯誤', 500);
+        if (!isset($setting['origin']))
+            throw new WFCException('颱風動態[' . $title . ']資料解析錯誤', 500);
 
         try {
             $path = rtrim($setting['origin'] ?? '', '/');
@@ -160,7 +160,7 @@ class TyphoonDynamics
                 'thumbnail' => count($images) > 0 ? $images[0] : null
             ];
         } catch (Exception $exception) {
-            throw new WFCException('颱風動態['.$title.']資料解析錯誤', 500, $exception);
+            throw new WFCException('颱風動態[' . $title . ']資料解析錯誤', 500, $exception);
         }
     }
 }

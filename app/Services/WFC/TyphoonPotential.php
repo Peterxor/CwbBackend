@@ -27,24 +27,28 @@ class TyphoonPotential
             $typhoon['current']['center']['point']['lon'] = (float)$typhoonPotential->TY_TRACK_POINT->center->point->lon;
             $typhoon['current']['track']['points'] = [];
 
+            $currentTime = self::currentTime();
+            $typhoon['time'] = $currentTime->toDateTimeLocalString() . '+08:00';
+
             foreach ($typhoonPotential->TY_TRACK_POINT->track->point as $point) {
+                $typhoon['current']['time'] =  $currentTime->toDateTimeLocalString() . '+08:00';
+                $typhoon['current']['label'] =  $currentTime->format('m月d日 H:i');
                 $typhoon['current']['track']['points'][] = [
                     'lat' => (float)$point->lat,
                     'lon' => (float)$point->lon
                 ];
             }
 
-            $currentTime = self::currentTime();
-
             $typhoon['fcst'] = [];
             foreach ($typhoonPotential->CIRCLE as $circle) {
                 $tempTime = clone $currentTime;
                 $tempTime->addHours((int)$circle->hour);
 
-                $item['center']['point']['lat'] = (float)$circle->center->point->lat;
-                $item['center']['point']['lon'] = (float)$circle->center->point->lon;
+                $item['time'] =  $tempTime->toDateTimeLocalString() . '+08:00';
                 $item['radius'] = (float)$circle->radius;
                 $item['label'] =  $tempTime->format('m月d日 H:i');
+                $item['center']['point']['lat'] = (float)$circle->center->point->lat;
+                $item['center']['point']['lon'] = (float)$circle->center->point->lon;
                 $item['track']['points'] = [];
                 foreach ($circle->track->point as $point) {
                     $item['track']['points'][] = [
