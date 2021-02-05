@@ -26,17 +26,18 @@ trait InformationTraits
         foreach ($setting ?? [] as $index => $settingImage) {
             $generalImage = $generalImages->where('name', $settingImage['img_name'] ?? '')->first();
             try {
-                $type = weatherType($settingImage['img_name']);
-                $imagePreference = $preference['weather']['images'][$settingImage['img_name']] ?? [];
-                $information = [
-                    'key' => $generalImage->name ?? $settingImage['img_name'],
-                    'mode' => GeneralImages::$mode[$type],
-                    'scale' => $imagePreference['scale'] ?? 100,
-                    'point_x' => $imagePreference['point_x'] ?? 0,
-                    'point_y' => $imagePreference['point_y'] ?? 0,
-                    'title' => $generalImage->content['display_name'] ?? ('小叮嚀' . $count)
-                ];
                 if ($settingImage['type'] == 'origin') {
+                    $type = weatherType($settingImage['img_name']);
+                    $imagePreference = $preference['weather']['images'][$settingImage['img_name']] ?? [];
+                    $information = [
+                        'key' => ($generalImage->name ?? $settingImage['img_name']) . '_' . $index,
+                        'mode' => GeneralImages::$mode[$type],
+                        'scale' => $imagePreference['scale'] ?? 100,
+                        'point_x' => $imagePreference['point_x'] ?? 0,
+                        'point_y' => $imagePreference['point_y'] ?? 0,
+                        'title' => $generalImage->content['display_name'] ?? ('小叮嚀' . $count)
+                    ];
+
                     switch ($type) {
                         case 1:
                             $image = imageUrl($generalImage->content['origin']);
@@ -47,10 +48,10 @@ trait InformationTraits
                             ]);
                             break;
                         case 2:
-                            $images = imagesUrl($generalImage->content['origin'], $generalImage->content['amount']);
+                            $images = imagesUrl($generalImage->content['origin'], $generalImage->content['amount'] ?? 1);
                             $informationList[] = array_merge($information, [
                                 'description' => self::parseDescription($images, $settingImage['img_name']),
-                                'interval' => $generalImage->content['interval'],
+                                'interval' => $generalImage->content['interval'] ?? 1000,
                                 'images' => $images,
                                 'thumbnail' => $images[0]
                             ]);
@@ -79,14 +80,46 @@ trait InformationTraits
                             break;
                     }
                 } else {
-                    $informationList[] = array_merge($information, [
-                        'description' => '',
-                        'image' => url($settingImage['img_url']),
-                        'thumbnail' => url($settingImage['img_url'])
-                    ]);
+                    $information = [
+                        'key' => $settingImage['img_name'],
+                        'mode' => GeneralImages::$mode[5],
+                        'scale' => 100,
+                        'point_x' => 0,
+                        'point_y' => 0,
+                        'title' => '小叮嚀' . $count
+                    ];
 
-                    $count++;
+                    switch ($settingImage['type']) {
+                        case 'youtube':
+                            // TODO: 缺 Youtube 照片
+                            $informationList[] = array_merge($information, [
+                                'mode' => GeneralImages::$mode[6],
+                                'description' => '',
+                                'title' => $settingImage['name'] ?? '',
+                                'url' => $settingImage['url'],
+                                'thumbnail' => url('images/weather/24H預測.png')
+                            ]);
+                            break;
+                        case 'website':
+                            // TODO: 缺 Website 照片
+                            $informationList[] = array_merge($information, [
+                                'mode' => GeneralImages::$mode[7],
+                                'description' => '',
+                                'title' => $settingImage['name'] ?? '',
+                                'url' => $settingImage['url'],
+                                'thumbnail' => url('images/weather/24H預測.png')
+                            ]);
+                            break;
+                        default:
+                            $informationList[] = array_merge($information, [
+                                'description' => '',
+                                'image' => url($settingImage['img_url']),
+                                'thumbnail' => url($settingImage['img_url'])
+                            ]);
+                    }
                 }
+
+                $count++;
             } catch (Exception $exception) {
                 throw new WFCException($title . '[第' . ($index + 1) . '項][' . ($generalImage->content['display_name'] ?? '') . ']資料解析錯誤', 500, $exception);
             }
@@ -158,24 +191,24 @@ trait InformationTraits
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
             case 'rainfall':
-                $time = Carbon::createFromFormat('Y-m-d_Hi', substr(pathinfo($urls)['filename'], 0, 15), 'Asia/Taipei');
-                return $time->format('m月d日 H:i');
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('Y-m-d_Hi', substr(pathinfo($url)['filename'], 0, 15), 'Asia/Taipei');
+                    if (empty($startTime))
+                        $startTime = $time->format('m月d日 H:i');
+                    $endTime = $time->format('m月d日 H:i');
+                }
+                return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
             case 'numerical_forecast':
                 foreach ($urls as $url) {
-                    $time = Carbon::createFromFormat('YmdH', '20' .substr(pathinfo($url)['filename'], 15, 8), 'Asia/Taipei');
+                    $time = Carbon::createFromFormat('YmdH', '20' . substr(pathinfo($url)['filename'], 15, 8), 'Asia/Taipei');
                     if (empty($startTime))
                         $startTime = $time->format('m月d日');
                     $endTime = $time->format('m月d日');
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
             case 'forecast_24h':
-                foreach ($urls as $url) {
-                    $time = Carbon::createFromFormat('Y-md-hi\_\A\0\1\2\H\D', pathinfo($url)['filename'], 'Asia/Taipei');
-                    if (empty($startTime))
-                        $startTime = $time->format('m月d日 H:i');
-                    $endTime = $time->format('m月d日 H:i');
-                }
-                return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
+                $time = Carbon::createFromFormat('Y-md-hi\_\A\0\1\2\H\D', pathinfo($urls)['filename'], 'Asia/Taipei');
+                return $time->format('m月d日 H:i');
             case 'weather_forecast':
                 foreach ($urls as $url) {
                     $time = Carbon::createFromFormat('Y-md', substr(pathinfo($url)['filename'], 0, 9), 'Asia/Taipei');

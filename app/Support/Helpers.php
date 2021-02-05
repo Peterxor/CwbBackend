@@ -206,19 +206,19 @@ if (!function_exists('weatherType')) {
         switch ($weatherName) {
             case 'surface_weather_map':
             case 'ultraviolet_light':
-            case 'rainfall':
             case 'wave_analysis_chart':
             case 'weather_alert':
+            case 'forecast_24h':
                 return 1;
             case 'east_asia_vis':
             case 'east_asia_mb':
             case 'east_asia_ir':
             case 'global_ir':
             case 'radar_echo':
+            case 'rainfall':
                 return 2;
             case 'temperature':
             case 'numerical_forecast':
-            case 'forecast_24h':
             case 'weather_forecast':
                 return 3;
             case 'precipitation_forecast_12h':
