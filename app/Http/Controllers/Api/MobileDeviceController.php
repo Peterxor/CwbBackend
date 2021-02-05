@@ -149,7 +149,7 @@ class MobileDeviceController extends Controller
                     $temp['list'][] = [
                         'mode' => 'origin',
                         'name' => $img->content['display_name'],
-                        'screen' => $img->name,
+                        'screen' => $img->name . '_' . $img->sort,
                         'sub' => 'weather_overview',
                         'pic_url' => getWeatherImage($img->name),
                     ];
@@ -255,6 +255,9 @@ class MobileDeviceController extends Controller
             if ($type === 'weather') {
                 // 一般天氣-圖資
                 $config = collect(config('weatherlayout'))->keyBy('name');
+                $screenTempAr = explode('_', $screen);
+                array_splice($screenTempAr, count($screenTempAr) - 1, 1);
+                $screen = implode('_', $screenTempAr);
                 return response()->json($this->weatherFormat($config, $preference[$type], $screen, empty($device->user)));
             } else {
                 // 颱風所有圖資

@@ -81,7 +81,7 @@ trait InformationTraits
                     }
                 } else {
                     $information = [
-                        'key' => $settingImage['img_name'],
+                        'key' => $settingImage['img_name'] . '_' . $index,
                         'mode' => GeneralImages::$mode[5],
                         'scale' => 100,
                         'point_x' => 0,
