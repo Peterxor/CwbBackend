@@ -62,6 +62,10 @@ class Handler extends ExceptionHandler
             return response()->json(['success' => false, 'message' => $exception->getMessage()], $exception->getCode());
         }
 
+        if ($exception instanceof ViewException) {
+            abort(400);
+        }
+
 
 
         return parent::render($request, $exception);

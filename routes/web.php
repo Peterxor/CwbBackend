@@ -33,6 +33,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('updateBoard', ['as' => 'updateBoard', 'uses' => 'DashboardController@updateBoard']);
         Route::put('{device}', ['as' => 'update', 'uses' => 'DashboardController@update']);
         Route::get('clear', ['as' => 'clear', 'uses' => 'DashboardController@clearRedis']);
+        Route::get('editImageTime', ['as' => 'editImageTime', 'uses' => 'DashboardController@editImageTime']);
+        Route::post('updateImageTime', ['as' => 'updateImageTime', 'uses' => 'DashboardController@updateImageTime']);
     });
     Route::resource('dashboard', 'DashboardController')->except(['show', 'edit', 'update']);
 

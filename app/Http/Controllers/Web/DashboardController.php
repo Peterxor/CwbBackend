@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Exceptions\ViewException;
 use App\Http\Controllers\Web\Controller as Controller;
 use App\Models\Device;
 use App\Models\HostPreference;
+use App\Models\ImageTime;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -19,6 +21,8 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\View\View;
 use App\Exceptions\PermissionException;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Finder\Finder;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -135,18 +139,6 @@ class DashboardController extends Controller
                     ];
                     break;
             }
-
-//            $temp = $type == 'origin' ? [
-//                'type' => $type,
-//                'img_id' => $origin_ids[$index],
-//                'img_name' => $db_origin_img[$origin_ids[$index]],
-//                'img_url' => getWeatherImage($db_origin_img[$origin_ids[$index]])
-//            ] : [
-//                'type' => $type,
-//                'img_id' => $upload_ids[$index],
-//                'img_name' => $upload_name[$index],
-//                'img_url' => $upload_url[$index]
-//            ];
             $data[] = $temp;
         }
         $update = $json_type == 'typhoon' ? ['typhoon_json' => $data] : ['forecast_json' => $data];
@@ -283,6 +275,81 @@ class DashboardController extends Controller
             return $this->sendError($e->getMessage(), [], 400, '更新看板失敗');
         }
     }
+
+    /**
+     * 編輯圖資時間設定
+     * @param Request $request
+     * @return Application|\Illuminate\Contracts\View\Factory|View
+     */
+    public function editImageTime(Request $request) {
+        $device_id = $request->get('device');
+        $device = Device::query()->with(['user'])->find($device_id);
+        $generalImages = GeneralImages::all();
+        $generals = [];
+        // 找出動態圖資，與圖資的檔案
+        foreach($generalImages as $generalImage) {
+            if (weatherType($generalImage->name) != 2 && weatherType($generalImage->name) != 3) {
+                continue;
+            }
+            $files = array_reverse(iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($generalImage->content['origin']))->sortByName(), false));
+            $options = [''];
+            foreach ($files as $file) {
+                $options[] = $file->getBasename();
+            }
+            $generals[] = [
+                'id' => $generalImage->id,
+                'name' => $generalImage->name,
+                'display_name' => $generalImage->content['display_name'],
+                'options' => $options
+            ];
+        }
+        // 取得主播圖資時間資訊
+        $userImageData = [];
+        $imageTimes = ImageTime::query()->where([
+            ['device_id', $device->id],
+            ['user_id', $device->user_id]
+        ])->get();
+        foreach ($imageTimes as $imageTime) {
+            $userImageData[$imageTime->general_image_id] = $imageTime;
+        }
+        return view('backend.pages.dashboard.edit_image_time', compact('generals', 'device', 'userImageData'));
+    }
+
+    /**
+     * 更新圖資時間設定
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     * @throws ViewException
+     */
+    public function updateImageTime(Request $request) {
+        try {
+            $generalIds = $request->get('general_id');
+            $isDefault = $request->get('is_default');
+            $startFiles = $request->get('start_file');
+            $endFiles = $request->get('end_file');
+            $device_id = $request->get('device');
+            $device = Device::query()->find($device_id);
+
+            foreach ($generalIds as $index => $generalId) {
+                if (!in_array($generalId, $isDefault)) {
+                    ImageTime::query()->updateOrCreate(
+                        ['device_id' => $device->id, 'user_id' => $device->user_id, 'general_image_id' => $generalId],
+                        ['is_default' => false, 'start_file' => $startFiles[$index], 'end_file' => $endFiles[$index]]
+                    );
+                } else {
+                    ImageTime::query()->updateOrCreate(
+                        ['device_id' => $device->id, 'user_id' => $device->user_id, 'general_image_id' => $generalId],
+                        ['is_default' => true, 'start_file' => null, 'end_file' => null]
+                    );
+                }
+            }
+            return redirect(route('dashboard.index'));
+        } catch (Exception $e) {
+            throw new ViewException('更新圖資時間設定錯誤', '400', $e);
+        }
+
+    }
+
 
     /**
      * keepalive

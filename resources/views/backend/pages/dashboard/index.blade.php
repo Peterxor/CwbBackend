@@ -101,7 +101,12 @@
                                        value="{{ ($device->board->media ?? false) ?  $device->board->media->file_name . '.' . $device->board->media->mime_type : ''}}">
                             </div>
                             <div class="col-6">
-
+                                <label for="example-search-input" class="col-4 col-form-label">
+                                <span class="kt-badge kt-badge--lg kt-badge--rounded" style="font-size: 22px"><i
+                                        class="la la-commenting"></i></span>圖資時間設定
+                                </label>
+                                <a href="{{route('dashboard.editImageTime', ['device'=> $device->id])}}"
+                                   class="btn btn-primary">調整圖資時間</a>
                             </div>
                         </div>
                         {{-- 預設版型 --}}
