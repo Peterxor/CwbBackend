@@ -28,16 +28,19 @@ class Dashboard
                 'career' => $setting['personnel_a']['career'],
                 'education' => $setting['personnel_a']['education'],
                 'experience' => $setting['personnel_a']['experience'],
-            ] : [];
+            ] : null;
             $data['user_2'] = $setting['personnel_b'] ? [
                 'name' => $setting['personnel_b']['name'],
                 'nick_name' => $setting['personnel_b']['nick_name'],
                 'career' => $setting['personnel_b']['career'],
                 'education' => $setting['personnel_b']['education'],
                 'experience' => $setting['personnel_b']['experience'],
-            ] : [];
+            ] : null;
             $data['current_press_conference'] = $setting['conference_status'] === 1 ? $setting['conference_time'] ?? null : null;
             $data['next_press_conference'] = $setting['next_conference_status'] === 1 ? $setting['next_conference_time'] ?? null : null;
+
+            if(is_null($data['user_1']) && is_null($data['user_2']) && is_null($data['current_press_conference']) && is_null($data['next_press_conference']))
+                $data['background'] = url('images/board_background/no_session.png');
         } else {
             $data['type'] = 'upload';
             $data['media_url'] = $setting['media']['url'] ?? '';
