@@ -91,12 +91,22 @@ class TyphoonDynamics
             $warning = ['sea' => [], 'land' => []];
 
             foreach ($typhoonDynamics->WarningAreaConfig->area as $area) {
-                foreach ($area->blk as $blk) {
-                    if ($blk->attributes()['st'] == 1) {
-                        foreach ($blk->obj as $obj) {
-                            if ($obj->attributes()['st'] == 1) {
-                                $warning[(string)$area->attributes()['name']][(string)$blk->attributes()['name']][] = (int)$obj->attributes()['id'];
+                if ((string)$area->attributes()['name'] == 'sea') {
+                    foreach ($area->blk as $blk) {
+                        if ($blk->attributes()['st'] == 1) {
+                            foreach ($blk->obj as $obj) {
+                                if ($obj->attributes()['st'] == 1) {
+                                    $warning['sea'][(string)$blk->attributes()['name']][] = (int)$obj->attributes()['id'];
+                                }
                             }
+                        }
+                    }
+                }
+
+                if ((string)$area->attributes()['name'] == 'land') {
+                    foreach ($area->blk as $blk) {
+                        if ($blk->attributes()['st'] == 1) {
+                            $warning['land'][(string)$blk->attributes()['name']] = 1;
                         }
                     }
                 }
