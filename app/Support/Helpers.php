@@ -135,7 +135,10 @@ if (!function_exists('preference')) {
         /** @var HostPreference $hostPreference */
         $hostPreference = HostPreference::query()->firstOrNew(['user_id' => $device->user_id, 'device_id' => $device->id]);
 
-        return depthArrayMerge($device->preference_json ?? [], $hostPreference->preference_json ?? []);
+        $preference = depthArrayMerge($device->preference_json ?? [], $hostPreference->preference_json ?? []);
+        $preference['user_id'] = $device->user_id;
+        $preference['device_id'] = $device->id;
+        return $preference;
     }
 }
 
@@ -249,6 +252,29 @@ if (!function_exists('imagesUrl')) {
             if ($key >= $amount)
                 continue;
             $images[] = Storage::disk('data')->url($path . '/' . $file->getBasename());
+        }
+        return array_reverse($images);
+    }
+}
+
+if (!function_exists('imagesUrlFormatByRange')) {
+    function imagesUrlFormatByRange(string $path, string $startFile, string $endFile): array
+    {
+        $path = rtrim($path, '/');
+        $files = array_reverse(iterator_to_array(Finder::create()->files()->in(Storage::disk('data')->path($path))->sortByName(), false));
+        $images = [];
+        $is_skip = true;
+        foreach ($files as $key => $file) {
+            if ($is_skip && $startFile == $file->getBasename())
+                $is_skip = false;
+
+            if ($is_skip)
+                continue;
+
+            $images[] = Storage::disk('data')->url($path . '/' . $file->getBasename());
+
+            if ($endFile == $file->getBasename())
+                break;
         }
         return array_reverse($images);
     }

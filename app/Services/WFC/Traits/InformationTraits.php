@@ -3,6 +3,7 @@
 namespace App\Services\WFC\Traits;
 
 use App\Models\GeneralImages;
+use App\Models\ImageTime;
 use App\Services\WFC\Exceptions\WFCException;
 use Carbon\Carbon;
 use Exception;
@@ -23,8 +24,10 @@ trait InformationTraits
         $count = 1;
         $informationList = [];
         $generalImages = GeneralImages::all();
+        $imageTimes = ImageTime::query()->where(['user_id' => $preference['user_id'], 'device_id' => $preference['device_id']])->get();
         foreach ($setting ?? [] as $index => $settingImage) {
             $generalImage = $generalImages->where('name', $settingImage['img_name'] ?? '')->first();
+            $imageTime = $imageTimes->where('general_image_id', $generalImage->id ?? 0)->first();
             try {
                 if ($settingImage['type'] == 'origin') {
                     $type = weatherType($settingImage['img_name']);
@@ -48,7 +51,16 @@ trait InformationTraits
                             ]);
                             break;
                         case 2:
-                            $images = imagesUrl($generalImage->content['origin'], $generalImage->content['amount'] ?? 1);
+                            $images = [];
+
+                            if (!($imageTime->is_default ?? true)) {
+                                $images = imagesUrlFormatByRange($generalImage->content['origin'], $imageTime->start_file ?? '', $imageTime->end_file ?? '');
+                            }
+
+                            if (empty($images)) {
+                                $images = imagesUrl($generalImage->content['origin'], $generalImage->content['amount'] ?? 1);
+                            }
+
                             $informationList[] = array_merge($information, [
                                 'description' => self::parseDescription($images, $settingImage['img_name']),
                                 'interval' => $generalImage->content['interval'] ?? 1000,
@@ -57,10 +69,23 @@ trait InformationTraits
                             ]);
                             break;
                         case 3:
-                            if ($settingImage['img_name'] == 'weather_forecast') {
-                                $images = array_slice(imagesUrl($generalImage->content['origin'], 8), 0, 6);
-                            } else {
-                                $images = imagesUrl($generalImage->content['origin'], 6);
+                            $images = [];
+
+                            if (!($imageTime->is_default ?? true)) {
+                                if ($settingImage['img_name'] == 'weather_forecast') {
+                                    $images = imagesUrlFormatByRange($generalImage->content['origin'], $imageTime->start_file ?? '', $imageTime->end_file ?? '');
+                                    $images = array_slice($images, 0, count($images));
+                                } else {
+                                    $images = imagesUrlFormatByRange($generalImage->content['origin'], $imageTime->start_file ?? '', $imageTime->end_file ?? '');
+                                }
+                            }
+
+                            if (empty($images)) {
+                                if ($settingImage['img_name'] == 'weather_forecast') {
+                                    $images = array_slice(imagesUrl($generalImage->content['origin'], 8), 0, 6);
+                                } else {
+                                    $images = imagesUrl($generalImage->content['origin'], 6);
+                                }
                             }
 
                             $informationList[] = array_merge($information, [
