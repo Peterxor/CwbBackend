@@ -132,10 +132,19 @@ class RainfallForecast
             }
 
             foreach ($rainfallForecast->PrecipitationInformation->AreaForecastData ?? [] as $areaForecastData) {
-                if (((string)$areaForecastData->Precipitation->attributes()['region']) == 'flat') {
-                    $data['location'][Transformer::parseRainfallFcstCity((string)$areaForecastData->attributes()['area'])][(string)$areaForecastData->attributes()['area']]['flat'] = (string)$areaForecastData->Precipitation->Value;
-                } else {
-                    $data['location'][Transformer::parseRainfallFcstCity((string)$areaForecastData->attributes()['area'])][(string)$areaForecastData->attributes()['area']]['mountain'] = (string)$areaForecastData->Precipitation->Value;
+                $rainfallFcstCity = Transformer::parseRainfallFcstCity((string)$areaForecastData->attributes()['area']);
+
+                $cityArray = [$rainfallFcstCity];
+
+                if (((string)$areaForecastData->attributes()['area']) == '宜蘭縣')
+                    $cityArray[] = 'n';
+
+                foreach ($cityArray as $city) {
+                    if (((string)$areaForecastData->Precipitation->attributes()['region']) == 'flat') {
+                        $data['location'][$city][(string)$areaForecastData->attributes()['area']]['flat'] = (string)$areaForecastData->Precipitation->Value;
+                    } else {
+                        $data['location'][$city][(string)$areaForecastData->attributes()['area']]['mountain'] = (string)$areaForecastData->Precipitation->Value;
+                    }
                 }
             }
 

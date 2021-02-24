@@ -168,7 +168,7 @@ class RainfallObservation
             while (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
                 $strArr = explode(" ", $str);
-                if(count($strArr) < 3)
+                if (count($strArr) < 3)
                     continue;
                 $area = Transformer::parseAddress($config, $strArr[2]);
                 if (count($area) == 0 || empty(Transformer::parseRainfallObsCity($area[0]))) {
@@ -184,27 +184,36 @@ class RainfallObservation
                     ];
                 }
 
-                if (count($data['top'][Transformer::parseRainfallObsCity($area[0])]) < 5) {
-                    $data['top'][Transformer::parseRainfallObsCity($area[0])][] = [
-                        'city' => $area[0],
-                        'area' => $strArr[1],
+                $rainfallObsCity = Transformer::parseRainfallObsCity($area[0]);
+
+                $cityArray = [$rainfallObsCity];
+
+                if($area[0] == '宜蘭縣')
+                    $cityArray[] = 'n';
+
+                foreach ($cityArray as $city) {
+                    if (count($data['top'][]) < 5) {
+                        $data['top'][$city][] = [
+                            'city' => $area[0],
+                            'area' => $strArr[1],
+                            'value' => (float)$strArr[0]
+                        ];
+                    }
+
+                    if (array_key_exists($area[0], $data['location'][$city])) {
+                        continue;
+                    }
+                    $data['location'][$city][$area[0]] = [
                         'value' => (float)$strArr[0]
                     ];
-                }
 
-                if (array_key_exists($area[0], $data['location'][Transformer::parseRainfallObsCity($area[0])])) {
-                    continue;
-                }
-                $data['location'][Transformer::parseRainfallObsCity($area[0])][$area[0]] = [
-                    'value' => (float)$strArr[0]
-                ];
-
-                if (count($data['top']['c']) < 5) {
-                    $data['top']['c'][] = [
-                        'city' => $area[0],
-                        'area' => $area[1],
-                        'value' => (float)$strArr[0]
-                    ];
+                    if (count($data['top']['c']) < 5) {
+                        $data['top']['c'][] = [
+                            'city' => $area[0],
+                            'area' => $area[1],
+                            'value' => (float)$strArr[0]
+                        ];
+                    }
                 }
             }
 
