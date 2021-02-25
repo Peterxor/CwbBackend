@@ -58,12 +58,12 @@ class TyphoonDynamics
             $data = [
                 'time' => Carbon::create((string)$typhoonDynamics->current->Point->Time)->toDateTimeLocalString() . '+08:00',
                 'past' => [
-                    'time' => (string)$typhoonDynamics->past->Point->Time,
+                    'time' => Carbon::create((string)$typhoonDynamics->past->Point->Time)->toDateTimeLocalString() . '+08:00',
                     'lat' => (float)$typhoonDynamics->past->Point->Lat,
                     'lon' => (float)$typhoonDynamics->past->Point->Lon
                 ],
                 'current' => [
-                    'time' => (string)$typhoonDynamics->current->Point->Time,
+                    'time' => Carbon::create((string)$typhoonDynamics->current->Point->Time)->toDateTimeLocalString() . '+08:00',
                     'offset' => (int)$typhoonDynamics->current->Point->offset,
                     'lat' => (float)$typhoonDynamics->current->Point->Lat,
                     'lon' => (float)$typhoonDynamics->current->Point->Lon,
@@ -76,7 +76,7 @@ class TyphoonDynamics
 
             foreach ($typhoonDynamics->fcst->Point as $point) {
                 $fcst[] = [
-                    'time' => (string)$point->Time,
+                    'time' => Carbon::create((string)$point->Time)->toDateTimeLocalString() . '+08:00',
                     'label' => (string)$point->Label,
                     'offset' => (int)$point->offset,
                     'lat' => (float)$point->Lat,
