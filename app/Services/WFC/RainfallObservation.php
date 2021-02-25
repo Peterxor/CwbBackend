@@ -179,7 +179,8 @@ class RainfallObservation
                 if (count($data['top']['a']) < 5) {
                     $data['top']['a'][] = [
                         'city' => $area[0],
-                        'area' => $strArr[1],
+                        'area' => $area[1],
+                        'site' => $strArr[1],
                         'value' => (float)$strArr[0]
                     ];
                 }
@@ -195,7 +196,8 @@ class RainfallObservation
                     if (count($data['top'][$city]) < 5) {
                         $data['top'][$city][] = [
                             'city' => $area[0],
-                            'area' => $strArr[1],
+                            'area' => $area[1],
+                            'site' => $strArr[1],
                             'value' => (float)$strArr[0]
                         ];
                     }
@@ -211,6 +213,7 @@ class RainfallObservation
                         $data['top']['c'][] = [
                             'city' => $area[0],
                             'area' => $area[1],
+                            'site' => $strArr[1],
                             'value' => (float)$strArr[0]
                         ];
                     }
