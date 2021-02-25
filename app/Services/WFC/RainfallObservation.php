@@ -192,7 +192,7 @@ class RainfallObservation
                     $cityArray[] = 'n';
 
                 foreach ($cityArray as $city) {
-                    if (count($data['top'][]) < 5) {
+                    if (count($data['top'][$city]) < 5) {
                         $data['top'][$city][] = [
                             'city' => $area[0],
                             'area' => $strArr[1],
