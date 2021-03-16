@@ -24,10 +24,15 @@ class SideMenu extends AbstractWidget
     public function run()
     {
         try {
-            $menus = Redis::get('menus');
+            $user = Auth::user();
+            $user_id = $user->id;
+            $menus = Redis::get("menus_$user_id");
             if (!$menus) {
                 $menus = config('menus');
-                Redis::set('menus', json_encode($menus));
+                // check permission
+                $tempMenus = $this->checkChildrenPermission($menus, $user);
+                $menus = $tempMenus;
+                Redis::set("menus_$user_id", json_encode($menus));
                 Log::debug('cache menus to redis');
             } else {
                 $menus = json_decode($menus, true);
@@ -36,11 +41,6 @@ class SideMenu extends AbstractWidget
             $menus = config('menus');
             // Log::debug('No redis, use config menu');
         }
-        // check permission
-        $user = Auth::user();
-        $tempMenus = $this->checkChildrenPermission($menus, $user);
-        $menus = $tempMenus;
-
         return view('backend.widgets.side_menu', [
             'items' => $menus,
         ]);

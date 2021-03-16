@@ -47,7 +47,7 @@
         			</li>
                     @foreach ($roles as $role)
                         <li class="nav-item">
-            				<div class="nav-link js-role" data-toggle="tab" role="tab" aria-selected="true" data-role="{{$role['name']}}">{{$role['name']}}</div>
+            				<div class="nav-link js-role" data-toggle="tab" role="tab" aria-selected="true" data-role="{{$role['name']}}">{{$role['chinese_name']}}</div>
             			</li>
                     @endforeach
         		</ul>
