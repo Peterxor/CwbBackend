@@ -165,6 +165,8 @@ class RainfallObservation
                 }
             }
 
+            $topCity = [];
+
             while (!feof($txt)) {
                 $str = self::txtDecode(fgets($txt));
                 $strArr = explode(" ", $str);
@@ -176,6 +178,7 @@ class RainfallObservation
                     continue;
                 }
 
+                // 全臺測站排名
                 if (count($data['top']['a']) < 5) {
                     $data['top']['a'][] = [
                         'city' => $area[0],
@@ -183,6 +186,17 @@ class RainfallObservation
                         'site' => $strArr[1],
                         'value' => (float)$strArr[0]
                     ];
+                }
+
+                // 全臺縣市排名
+                if (count($data['top']['c']) < 5 && !in_array($area[0], $topCity)) {
+                    $data['top']['c'][] = [
+                        'city' => $area[0],
+                        'area' => $area[1],
+                        'site' => $strArr[1],
+                        'value' => (float)$strArr[0]
+                    ];
+                    $topCity[] = $area[0];
                 }
 
                 $rainfallObsCity = Transformer::parseRainfallObsCity($area[0]);
@@ -208,15 +222,6 @@ class RainfallObservation
                     $data['location'][$city][$area[0]] = [
                         'value' => (float)$strArr[0]
                     ];
-
-                    if (count($data['top']['c']) < 5) {
-                        $data['top']['c'][] = [
-                            'city' => $area[0],
-                            'area' => $area[1],
-                            'site' => $strArr[1],
-                            'value' => (float)$strArr[0]
-                        ];
-                    }
                 }
             }
 
