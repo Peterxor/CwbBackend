@@ -47,6 +47,7 @@ trait InformationTraits
                             $informationList[] = array_merge($information, [
                                 'description' => self::parseDescription($image, $settingImage['img_name']),
                                 'image' => $image,
+                                'time' => self::parseTime($image, $settingImage['img_name']),
                                 'thumbnail' => $image
                             ]);
                             break;
@@ -65,6 +66,7 @@ trait InformationTraits
                                 'description' => self::parseDescription($images, $settingImage['img_name']),
                                 'interval' => $generalImage->content['interval'] ?? 1000,
                                 'images' => $images,
+                                'times' => self::parseTime($images, $settingImage['img_name']),
                                 'thumbnail' => $images[0]
                             ]);
                             break;
@@ -91,6 +93,7 @@ trait InformationTraits
                             $informationList[] = array_merge($information, [
                                 'description' => self::parseDescription($images, $settingImage['img_name']),
                                 'images' => $images,
+                                'times' => self::parseTime($images, $settingImage['img_name']),
                                 'thumbnail' => $images[0]
                             ]);
                             break;
@@ -154,6 +157,7 @@ trait InformationTraits
     }
 
     /**
+     * 圖資描述
      *
      * @param $urls
      * @param string $imageName
@@ -163,6 +167,7 @@ trait InformationTraits
     {
         $startTime = '';
         $endTime = '';
+
         switch ($imageName) {
             case 'east_asia_vis':
                 foreach ($urls as $url) {
@@ -240,6 +245,85 @@ trait InformationTraits
                     return $time->format('m月d日');
                 }
                 return empty($startTime) ? '' : $startTime . ' ~ ' . $endTime;
+            case 'wave_analysis_chart':
+                $time = Carbon::createFromFormat('\F\I\1\2\P\OYmd\-\0\0', pathinfo($urls)['filename'], 'Asia/Taipei');
+                return $time->format('m月d日 H:i');
+            default:
+                return '';
+        }
+    }
+
+    /**
+     * 圖資時間
+     *
+     * @param $urls
+     * @param string $imageName
+     * @return array|string
+     */
+    static private function parseTime($urls, string $imageName)
+    {
+        $times = [];
+        switch ($imageName) {
+            case 'east_asia_vis':
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('Y-m-d_Hi\.\V\I\S', pathinfo($url)['filename'], 'Asia/Taipei');
+                    $times[] = $time->format('m月d日 H:i');
+                }
+                return $times;
+            case 'east_asia_mb':
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('Y-m-d_Hi\.\I\R\1\_\M\B', pathinfo($url)['filename'], 'Asia/Taipei');
+                    $times[] = $time->format('m月d日 H:i');
+                }
+                return $times;
+            case 'east_asia_ir':
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('Y-m-d_Hi\.\I\R\1\_\C\R', pathinfo($url)['filename'], 'Asia/Taipei');
+                    $times[] = $time->format('m月d日 H:i');
+                }
+                return $times;
+            case 'surface_weather_map':
+                $time = Carbon::createFromFormat('Y-md-Hi\_\S\F\C\c\o\m\b\o\H\D', pathinfo($urls)['filename'], 'Asia/Taipei');
+                return $time->format('m月d日 H:i');
+            case 'global_ir':
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('Y-m-d_Hi\.\I\R\1\_\F\D\K\.\M\B', pathinfo($url)['filename'], 'Asia/Taipei');
+                    $times[] = $time->format('m月d日 H:i');
+                }
+                return $times;
+            case 'radar_echo':
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('\C\V\1\_\4\K\_\3\8\4\0\_YmdHi', pathinfo($url)['filename'], 'Asia/Taipei');
+                    $times[] = $time->format('m月d日 H:i');
+                }
+                return $times;
+            case 'temperature':
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('Y-m-d_Hi\.\G\T\P\8', pathinfo($url)['filename'], 'Asia/Taipei');
+                    $times[] = $time->format('m月d日 H:i');
+                }
+                return $times;
+            case 'rainfall':
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('Y-m-d_Hi', substr(pathinfo($url)['filename'], 0, 15), 'Asia/Taipei');
+                    $times[] = $time->format('m月d日 H:i');
+                }
+                return $times;
+            case 'numerical_forecast':
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('YmdH', '20' . substr(pathinfo($url)['filename'], 15, 8), 'Asia/Taipei');
+                    $times[] = $time->format('m月d日');
+                }
+                return $times;
+            case 'forecast_24h':
+                $time = Carbon::createFromFormat('Y-md-hi\_\A\0\1\2\H\D', pathinfo($urls)['filename'], 'Asia/Taipei');
+                return $time->format('m月d日 H:i');
+            case 'weather_forecast':
+                foreach ($urls as $url) {
+                    $time = Carbon::createFromFormat('Y-md', substr(pathinfo($url)['filename'], 0, 9), 'Asia/Taipei');
+                    return $time->format('m月d日');
+                }
+                return $times;
             case 'wave_analysis_chart':
                 $time = Carbon::createFromFormat('\F\I\1\2\P\OYmd\-\0\0', pathinfo($urls)['filename'], 'Asia/Taipei');
                 return $time->format('m月d日 H:i');
