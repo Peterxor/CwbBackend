@@ -4,43 +4,37 @@
 namespace App\Services\WFC;
 
 
+use App\Services\WFC\Exceptions\WFCException;
+
 class Transformer
 {
     /**
-     * 地址設定檔
-     *
-     * @return array|string[]
-     */
-    static function addressConfig(): array
-    {
-        $txt = fopen(storage_path('app/public/data/wfc_config.csv'), 'r');
-
-        if (!feof($txt))
-            fgets($txt);
-
-        $data = [];
-
-        while (!feof($txt)) {
-            $str = trim(fgets($txt));
-            if (empty($str))
-                continue;
-            $strArr = explode(",", $str);
-            $data[trim($strArr[0])] = [trim($strArr[2]), trim($strArr[3])];
-        }
-
-        return $data;
-    }
-
-    /**
      * 解析地址
      *
-     * @param array $config
      * @param string $address
      * @return array|string[]
+     * @throws WFCException
      */
-    static function parseAddress(array $config, string $address): array
+    static function parseAddress(string $address): array
     {
-        return $config[$address] ?? [];
+        $pos = false;
+        if (mb_strpos($address, '縣'))
+            $pos = mb_strpos($address, '縣');
+        elseif (mb_strpos($address, '市'))
+            $pos = mb_strpos($address, '市');
+
+        if (!$pos)
+            throw new WFCException('雨量觀測[' . $address . ']測站解析錯誤', 500);
+
+        $city = mb_substr($address, 0, $pos + 1);
+        $address = mb_substr($address, $pos + 1);
+
+        if (mb_strpos($address, '('))
+            $area = mb_substr($address, 0, mb_strpos($address, '('));
+        else
+            $area = $address;
+
+        return [$city, $area];
     }
 
     /**
