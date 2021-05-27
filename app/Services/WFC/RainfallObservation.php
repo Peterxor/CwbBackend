@@ -166,6 +166,9 @@ class RainfallObservation
                 $strArr = explode(" ", $str);
                 if (count($strArr) < 3)
                     continue;
+
+                $strArr[2] = str_replace('台', '臺', $strArr[2]);
+
                 $area = Transformer::parseAddress($strArr[2]);
                 if (count($area) == 0 || empty(Transformer::parseRainfallObsCity($area[0]))) {
                     Log::warning('雨量觀測[測站資料]資料解析錯誤:' . $str);
@@ -197,7 +200,7 @@ class RainfallObservation
 
                 $cityArray = [$rainfallObsCity];
 
-                if($area[0] == '宜蘭縣')
+                if ($area[0] == '宜蘭縣')
                     $cityArray[] = 'n';
 
                 foreach ($cityArray as $city) {
