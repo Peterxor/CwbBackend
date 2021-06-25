@@ -347,7 +347,7 @@ if (!function_exists('dashboardJsonUrl')) {
             case 'website':
                 return $jsonObj['url'];
             default:
-                return '';
+                return 'no_type';
         }
     }
 }
@@ -365,7 +365,7 @@ if (!function_exists('dashboardJsonName')) {
             case 'website':
                 return $jsonObj['name'];
             default:
-                return '';
+                return 'no_type';
         }
     }
 }
@@ -383,7 +383,7 @@ if (!function_exists('jsonScreen')) {
             case 'website':
                 return $jsonObj['name'];
             default:
-                return '';
+                return 'no_type';
         }
     }
 }
