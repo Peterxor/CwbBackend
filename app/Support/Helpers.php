@@ -342,10 +342,10 @@ if (!function_exists('dashboardJsonUrl')) {
         switch ($jsonObj['type']) {
             case 'origin':
             case 'upload':
-                return $jsonObj['img_url'];
+                return $jsonObj['img_url'] ?? '';
             case 'youtube':
             case 'website':
-                return $jsonObj['url'];
+                return $jsonObj['url'] ?? '';
             default:
                 return 'no_type';
         }
